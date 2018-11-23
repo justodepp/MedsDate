@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="product"
+            type="com.medsdate.data.db.model.MedicineEntry"/>
+        <variable name="callback"
+            type="com.medsdate.ui.main.MedicineClickCallback"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/theme_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_margin_8dp"
+        style="@style/CardView.Style" >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/general_margin_4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/category_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:paddingStart="@dimen/general_padding_16dp"
+                android:paddingEnd="@dimen/general_padding_16dp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                tools:text="category" />
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/general_padding_16dp"
+                android:paddingEnd="@dimen/general_padding_16dp"
+                android:paddingTop="@dimen/general_padding_4dp"
+                android:paddingBottom="@dimen/general_padding_4dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/category_text"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/quantity_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/general_padding_16dp"
+                android:paddingEnd="@dimen/general_padding_16dp"
+                android:paddingTop="@dimen/general_padding_4dp"
+                android:paddingBottom="@dimen/general_padding_4dp"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/title_text"
+                tools:text="Quantity: " />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="@dimen/item_date_width"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/general_padding_16dp"
+                android:paddingBottom="@dimen/general_padding_16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/day_number_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/general_padding_8dp"
+                    android:paddingStart="@dimen/general_padding_8dp"
+                    android:paddingEnd="@dimen/general_padding_8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    tools:text="31" />
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/month_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/general_padding_8dp"
+                    android:paddingStart="@dimen/general_padding_8dp"
+                    android:paddingEnd="@dimen/general_padding_8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/day_number_text"
+                    tools:text="GEN" />
+
+                <TextView
+                    android:id="@+id/year_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/month_text"
+                    tools:text="2018" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>
