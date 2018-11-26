@@ -13,4 +13,6 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="item_date_width">80dp</dimen>
+
+    <dimen name="item_date_width_dialog">60dp</dimen>
 </resources>

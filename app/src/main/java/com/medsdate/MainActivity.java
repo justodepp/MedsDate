@@ -1,13 +1,16 @@
 package com.medsdate;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.dialogs.DialogMedicineFragment;
 import com.medsdate.ui.main.MedicineFragment;
+import com.medsdate.ui.viewmodel.MedsViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogMedicineFragment.newInstance(true, true, new DialogMedicineFragment.OnDialogMedicineListener() {
+                DialogMedicineFragment.newInstance(false, true, new DialogMedicineFragment.OnDialogMedicineListener() {
                     @Override
-                    public void saveMedicine() {
+                    public void saveMedicine(MedicineEntry medicineEntry) {
+                        MedsViewModel mViewModel = ViewModelProviders.of(MainActivity.this).get(MedsViewModel.class);
+                        mViewModel.insert(medicineEntry);
                     }
 
                     @Override

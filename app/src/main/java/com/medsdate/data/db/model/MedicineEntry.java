@@ -29,11 +29,12 @@ public class MedicineEntry {
     }
 
     @Ignore
-    public MedicineEntry(String category, String name, Date expireAt, int quantity) {
+    public MedicineEntry(String category, String name, Date expireAt, int quantity, Date updatedAt) {
         this.category = category;
         this.name = name;
         this.quantity = quantity;
         this.expireAt = expireAt;
+        this.updatedAt = updatedAt;
     }
 
     public MedicineEntry(MedicineEntry medicine) {
@@ -42,6 +43,7 @@ public class MedicineEntry {
         this.name = medicine.getName();
         this.quantity = medicine.getQuantity();
         this.expireAt = medicine.getExpireAt();
+        this.updatedAt = medicine.getUpdatedAt();
     }
 
     public int getId() {

@@ -6,6 +6,8 @@ import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.MedsRepository;
 import com.medsdate.utils.AppExecutors;
 
+import timber.log.Timber;
+
 public class BasicApp extends Application {
 
     private AppExecutors mAppExecutors;
@@ -15,6 +17,7 @@ public class BasicApp extends Application {
         super.onCreate();
 
         mAppExecutors = AppExecutors.getInstance();
+        Timber.plant(new Timber.DebugTree());
     }
 
     public AppDatabase getDatabase() {

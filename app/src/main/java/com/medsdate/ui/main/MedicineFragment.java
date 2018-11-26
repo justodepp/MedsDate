@@ -11,7 +11,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,8 @@ import com.medsdate.utils.AppExecutors;
 import com.medsdate.utils.ItemClickSupport;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
@@ -106,14 +107,9 @@ public class MedicineFragment extends Fragment {
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        int position = viewHolder.getAdapterPosition();
-                        List<MedicineEntry> medicine = mAdapter.getMeds();
-                        mDb.medicineDao().deleteMedicine(medicine.get(position));
-                    }
-                });
+                int position = viewHolder.getAdapterPosition();
+                List<MedicineEntry> medicine = mAdapter.getMeds();
+                mDb.medicineDao().deleteMedicine(medicine.get(position));
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -124,7 +120,7 @@ public class MedicineFragment extends Fragment {
 
                 DialogMedicineFragment.newInstance(true, true, new DialogMedicineFragment.OnDialogMedicineListener() {
                     @Override
-                    public void saveMedicine() {
+                    public void saveMedicine(MedicineEntry medicineEntry) {
                     }
 
                     @Override
@@ -143,7 +139,7 @@ public class MedicineFragment extends Fragment {
         mViewModel.getMeds().observe(this, new Observer<List<MedicineEntry>>() {
             @Override
             public void onChanged(@Nullable List<MedicineEntry> medsEntries) {
-                Log.d(TAG, "Updating list of Meds from LiveData in ViewModel");
+                Timber.d("Updating list of Meds from LiveData in ViewModel");
                 mAdapter.setMeds(medsEntries);
             }
         });

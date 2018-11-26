@@ -100,6 +100,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/day_number_text"
+                    android:textAllCaps="true"
                     tools:text="GEN" />
 
                 <TextView
