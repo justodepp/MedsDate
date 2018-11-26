@@ -83,4 +83,12 @@ public class MedicineEntry {
     public void setExpireAt(Date expireAt) {
         this.expireAt = expireAt;
     }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

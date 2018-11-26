@@ -1,80 +1,55 @@
 package com.medsdate.ui.main;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
-import com.medsdate.databinding.ItemRvMainBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 
 public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHolder> {
 
     List<? extends MedicineEntry> mMedsList;
 
-    @Nullable
-    private final MedicineClickCallback mMedicineClickCallback;
+    // Constant for date format
+    private static final String DATE_FORMAT = "dd/MM/yyy";
+    // Date formatter
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
-    public MedsAdapter(@Nullable MedicineClickCallback clickCallback) {
-        mMedicineClickCallback = clickCallback;
+//    @Nullable
+//    private final MedicineClickCallback mMedicineClickCallback;
+
+    public MedsAdapter() {
+//        mMedicineClickCallback = clickCallback;
         setHasStableIds(true);
     }
 
-    public void setMedsList(final List<? extends MedicineEntry> medsList) {
-        if (mMedsList == null) {
-            mMedsList = medsList;
-            notifyItemRangeInserted(0, medsList.size());
-        } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return mMedsList.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return medsList.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mMedsList.get(oldItemPosition).getId() ==
-                            medsList.get(newItemPosition).getId();
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    MedicineEntry newProduct = medsList.get(newItemPosition);
-                    MedicineEntry oldProduct = mMedsList.get(oldItemPosition);
-                    return newProduct.getId() == oldProduct.getId()
-                            && Objects.equals(newProduct.getName(), oldProduct.getName())
-                            && Objects.equals(newProduct.getExpireAt(), oldProduct.getExpireAt());
-                }
-            });
-            mMedsList = medsList;
-            result.dispatchUpdatesTo(this);
-        }
-    }
-
     @Override
-    public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemRvMainBinding binding = DataBindingUtil
+    public MedicineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the task_layout to a view
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_rv_main, parent, false);
+
+        return new MedicineViewHolder(view);
+        /*ItemRvMainBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_rv_main,
                         parent, false);
         binding.setCallback(mMedicineClickCallback);
-        return new MedicineViewHolder(binding);
+        return new MedicineViewHolder(binding);*/
     }
 
     @Override
-    public void onBindViewHolder(MedicineViewHolder holder, int position) {
-        holder.binding.setMedicine(mMedsList.get(position));
-        holder.binding.executePendingBindings();
+    public void onBindViewHolder(@NonNull MedicineViewHolder holder, int position) {
+//        holder.binding.setMedicine(mMedsList.get(position));
+//        holder.binding.executePendingBindings();
+
+        holder.bind(position);
     }
 
     @Override
@@ -89,15 +64,32 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
 
     static class MedicineViewHolder extends RecyclerView.ViewHolder {
 
-        final ItemRvMainBinding binding;
+        public MedicineViewHolder(View itemView) {
+            super(itemView);
+//            super(binding.getRoot());
+//            this.binding = binding;
+        }
 
-        public MedicineViewHolder(ItemRvMainBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public void bind(int position){
+
         }
     }
 
     public List<MedicineEntry> getMeds() {
         return (List<MedicineEntry>) mMedsList;
+    }
+
+    /**
+     * When data changes, this method updates the list of taskEntries
+     * and notifies the adapter to use the new values on it
+     */
+    public void setMeds(List<MedicineEntry> medsEntries) {
+        mMedsList = medsEntries;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

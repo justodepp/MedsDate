@@ -14,14 +14,10 @@ import android.support.annotation.NonNull;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.utils.AppExecutors;
 
-import java.util.List;
-
 @Database(entities = {MedicineEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "medslist";
 
     private static AppDatabase sInstance;
@@ -107,10 +103,10 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4("
+            /*database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4("
                     + "`name` TEXT, `description` TEXT, content=`products`)");
             database.execSQL("INSERT INTO productsFts (`rowid`, `name`, `description`) "
-                    + "SELECT `id`, `name`, `description` FROM products");
+                    + "SELECT `id`, `name`, `description` FROM products");*/
         }
     };
 }

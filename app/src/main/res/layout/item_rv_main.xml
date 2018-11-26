@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable name="product"
-            type="com.medsdate.data.db.model.MedicineEntry"/>
-        <variable name="callback"
-            type="com.medsdate.ui.main.MedicineClickCallback"/>
-    </data>
-
     <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+
         android:id="@+id/theme_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,11 +103,13 @@
                     tools:text="GEN" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/year_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/general_margin_8dp"
+                    android:paddingStart="@dimen/general_padding_8dp"
+                    android:paddingEnd="@dimen/general_padding_8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -125,4 +120,3 @@
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
-</layout>
