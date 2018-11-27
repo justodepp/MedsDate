@@ -52,8 +52,9 @@ public class MedsViewModel extends AndroidViewModel {
         medsRepository.deleteMedicine(medicine);
     }
 
-    public void load(int medicineId) {
-        medsRepository.loadMedicine(medicineId);
+    public LiveData<MedicineEntry> load(int medicineId) {
+
+        return medsRepository.loadMedicine(medicineId);
     }
 
     public void update(MedicineEntry medicine) {

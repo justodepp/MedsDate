@@ -2,13 +2,17 @@ package com.medsdate.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import com.medsdate.R;
 import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.model.MedicineEntry;
+import com.medsdate.ui.viewmodel.MedsViewModel;
 import com.medsdate.utils.AppExecutors;
 
 import java.util.Calendar;
@@ -29,11 +34,10 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     private static final int DEFAULT_TASK_ID = -1;
 
     private boolean cancelable;
-    private boolean isNewMedicine;
 
     private OnDialogMedicineListener listener;
 
-    private int mTaskId = DEFAULT_TASK_ID;
+    private int mMedicineId = DEFAULT_TASK_ID;
     // Member variable for the Database
     private AppDatabase mDb;
 
@@ -46,6 +50,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     private TextView mMonth;
     private TextView mYear;
 
+    private EditText mName;
     private TextView mQuantity;
     private int currentQuantity = 1;
 
@@ -67,11 +72,11 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         return fragment;
     }
 
-    public static DialogMedicineFragment newInstance(boolean cancelable, boolean isNewMedicine, OnDialogMedicineListener listener) {
+    public static DialogMedicineFragment newInstance(boolean cancelable, int extra_id, OnDialogMedicineListener listener) {
         DialogMedicineFragment fragment = new DialogMedicineFragment();
 
         fragment.cancelable = cancelable;
-        fragment.isNewMedicine = isNewMedicine;
+        fragment.mMedicineId = extra_id;
 
         if(listener != null) {
             fragment.listener = listener;
@@ -84,7 +89,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mTaskId = getArguments().getInt(EXTRA_TASK_ID);
+            mMedicineId = getArguments().getInt(EXTRA_TASK_ID, DEFAULT_TASK_ID);
         }
     }
 
@@ -103,12 +108,6 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         dialogView.findViewById(R.id.txt_cancel).setOnClickListener(this);
         dialogView.findViewById(R.id.txt_save).setOnClickListener(this);
         mDb = AppDatabase.getInstance(getContext(), AppExecutors.getInstance());
-
-        if(isNewMedicine) {
-
-        } else {
-
-        }
 
         init();
 
@@ -188,7 +187,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
 
                 MedicineEntry medicineEntry = new MedicineEntry(
                         "CATEGORY",
-                        "NAME",
+                        mName.getText().toString(),
                         myCalendar.getTime(),
                         Integer.parseInt(mQuantity.getText().toString()),
                         new Date());
@@ -199,17 +198,46 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     }
 
     private void init() {
-        myCalendar = Calendar.getInstance();
+        mQuantity = dialogView.findViewById(R.id.spinner_quantity);
+        mName = dialogView.findViewById(R.id.txt_name_medicine);
 
         mDay = dialogView.findViewById(R.id.day_number_text);
         mMonth = dialogView.findViewById(R.id.month_text);
         mYear = dialogView.findViewById(R.id.year_text);
 
+        if (mMedicineId != DEFAULT_TASK_ID) {
+            final MedsViewModel viewModel
+                    = ViewModelProviders.of(this).get(MedsViewModel.class);
+            viewModel.load(mMedicineId).observe(this, new Observer<MedicineEntry>() {
+                @Override
+                public void onChanged(@Nullable MedicineEntry medicineEntry) {
+                    viewModel.load(mMedicineId).removeObserver(this);
+                    populateUI(medicineEntry);
+                }
+            });
+        } else {
+            myCalendar = Calendar.getInstance();
+
+            mDay.setText(String.valueOf(myCalendar.get(Calendar.DAY_OF_MONTH)));
+            mMonth.setText(myCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+            mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
+        }
+    }
+
+    private void populateUI(MedicineEntry medicineEntry) {
+        if (medicineEntry == null) {
+            return;
+        }
+
+        mName.setText(medicineEntry.getName());
+        mQuantity.setText(String.valueOf(medicineEntry.getQuantity()));
+
+        myCalendar = Calendar.getInstance();
+        myCalendar.setTime(medicineEntry.getExpireAt());
+
         mDay.setText(String.valueOf(myCalendar.get(Calendar.DAY_OF_MONTH)));
         mMonth.setText(myCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
         mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
-
-        mQuantity = dialogView.findViewById(R.id.spinner_quantity);
     }
 
     public interface OnDialogMedicineListener {

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 
 import com.medsdate.data.db.model.MedicineEntry;
+import com.medsdate.utils.AppExecutors;
 
 import java.util.List;
 
@@ -41,7 +42,12 @@ public class MedsRepository {
      * Get the list of products from the database and get notified when the data changes.
      */
     public void insertMedicine(final MedicineEntry medicineEntry) {
-        mDatabase.medicineDao().insertMedicine(medicineEntry);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.medicineDao().insertMedicine(medicineEntry);
+            }
+        });
     }
 
     public LiveData<List<MedicineEntry>> getMeds() {
@@ -53,10 +59,20 @@ public class MedsRepository {
     }
 
     public void updateMedicine(final MedicineEntry medicineEntry) {
-        mDatabase.medicineDao().updateMedicine(medicineEntry);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.medicineDao().updateMedicine(medicineEntry);
+            }
+        });
     }
 
     public void deleteMedicine(final MedicineEntry medicineEntry) {
-        mDatabase.medicineDao().deleteMedicine(medicineEntry);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.medicineDao().deleteMedicine(medicineEntry);
+            }
+        });
     }
 }

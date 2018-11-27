@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AppDatabase mDb;
 
     private MedsAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.fab).setOnClickListener(this);
         mViewModel = ViewModelProviders.of(this).get(MedsViewModel.class);
         // Set the RecyclerView to its corresponding view
-        RecyclerView mRecyclerView = findViewById(R.id.rv_main);
+        mRecyclerView = findViewById(R.id.rv_main);
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
@@ -70,12 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Here is where you'll implement swipe to delete
                 int position = viewHolder.getAdapterPosition();
                 List<MedicineEntry> medicine = mAdapter.getMeds();
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        mViewModel.delete(medicine.get(position));
-                    }
-                });
+                mViewModel.delete(medicine.get(position));
+
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -84,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 List<MedicineEntry> medicine = mAdapter.getMeds();
 
-                DialogMedicineFragment.newInstance(true, true, new DialogMedicineFragment.OnDialogMedicineListener() {
+                DialogMedicineFragment.newInstance(true, medicine.get(position).getId(),
+                        new DialogMedicineFragment.OnDialogMedicineListener() {
                     @Override
                     public void saveMedicine(MedicineEntry medicineEntry) {
                     }
@@ -107,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onChanged(@Nullable List<MedicineEntry> medsEntries) {
                 Timber.d("Updating list of Meds from LiveData in ViewModel");
                 mAdapter.setMeds(medsEntries);
+                if(medsEntries.size() > 0) {
+                    findViewById(R.id.empty_view).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -114,15 +117,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
-            DialogMedicineFragment.newInstance(false, true, new DialogMedicineFragment.OnDialogMedicineListener() {
+            DialogMedicineFragment.newInstance(false, new DialogMedicineFragment.OnDialogMedicineListener() {
                 @Override
                 public void saveMedicine(MedicineEntry medicineEntry) {
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            mViewModel.insert(medicineEntry);
-                        }
-                    });
+                    mViewModel.insert(medicineEntry);
                 }
 
                 @Override

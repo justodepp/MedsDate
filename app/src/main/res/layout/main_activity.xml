@@ -19,7 +19,8 @@
 
         <include
             android:id="@+id/progressBar"
-            layout="@layout/progress_bar_indicator" />
+            layout="@layout/progress_bar_indicator"
+            android:visibility="gone"/>
 
         <!-- Empty view for the list -->
         <RelativeLayout
