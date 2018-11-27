@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void updateMedicine() {
-                        mDb.medicineDao().updateMedicine(medicine.get(position));
+                    public void updateMedicine(MedicineEntry medicineEntry) {
+                        mViewModel.update(medicineEntry);
                     }
                 }).show(getSupportFragmentManager(), "DialogMedicineFragment");
             }
@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 @Override
-                public void updateMedicine() {
-
+                public void updateMedicine(MedicineEntry medicineEntry) {
+                    return;
                 }
             }).show(getSupportFragmentManager(), "DialogMedicineFragment");
         }

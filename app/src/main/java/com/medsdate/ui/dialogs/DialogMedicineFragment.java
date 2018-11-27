@@ -192,7 +192,12 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                         Integer.parseInt(mQuantity.getText().toString()),
                         new Date());
 
-                listener.saveMedicine(medicineEntry);
+                if (mMedicineId != DEFAULT_TASK_ID) {
+                    medicineEntry.setId(mMedicineId);
+                    listener.updateMedicine(medicineEntry);
+                } else {
+                    listener.saveMedicine(medicineEntry);
+                }
             }
         }
     }
@@ -242,7 +247,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
 
     public interface OnDialogMedicineListener {
         void saveMedicine(MedicineEntry medicineEntry);
-        void updateMedicine();
+        void updateMedicine(MedicineEntry medicineEntry);
     }
 
     private void dateChooser() {

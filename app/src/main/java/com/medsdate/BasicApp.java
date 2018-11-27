@@ -2,6 +2,7 @@ package com.medsdate;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.MedsRepository;
 import com.medsdate.utils.AppExecutors;
@@ -16,8 +17,9 @@ public class BasicApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mAppExecutors = AppExecutors.getInstance();
+        Stetho.initializeWithDefaults(this);
         Timber.plant(new Timber.DebugTree());
+        mAppExecutors = AppExecutors.getInstance();
     }
 
     public AppDatabase getDatabase() {
