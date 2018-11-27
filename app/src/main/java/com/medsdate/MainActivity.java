@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +26,7 @@ import timber.log.Timber;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, DialogMedicineFragment.OnDialogMedicineListener {
 
     private MedsViewModel mViewModel;
     private AppDatabase mDb;
@@ -82,16 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 List<MedicineEntry> medicine = mAdapter.getMeds();
 
                 DialogMedicineFragment.newInstance(true, medicine.get(position).getId(),
-                        new DialogMedicineFragment.OnDialogMedicineListener() {
-                    @Override
-                    public void saveMedicine(MedicineEntry medicineEntry) {
-                    }
-
-                    @Override
-                    public void updateMedicine(MedicineEntry medicineEntry) {
-                        mViewModel.update(medicineEntry);
-                    }
-                }).show(getSupportFragmentManager(), "DialogMedicineFragment");
+                        MainActivity.this)
+                        .show(getSupportFragmentManager(), "DialogMedicineFragment");
             }
         });
 
@@ -117,17 +110,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
-            DialogMedicineFragment.newInstance(false, new DialogMedicineFragment.OnDialogMedicineListener() {
-                @Override
-                public void saveMedicine(MedicineEntry medicineEntry) {
-                    mViewModel.insert(medicineEntry);
-                }
-
-                @Override
-                public void updateMedicine(MedicineEntry medicineEntry) {
-                    return;
-                }
-            }).show(getSupportFragmentManager(), "DialogMedicineFragment");
+            DialogMedicineFragment.newInstance(false, this)
+                    .show(getSupportFragmentManager(), "DialogMedicineFragment");
         }
+    }
+
+    @Override
+    public void saveMedicine(MedicineEntry medicineEntry) {
+        mViewModel.insert(medicineEntry);
+    }
+
+    @Override
+    public void updateMedicine(MedicineEntry medicineEntry) {
+        mViewModel.update(medicineEntry);
+
+        Snackbar.make(findViewById(android.R.id.content), "Medicine updated!", Snackbar.LENGTH_SHORT).show();
     }
 }
