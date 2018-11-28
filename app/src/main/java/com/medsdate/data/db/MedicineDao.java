@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface MedicineDao {
 
-    @Query("SELECT * FROM medicine ORDER BY expire_at DESC")
+    @Query("SELECT * FROM medicine ORDER BY expire_at ASC")
     LiveData<List<MedicineEntry>> loadAllMeds();
 
     @Insert

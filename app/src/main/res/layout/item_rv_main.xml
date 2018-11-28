@@ -67,7 +67,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="@dimen/item_date_width"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="@dimen/general_padding_16dp"
                 android:paddingBottom="@dimen/general_padding_16dp"
                 app:layout_constraintBottom_toBottomOf="parent"

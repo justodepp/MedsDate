@@ -5,17 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHolder> {
 
-    List<? extends MedicineEntry> mMedsList;
+    private List<? extends MedicineEntry> mMedsList;
 
     // Constant for date format
     private static final String DATE_FORMAT = "dd/MM/yyy";
@@ -62,16 +64,39 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
         return mMedsList.get(position).getId();
     }
 
-    static class MedicineViewHolder extends RecyclerView.ViewHolder {
+    public class MedicineViewHolder extends RecyclerView.ViewHolder {
+
+        TextView mCategory;
+        TextView mTitle;
+        TextView mQuantity;
+        TextView mDay;
+        TextView mMonth;
+        TextView mYear;
 
         public MedicineViewHolder(View itemView) {
             super(itemView);
 //            super(binding.getRoot());
 //            this.binding = binding;
+            mCategory = itemView.findViewById(R.id.category_text);
+            mTitle = itemView.findViewById(R.id.title_text);
+            mQuantity = itemView.findViewById(R.id.quantity_text);
+            mDay = itemView.findViewById(R.id.day_number_text);
+            mMonth = itemView.findViewById(R.id.month_text);
+            mYear = itemView.findViewById(R.id.year_text);
         }
 
         public void bind(int position){
+            MedicineEntry medicineEntry = mMedsList.get(position);
+            mCategory.setText(medicineEntry.getCategory());
+            mTitle.setText(medicineEntry.getName());
+            mQuantity.setText(String.valueOf(medicineEntry.getQuantity()));
 
+            Calendar myCalendar = Calendar.getInstance();
+            myCalendar.setTime(medicineEntry.getExpireAt());
+
+            mDay.setText(String.valueOf(myCalendar.get(Calendar.DAY_OF_MONTH)));
+            mMonth.setText(myCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+            mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
         }
     }
 
