@@ -16,13 +16,15 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/image_empty"
+                android:layout_height="@dimen/image_empty"
                 android:layout_marginStart="@dimen/general_margin_4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
+                android:padding="@dimen/general_padding_16dp"
+                tools:src="@drawable/img_placeholder"
+                android:src="@drawable/img_placeholder"/>
 
             <TextView
                 android:id="@+id/category_text"

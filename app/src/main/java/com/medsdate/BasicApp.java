@@ -1,5 +1,9 @@
 package com.medsdate;
 
+/**
+ * Icon credits Smashicons, Good Ware, smalllikeart, Freepik from flaticon.com
+ */
+
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
