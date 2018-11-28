@@ -1,7 +1,9 @@
 package com.medsdate;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -125,5 +127,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mViewModel.update(medicineEntry);
 
         Snackbar.make(findViewById(android.R.id.content), "Medicine updated!", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        showAlertWithMessage("Are you sure to exit?");
+    }
+
+    public void showAlertWithMessage(String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
