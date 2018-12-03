@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     private AppDatabase mDb;
 
     private View dialogView;
+
+    private ImageView mImage;
 
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
@@ -107,6 +110,8 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
 
         dialogView.findViewById(R.id.txt_cancel).setOnClickListener(this);
         dialogView.findViewById(R.id.txt_save).setOnClickListener(this);
+
+        dialogView.findViewById(R.id.imageView).setOnClickListener(this);
         mDb = AppDatabase.getInstance(getContext(), AppExecutors.getInstance());
 
         init();
@@ -199,6 +204,9 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                     listener.saveMedicine(medicineEntry);
                 }
             }
+        } else if (view.getId() == R.id.imageView) {
+            DialogGalleryFragment.newInstance(true, null)
+                    .show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
         }
     }
 
@@ -209,6 +217,8 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         mDay = dialogView.findViewById(R.id.day_number_text);
         mMonth = dialogView.findViewById(R.id.month_text);
         mYear = dialogView.findViewById(R.id.year_text);
+
+        mImage = dialogView.findViewById(R.id.imageView);
 
         if (mMedicineId != DEFAULT_TASK_ID) {
             final MedsViewModel viewModel
