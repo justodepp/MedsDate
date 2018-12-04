@@ -19,6 +19,8 @@ public class MedicineEntry {
 
     private int quantity;
 
+    private String image;
+
     @ColumnInfo(name = "expire_at")
     private Date expireAt;
 
@@ -29,10 +31,11 @@ public class MedicineEntry {
     }
 
     @Ignore
-    public MedicineEntry(String category, String name, Date expireAt, int quantity, Date updatedAt) {
+    public MedicineEntry(String category, String name, Date expireAt, int quantity, String image, Date updatedAt) {
         this.category = category;
         this.name = name;
         this.quantity = quantity;
+        this.image = image;
         this.expireAt = expireAt;
         this.updatedAt = updatedAt;
     }
@@ -42,6 +45,7 @@ public class MedicineEntry {
         this.category = medicine.getCategory();
         this.name = medicine.getName();
         this.quantity = medicine.getQuantity();
+        this.image = medicine.getImage();
         this.expireAt = medicine.getExpireAt();
         this.updatedAt = medicine.getUpdatedAt();
     }
@@ -76,6 +80,14 @@ public class MedicineEntry {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Date getExpireAt() {

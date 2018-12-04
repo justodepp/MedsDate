@@ -5,10 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
+import com.medsdate.utils.GlideApp;
+import com.medsdate.utils.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -72,6 +75,7 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
         TextView mDay;
         TextView mMonth;
         TextView mYear;
+        ImageView mImage;
 
         public MedicineViewHolder(View itemView) {
             super(itemView);
@@ -83,6 +87,7 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
             mDay = itemView.findViewById(R.id.day_number_text);
             mMonth = itemView.findViewById(R.id.month_text);
             mYear = itemView.findViewById(R.id.year_text);
+            mImage = itemView.findViewById(R.id.imageView);
         }
 
         public void bind(int position){
@@ -97,6 +102,15 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
             mDay.setText(String.valueOf(myCalendar.get(Calendar.DAY_OF_MONTH)));
             mMonth.setText(myCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
             mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
+
+            if(!medicineEntry.getImage().equals("")){
+                GlideApp.with(itemView.getContext())
+                        .asDrawable()
+                        .load(Utility.loadImage(itemView.getContext(), medicineEntry.getImage()))
+                        .into(mImage);
+
+                mImage.setBackgroundColor(itemView.getContext().getResources().getColor(android.R.color.transparent));
+            }
         }
     }
 

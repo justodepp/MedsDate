@@ -19,10 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medsdate.R;
-import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.viewmodel.MedsViewModel;
-import com.medsdate.utils.AppExecutors;
 import com.medsdate.utils.GlideApp;
 import com.medsdate.utils.Utility;
 
@@ -41,8 +39,6 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     private OnDialogMedicineListener listener;
 
     private int mMedicineId = DEFAULT_TASK_ID;
-    // Member variable for the Database
-    private AppDatabase mDb;
 
     private View dialogView;
 
@@ -58,6 +54,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
     private EditText mName;
     private TextView mQuantity;
     private int currentQuantity = 1;
+    private String imageName = "";
 
     public static DialogMedicineFragment newInstance() {
         return newInstance(true, null);
@@ -114,7 +111,6 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         dialogView.findViewById(R.id.txt_save).setOnClickListener(this);
 
         dialogView.findViewById(R.id.imageView).setOnClickListener(this);
-        mDb = AppDatabase.getInstance(getContext(), AppExecutors.getInstance());
 
         init();
 
@@ -197,6 +193,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                         mName.getText().toString(),
                         myCalendar.getTime(),
                         Integer.parseInt(mQuantity.getText().toString()),
+                        imageName,
                         new Date());
 
                 if (mMedicineId != DEFAULT_TASK_ID) {
@@ -210,10 +207,12 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
             DialogGalleryFragment.newInstance(true, new DialogGalleryFragment.OnDialogGalleryListener() {
                 @Override
                 public void setImageFromGallery(String name) {
+                    imageName = name;
                     GlideApp.with(getContext())
                             .asDrawable()
                             .load(Utility.loadImage(getContext(), name))
                             .into(mImage);
+                    mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 }
             }).show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
         }
@@ -262,6 +261,14 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         mDay.setText(String.valueOf(myCalendar.get(Calendar.DAY_OF_MONTH)));
         mMonth.setText(myCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
         mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
+
+        if(!medicineEntry.getImage().equals("")) {
+            GlideApp.with(getContext())
+                    .asDrawable()
+                    .load(Utility.loadImage(getContext(), medicineEntry.getImage()))
+                    .into(mImage);
+            mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        }
     }
 
     public interface OnDialogMedicineListener {
