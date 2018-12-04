@@ -23,6 +23,8 @@ import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.viewmodel.MedsViewModel;
 import com.medsdate.utils.AppExecutors;
+import com.medsdate.utils.GlideApp;
+import com.medsdate.utils.Utility;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -205,8 +207,15 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                 }
             }
         } else if (view.getId() == R.id.imageView) {
-            DialogGalleryFragment.newInstance(true, null)
-                    .show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
+            DialogGalleryFragment.newInstance(true, new DialogGalleryFragment.OnDialogGalleryListener() {
+                @Override
+                public void setImageFromGallery(String name) {
+                    GlideApp.with(getContext())
+                            .asDrawable()
+                            .load(Utility.loadImage(getContext(), name))
+                            .into(mImage);
+                }
+            }).show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
         }
     }
 

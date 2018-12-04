@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -20,6 +21,8 @@ import android.view.View;
 
 import com.medsdate.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -295,5 +298,18 @@ public class Utility {
                 .appendPath(quality)
                 .build();
         return uri;
+    }
+
+    public static Drawable loadImage(Context context, String name) {
+        try {
+            // get input stream
+            InputStream ims = context.getAssets().open("img_meds/"+name);
+            // load image as Drawable
+            Drawable d = Drawable.createFromStream(ims, null);
+            // set image to ImageView
+            return d;
+        } catch (IOException ex) {
+            return null;
+        }
     }
 }

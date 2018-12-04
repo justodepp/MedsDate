@@ -1,7 +1,6 @@
 package com.medsdate.ui.main;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,8 @@ import android.widget.ImageView;
 
 import com.medsdate.R;
 import com.medsdate.utils.GlideApp;
+import com.medsdate.utils.Utility;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class GalleryImageAdapter extends BaseAdapter {
@@ -57,42 +55,10 @@ public class GalleryImageAdapter extends BaseAdapter {
 
         //sets the image from path
         GlideApp.with(mContext)
-                .load(loadImage(currentItem))
+                .load(Utility.loadImage(mContext, currentItem))
                 .into(imageView);
 
         // returns the view for the current row
         return convertView;
-    }
-
-    // create a new ImageView for each item referenced by the Adapter
-    /*public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-        } else {
-            imageView = (ImageView) convertView;
-        }
-
-        // The images are in /app/assets/images/thumbnails/example.jpeg
-        imageView.setImageDrawable(loadThumb("images/thumbnails/" + data.get(position) + ".jpeg"));
-        return imageView;
-    }*/
-
-    // references to our images
-    private Drawable loadImage(String name) {
-        try {
-            // get input stream
-            InputStream ims = mContext.getAssets().open("img_meds/"+name);
-            // load image as Drawable
-            Drawable d = Drawable.createFromStream(ims, null);
-            // set image to ImageView
-            return d;
-        } catch (IOException ex) {
-            return null;
-        }
     }
 }
