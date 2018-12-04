@@ -57,8 +57,7 @@ public class GalleryImageAdapter extends BaseAdapter {
 
         //sets the image from path
         GlideApp.with(mContext)
-                .load("")
-                .error(loadImage(currentItem))
+                .load(loadImage(currentItem))
                 .into(imageView);
 
         // returns the view for the current row
@@ -87,7 +86,7 @@ public class GalleryImageAdapter extends BaseAdapter {
     private Drawable loadImage(String name) {
         try {
             // get input stream
-            InputStream ims = mContext.getAssets().open("images/"+name);
+            InputStream ims = mContext.getAssets().open("img_meds/"+name);
             // load image as Drawable
             Drawable d = Drawable.createFromStream(ims, null);
             // set image to ImageView

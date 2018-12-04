@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.medsdate.R;
 import com.medsdate.data.db.AppDatabase;
@@ -85,7 +86,7 @@ public class DialogGalleryFragment extends DialogFragment implements View.OnClic
         //String[] images = getActivity().getAssets().list("images");
         String[] images = new String[0];
         try {
-            images = getActivity().getAssets().list("images");
+            images = getActivity().getAssets().list("img_meds");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +99,7 @@ public class DialogGalleryFragment extends DialogFragment implements View.OnClic
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Toast.makeText(getContext(), listImages.get(i), Toast.LENGTH_SHORT).show();
             }
         });
     }
