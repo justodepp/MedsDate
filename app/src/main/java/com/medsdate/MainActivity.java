@@ -14,12 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.dialogs.DialogMedicineFragment;
 import com.medsdate.ui.main.MedsAdapter;
 import com.medsdate.ui.viewmodel.MedsViewModel;
-import com.medsdate.utils.AppExecutors;
 import com.medsdate.utils.ItemClickSupport;
 
 import java.util.List;
@@ -31,7 +29,6 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, DialogMedicineFragment.OnDialogMedicineListener {
 
     private MedsViewModel mViewModel;
-    private AppDatabase mDb;
 
     private MedsAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -74,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Here is where you'll implement swipe to delete
                 int position = viewHolder.getAdapterPosition();
                 List<MedicineEntry> medicine = mAdapter.getMeds();
-                mViewModel.delete(medicine.get(position));
 
+                Receiver.cancelAlarmNotification(MainActivity.this, medicine.get(position));
+                mViewModel.delete(medicine.get(position));
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -90,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mDb = AppDatabase.getInstance(this, AppExecutors.getInstance());
         setupViewModel();
     }
 
@@ -120,13 +117,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void saveMedicine(MedicineEntry medicineEntry) {
         mViewModel.insert(medicineEntry);
+        Receiver.setAlarmNotification(this, medicineEntry);
     }
 
     @Override
     public void updateMedicine(MedicineEntry medicineEntry) {
         mViewModel.update(medicineEntry);
-
-        Snackbar.make(findViewById(android.R.id.content), "Medicine updated!", Snackbar.LENGTH_SHORT).show();
+        Receiver.setAlarmNotification(this, medicineEntry);
+        Snackbar.make(findViewById(android.R.id.content), getString(R.string.text_med_updated), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

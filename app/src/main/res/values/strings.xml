@@ -3,4 +3,15 @@
 
     <string name="empty_view_title_text">It\'s a bit lonely here&#8230;</string>
     <string name="empty_view_subtitle_text">Get started by adding a medicine</string>
+
+    <!-- Push -->
+    <string name="notification_title">Attention!</string>
+    <string name="notification_message">Your meds <b>%1$s</b> are about to expire!</string>
+    <string name="default_notification_channel_id" translatable="false">default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">Alarm</string>
+
+    <!-- Toast -->
+    <string name="text_med_updated">Medicine updated!</string>
+    <string name="text_alarm_set">Alarm is set!</string>
+    <string name="text_alarm_unset">Alarm is unset!</string>
 </resources>
