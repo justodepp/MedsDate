@@ -103,7 +103,7 @@ public class Receiver extends BroadcastReceiver {
         // I choose 3s after the launch of my application /* System.currentTimeMillis() + 3000 */
         Long alarmTime = medicine.getExpireAt().getTime()+10*60*60*1000;
         assert alarms != null;
-        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, operation);
+        alarms.set(AlarmManager.RTC_WAKEUP, alarmTime, operation);
 
         Toast.makeText(context, context.getString(R.string.text_alarm_set), Toast.LENGTH_SHORT).show();
     }

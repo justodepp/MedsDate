@@ -69,7 +69,6 @@ public class DialogGalleryFragment extends DialogFragment {
     }
 
     private void init() {
-        //String[] images = getActivity().getAssets().list("images");
         String[] images = new String[0];
         try {
             images = getActivity().getAssets().list("img_meds");

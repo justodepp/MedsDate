@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MedsViewModel mViewModel;
 
     private MedsAdapter mAdapter;
-    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.fab).setOnClickListener(this);
         mViewModel = ViewModelProviders.of(this).get(MedsViewModel.class);
         // Set the RecyclerView to its corresponding view
-        mRecyclerView = findViewById(R.id.rv_main);
+        RecyclerView mRecyclerView = findViewById(R.id.rv_main);
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         showAlertWithMessage("Are you sure to exit?");
     }
 
