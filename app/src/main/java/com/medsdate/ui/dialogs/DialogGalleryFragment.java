@@ -10,25 +10,19 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.medsdate.R;
-import com.medsdate.data.db.AppDatabase;
 import com.medsdate.ui.main.GalleryImageAdapter;
-import com.medsdate.utils.AppExecutors;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DialogGalleryFragment extends DialogFragment implements View.OnClickListener {
+public class DialogGalleryFragment extends DialogFragment {
 
     private boolean cancelable;
 
     private OnDialogGalleryListener listener;
-    // Member variable for the Database
-    private AppDatabase mDb;
 
     private View dialogView;
-    private GridView gridView;
-    private GalleryImageAdapter mAdapter;
 
     public static DialogGalleryFragment newInstance() {
         return newInstance(true, null);
@@ -63,7 +57,6 @@ public class DialogGalleryFragment extends DialogFragment implements View.OnClic
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_gallery, null);
-        mDb = AppDatabase.getInstance(getContext(), AppExecutors.getInstance());
 
         init();
 
@@ -73,12 +66,6 @@ public class DialogGalleryFragment extends DialogFragment implements View.OnClic
         dialog.setCanceledOnTouchOutside(cancelable);
 
         return builder.create();
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.spinner_quantity) {
-        }
     }
 
     private void init() {
@@ -91,8 +78,8 @@ public class DialogGalleryFragment extends DialogFragment implements View.OnClic
         }
         ArrayList<String> listImages = new ArrayList<String>(Arrays.asList(images));
 
-        gridView = dialogView.findViewById(R.id.grid_gallery);
-        mAdapter = new GalleryImageAdapter(getContext(), listImages);
+        GridView gridView = dialogView.findViewById(R.id.grid_gallery);
+        GalleryImageAdapter mAdapter = new GalleryImageAdapter(getContext(), listImages);
 
         gridView.setAdapter(mAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

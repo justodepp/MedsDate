@@ -114,56 +114,6 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
 
         init();
 
-/*        startTrial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogMedicineFragment.this.getDialog().cancel();
-
-                if(listener  != null) {
-                    listener.startTrial();
-                }
-            }
-        });
-
-        TextView skipTrial = dialogView.findViewById(R.id.txt_welcome_no_trial);
-        skipTrial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogMedicineFragment.this.getDialog().cancel();
-
-                if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
-            mButton.setText(R.string.update_button);
-            if (mTaskId == DEFAULT_TASK_ID) {
-                // populate the UI
-                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-
-                AddTaskViewModelFactory factory = new AddTaskViewModelFactory(mDb, mTaskId);
-                final AddTaskViewModel viewModel
-                        = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
-
-                // COMPLETED (12) Observe the LiveData object in the ViewModel. Use it also when removing the observer
-                viewModel.getTask().observe(this, new Observer<TaskEntry>() {
-                    @Override
-                    public void onChanged(@Nullable TaskEntry taskEntry) {
-                        viewModel.getTask().removeObserver(this);
-                        populateUI(taskEntry);
-                    }
-                });
-            }
-        }
-            }
-        });
-
-        TextView accediTrial = dialogView.findViewById(R.id.txt_welcome_accedi);
-        accediTrial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(listener  != null) {
-                    listener.startAccedi();
-                }
-            }
-        });*/
-
         // Create the AlertDialog object and return it
         builder.setView(dialogView);
         Dialog dialog = builder.create();
