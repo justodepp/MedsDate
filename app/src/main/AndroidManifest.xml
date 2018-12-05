@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Allows Glide to monitor connectivity status and restart failed requests if users go from a
     a disconnected to a connected network state. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Registering the BroadcastReceiver !-->
+        <receiver android:name=".notification.Receiver" />
     </application>
 
 </manifest>

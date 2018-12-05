@@ -15,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.medsdate.data.db.model.MedicineEntry;
+import com.medsdate.notification.Receiver;
 import com.medsdate.ui.dialogs.DialogMedicineFragment;
 import com.medsdate.ui.main.MedsAdapter;
 import com.medsdate.ui.viewmodel.MedsViewModel;
