@@ -12,6 +12,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.medsdate.data.db.model.MedicineEntry;
@@ -145,5 +148,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
         final AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_credits:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

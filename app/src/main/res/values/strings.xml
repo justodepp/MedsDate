@@ -4,6 +4,9 @@
     <string name="empty_view_title_text">It\'s a bit lonely here&#8230;</string>
     <string name="empty_view_subtitle_text">Get started by adding a medicine</string>
 
+    <!-- Menu -->
+    <string name="menu_credits">Credits</string>
+
     <!-- Push -->
     <string name="notification_title">Attention!</string>
     <string name="notification_message">Your meds <b>%1$s</b> are about to expire!</string>
