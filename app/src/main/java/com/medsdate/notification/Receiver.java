@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.medsdate.MainActivity;
 import com.medsdate.R;
@@ -105,7 +104,7 @@ public class Receiver extends BroadcastReceiver {
         assert alarms != null;
         alarms.set(AlarmManager.RTC_WAKEUP, alarmTime, operation);
 
-        Toast.makeText(context, context.getString(R.string.text_alarm_set), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, context.getString(R.string.text_alarm_set), Toast.LENGTH_SHORT).show();
     }
 
     public static void cancelAlarmNotification(Context context, MedicineEntry medicine) {
@@ -120,6 +119,6 @@ public class Receiver extends BroadcastReceiver {
         alarms.cancel(operation);
         operation.cancel();
 
-        Toast.makeText(context, context.getString(R.string.text_alarm_unset), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, context.getString(R.string.text_alarm_unset), Toast.LENGTH_SHORT).show();
     }
 }
