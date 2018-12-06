@@ -38,14 +38,14 @@
         app:layout_constraintTop_toTopOf="@+id/imageView"
         android:textAllCaps="true"
         android:textSize="12sp"
-        tools:text="name"
-        android:text="name"/>
+        tools:text="@string/label_meds_name"
+        android:text="@string/label_meds_name"/>
 
     <EditText
         android:id="@+id/txt_name_medicine"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Medicine name"
+        android:hint="@string/hint_meds_name"
         android:maxLines="2"
         android:inputType="text"
         android:paddingStart="@dimen/general_padding_4dp"
@@ -55,7 +55,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/category_text"
         android:textSize="16sp"
-        tools:text="nome" />
+        tools:text="@string/hint_meds_name" />
 
     <TextView
         android:id="@+id/txt_quantity_medicine"
@@ -70,8 +70,8 @@
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/txt_name_medicine"
-        android:text="Quantità"
-        tools:text="Quantità" />
+        android:text="@string/label_meds_quantity"
+        tools:text="@string/label_meds_quantity" />
 
     <TextView
         android:id="@+id/spinner_quantity"
@@ -79,12 +79,12 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/general_padding_4dp"
         android:paddingEnd="@dimen/general_padding_4dp"
-        android:text="Select..."
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/txt_quantity_medicine"
         app:layout_constraintStart_toStartOf="@+id/txt_quantity_medicine"
         app:layout_constraintTop_toBottomOf="@+id/txt_quantity_medicine"
-        tools:text="Select..." />
+        tools:text="@string/label_meds_quantity_spinner"
+        android:text="@string/label_meds_quantity_spinner" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/txt_date_expire"
@@ -165,8 +165,8 @@
             android:gravity="center"
             android:padding="@dimen/general_padding_8dp"
             android:textStyle="bold"
-            tools:text="CANCEL"
-            android:text="CANCEL"/>
+            tools:text="@string/btn_cancel"
+            android:text="@string/btn_cancel"/>
 
         <View
             android:layout_width="0dp"
@@ -185,8 +185,8 @@
             android:gravity="center"
             android:padding="@dimen/general_padding_8dp"
             android:textStyle="bold"
-            tools:text="SALVA"
-            android:text="SALVA"/>
+            tools:text="@string/btn_save"
+            android:text="@string/btn_save"/>
 
     </LinearLayout>
 

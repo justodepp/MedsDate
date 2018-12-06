@@ -21,6 +21,14 @@
     <string name="default_notification_channel_id" translatable="false">default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Alarm</string>
 
+    <!-- Dialog Medicine -->
+    <string name="label_meds_name">Nome</string>
+    <string name="hint_meds_name">Nome medicina</string>
+    <string name="label_meds_quantity">Quantità</string>
+    <string name="label_meds_quantity_spinner">Seleziona&#8230;</string>
+    <string name="btn_save">Salva</string>
+    <string name="btn_cancel">Annulla</string>
+
     <!-- Toast -->
     <string name="text_med_updated">Medicine aggiornate!</string>
     <string name="text_alarm_set">Alarm is set!</string>
@@ -28,7 +36,7 @@
 
     <!-- Support Me -->
     <string name="donate_title">Dona</string>
-    <string name="donate_desc">Qui puoi scegliere se mandarmi una piccola donazione.</string>
+    <string name="donate_desc">Qui puoi scegliere se effettuare una piccola donazione.</string>
     <string name="donate_new">Grazie per il supporto! &lt;3</string>
     <string name="donate_history">Grazie per il supporto!</string>
 

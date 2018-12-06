@@ -21,6 +21,14 @@
     <string name="default_notification_channel_id" translatable="false">default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Alarm</string>
 
+    <!-- Dialog Medicine -->
+    <string name="label_meds_name">Name</string>
+    <string name="hint_meds_name">Medicine Name</string>
+    <string name="label_meds_quantity">Quantity</string>
+    <string name="label_meds_quantity_spinner">Select&#8230;</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+
     <!-- Toast -->
     <string name="text_med_updated">Medicine updated!</string>
     <string name="text_alarm_set">Alarm is set!</string>
