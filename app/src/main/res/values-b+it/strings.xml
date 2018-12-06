@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Meds Date</string>
+
+    <string name="empty_view_title_text">E\' un po\' vuoto qui&#8230;</string>
+    <string name="empty_view_subtitle_text">Inizia aggiungendo un medicinale</string>
+
+    <!-- Menu -->
+    <string name="menu_credits">Crediti</string>
+    <string name="menu_donate">Dona</string>
+
+    <!-- Message -->
+    <string name="error_insert_update">Completa i campi</string>
+
+    <!-- Credits -->
+    <string name="title_credits_text">Crediti</string>
+    <string name="msg_credits_text">Icone crediti a Smashicons, Good Ware, smalllikeart e Freepik da flaticon.com</string>
+
+    <!-- Push -->
+    <string name="notification_title">Attenzione!</string>
+    <string name="notification_message">Le tue medicine <b>%1$s</b> stanno per scadere!</string>
+    <string name="default_notification_channel_id" translatable="false">default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">Alarm</string>
+
+    <!-- Toast -->
+    <string name="text_med_updated">Medicine aggiornate!</string>
+    <string name="text_alarm_set">Alarm is set!</string>
+    <string name="text_alarm_unset">Alarm is unset!</string>
+
+    <!-- Support Me -->
+    <string name="donate_title">Dona</string>
+    <string name="donate_desc">Qui puoi scegliere se mandarmi una piccola donazione.</string>
+    <string name="donate_new">Grazie per il supporto! &lt;3</string>
+    <string name="donate_history">Grazie per il supporto!</string>
+
+</resources>

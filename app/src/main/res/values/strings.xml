@@ -9,7 +9,7 @@
     <string name="menu_donate">Donate</string>
 
     <!-- Message -->
-    <string name="error_insert_update">Completa i campi</string>
+    <string name="error_insert_update">Complete the fields</string>
 
     <!-- Credits -->
     <string name="title_credits_text">Credits</string>
