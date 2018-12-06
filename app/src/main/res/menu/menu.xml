@@ -6,4 +6,9 @@
         app:showAsAction="never"
         android:title="@string/menu_credits">
     </item>
+    <item
+        android:id="@+id/action_donate"
+        app:showAsAction="never"
+        android:title="@string/menu_donate">
+    </item>
 </menu>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="180dp"
+    android:layout_marginStart="@dimen/general_margin_16dp"
+    android:layout_marginEnd="@dimen/general_margin_16dp"
+    android:padding="@dimen/general_padding_16dp"
+    android:background="@drawable/white_angular_shape"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/title_credits_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general_margin_8dp"
+        android:paddingStart="@dimen/general_padding_8dp"
+        android:paddingEnd="@dimen/general_padding_8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="sans-serif-medium"
+        android:textAppearance="?android:textAppearanceLarge"
+        tools:text="@string/title_credits_text" />
+
+    <TextView
+        android:id="@+id/msg_credits_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general_margin_16dp"
+        android:paddingStart="@dimen/general_padding_8dp"
+        android:paddingEnd="@dimen/general_padding_8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_credits_text"
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="?android:textAppearanceMedium"
+        tools:text="@string/msg_credits_text" />
+
+</android.support.constraint.ConstraintLayout>

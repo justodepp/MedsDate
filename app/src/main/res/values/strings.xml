@@ -6,9 +6,14 @@
 
     <!-- Menu -->
     <string name="menu_credits">Credits</string>
+    <string name="menu_donate">Donate</string>
 
     <!-- Message -->
     <string name="error_insert_update">Completa i campi</string>
+
+    <!-- Credits -->
+    <string name="title_credits_text">Credits</string>
+    <string name="msg_credits_text">Icon credits to Smashicons, Good Ware, smalllikeart and Freepik from flaticon.com</string>
 
     <!-- Push -->
     <string name="notification_title">Attention!</string>
@@ -20,4 +25,11 @@
     <string name="text_med_updated">Medicine updated!</string>
     <string name="text_alarm_set">Alarm is set!</string>
     <string name="text_alarm_unset">Alarm is unset!</string>
+
+    <!-- Support Me -->
+    <string name="donate_title">Support me</string>
+    <string name="donate_desc">Here you can send me a donation if you want to.</string>
+    <string name="donate_new">Thank you for your support! &lt;3</string>
+    <string name="donate_history">Thank you for your support!</string>
+
 </resources>
