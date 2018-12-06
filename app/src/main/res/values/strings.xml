@@ -7,6 +7,9 @@
     <!-- Menu -->
     <string name="menu_credits">Credits</string>
 
+    <!-- Message -->
+    <string name="error_insert_update">Completa i campi</string>
+
     <!-- Push -->
     <string name="notification_title">Attention!</string>
     <string name="notification_message">Your meds <b>%1$s</b> are about to expire!</string>

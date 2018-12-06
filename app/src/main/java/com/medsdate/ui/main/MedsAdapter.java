@@ -96,6 +96,18 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
             mTitle.setText(medicineEntry.getName());
             mQuantity.setText(String.valueOf(medicineEntry.getQuantity()));
 
+            if (Utility.getDatePart(medicineEntry.getExpireAt()) == Utility.getDatePart(Calendar.getInstance().getTime())) {
+                itemView.findViewById(R.id.constraintLayout).setBackgroundColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+                mDay.setTextColor(itemView.getContext().getResources().getColor(android.R.color.white));
+                mMonth.setTextColor(itemView.getContext().getResources().getColor(android.R.color.white));
+                mYear.setTextColor(itemView.getContext().getResources().getColor(android.R.color.white));
+            } else {
+                itemView.findViewById(R.id.constraintLayout).setBackgroundColor(itemView.getContext().getResources().getColor(android.R.color.white));
+                mDay.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
+                mMonth.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
+                mYear.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
+            }
+
             Calendar myCalendar = Calendar.getInstance();
             myCalendar.setTime(medicineEntry.getExpireAt());
 

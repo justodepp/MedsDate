@@ -135,23 +135,27 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         } else if (view.getId() == R.id.txt_cancel) {
             dismiss();
         } else if (view.getId() == R.id.txt_save) {
-            if(listener  != null) {
-                DialogMedicineFragment.this.getDialog().cancel();
+            if (!mName.getText().toString().equals("") && !mQuantity.getText().equals("")) {
+                if (listener != null) {
+                    DialogMedicineFragment.this.getDialog().cancel();
 
-                MedicineEntry medicineEntry = new MedicineEntry(
-                        "CATEGORY",
-                        mName.getText().toString(),
-                        myCalendar.getTime(),
-                        Integer.parseInt(mQuantity.getText().toString()),
-                        imageName,
-                        new Date());
+                    MedicineEntry medicineEntry = new MedicineEntry(
+                            "CATEGORY",
+                            mName.getText().toString(),
+                            myCalendar.getTime(),
+                            Integer.parseInt(mQuantity.getText().toString()),
+                            imageName,
+                            new Date());
 
-                if (mMedicineId != DEFAULT_TASK_ID) {
-                    medicineEntry.setId(mMedicineId);
-                    listener.updateMedicine(medicineEntry);
-                } else {
-                    listener.saveMedicine(medicineEntry);
+                    if (mMedicineId != DEFAULT_TASK_ID) {
+                        medicineEntry.setId(mMedicineId);
+                        listener.updateMedicine(medicineEntry);
+                    } else {
+                        listener.saveMedicine(medicineEntry);
+                    }
                 }
+            } else {
+                showAlertWithMessage(getString(R.string.error_insert_update));
             }
         } else if (view.getId() == R.id.imageView) {
             DialogGalleryFragment.newInstance(true, new DialogGalleryFragment.OnDialogGalleryListener() {
@@ -289,5 +293,14 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                         });
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void showAlertWithMessage(String message) {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", (dialog, i) -> dialog.dismiss());
+        final android.app.AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
