@@ -1,9 +1,17 @@
 # MedsDate
+###### MedsDate is an application designed to help you keep in mind your drugs expiration date.
+# Table of Contents
+1. [Credits](#credits)
+2. [License](#license)
+
+## Credits
+- [Flaticon](https://www.flaticon.com/): source of the all icon.
+- Icons author [Smashicons](https://smashicons.com/), Good Ware, [smalllikeart](https://www.flaticon.com/authors/smalllikeart), [Freepik](https://www.freepik.com)
 
 License
 -------------
 ```
-Copyright 2018 Gianni Andrea Cavalli
+Copyright 2018-present Gianni Andrea Cavalli
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
