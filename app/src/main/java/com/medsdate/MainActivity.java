@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        //Billing
+        //TODO: riabilitare appena verrà creata l'app sullo store
         mBilling = new BillingHandler(this, this, SKU);
 
         findViewById(R.id.fab).setOnClickListener(this);
