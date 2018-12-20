@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +10,7 @@
         android:layout_margin="@dimen/general_margin_8dp"
         style="@style/CardView.Style" >
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -67,7 +67,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_text"
                 tools:text="Quantity: " />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="@dimen/item_date_width"
                 android:layout_height="wrap_content"
@@ -119,8 +119,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/month_text"
                     tools:text="2018" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>

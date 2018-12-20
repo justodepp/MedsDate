@@ -17,8 +17,8 @@
 package com.medsdate.ui.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.MedsRepository;
