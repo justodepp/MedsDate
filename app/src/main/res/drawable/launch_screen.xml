@@ -24,7 +24,8 @@ android:opacity="opaque">
 <!-- Your product logo - 144dp color version of your app icon -->
 <item>
     <bitmap
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/starter_image"
+        android:tint="@android:color/white"
         android:gravity="center" />
 </item>
 </layer-list>
