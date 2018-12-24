@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BillingHandler.BillingCallbacks{
 
     private static final String SHOWCASE_ID = "sequence.SHOWCASE_ID";
-    private Menu mMenu;
 
     private MedsViewModel mViewModel;
 
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    //region Click
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
@@ -168,27 +168,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         showAlertWithMessage("Are you sure to exit?");
     }
+    //endregion
 
-    public void showAlertWithMessage(String message) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage(message);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
+    //region Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        mMenu = menu;
         return true;
     }
 
@@ -207,13 +193,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return super.onOptionsItemSelected(item);
         }
     }
+    //endregion
 
-    @Override
-    protected void onDestroy() {
-        mBilling.destroy();
-        super.onDestroy();
-    }
-
+    //region Billing
     private void showDonation(){
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.donate_title)
@@ -276,6 +258,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Snackbar.make(findViewById(android.R.id.content),
                 isNew ? R.string.donate_new : R.string.donate_history,
                 Snackbar.LENGTH_LONG).show();
+    }
+    //endregion
+
+    //region System
+    @Override
+    protected void onDestroy() {
+        mBilling.destroy();
+        super.onDestroy();
+    }
+    //endregion
+
+    public void showAlertWithMessage(String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void presentShowcaseSequence() {
