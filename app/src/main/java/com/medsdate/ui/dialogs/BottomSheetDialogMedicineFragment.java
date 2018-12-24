@@ -154,12 +154,12 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
             if (!mName.getText().toString().equals("") && !mQuantity.getText().equals("")) {
                 if (listener != null) {
                     BottomSheetDialogMedicineFragment.this.getDialog().cancel();
-
+                    String quantity = mQuantity.getText().toString();
                     MedicineEntry medicineEntry = new MedicineEntry(
                             "CATEGORY",
                             mName.getText().toString(),
                             myCalendar.getTime(),
-                            Integer.parseInt(mQuantity.getText().toString()),
+                            Integer.parseInt(quantity.contains("Sele") ? "1" : quantity),
                             imageName,
                             new Date());
 

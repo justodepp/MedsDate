@@ -18,6 +18,7 @@ import com.medsdate.ui.dialogs.DialogCreditsFragment;
 import com.medsdate.ui.main.MedsAdapter;
 import com.medsdate.ui.viewmodel.MedsViewModel;
 import com.medsdate.utils.ItemClickSupport;
+import com.medsdate.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utility.getSpan(this)));
 
         // Initialize the adapter and attach it to the RecyclerView
         mAdapter = new MedsAdapter();
