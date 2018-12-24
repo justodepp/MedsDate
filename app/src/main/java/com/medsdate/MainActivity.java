@@ -34,14 +34,19 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetDialogMedicineFragment.OnDialogMedicineListener,
     BillingHandler.BillingCallbacks{
+
+    private static final String SHOWCASE_ID = "sequence.SHOWCASE_ID";
+    private Menu mMenu;
 
     private MedsViewModel mViewModel;
 
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
                 }
+                presentShowcaseSequence();
             }
         });
     }
@@ -182,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -269,5 +276,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Snackbar.make(findViewById(android.R.id.content),
                 isNew ? R.string.donate_new : R.string.donate_history,
                 Snackbar.LENGTH_LONG).show();
+    }
+
+    private void presentShowcaseSequence() {
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setMaskColour(getResources().getColor(R.color.showcase_mask_color))
+                        .setTarget(findViewById(R.id.empty_shelter_image))
+                        .setContentText(getString(R.string.showcase_drugs))
+                        .setDismissText(getString(R.string.showcase_gotit))
+                        .useFadeAnimation()
+                        .build()
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setMaskColour(getResources().getColor(R.color.showcase_mask_color))
+                        .setTarget(findViewById(R.id.fab))
+                        .setContentText(getString(R.string.showcase_fab))
+                        .setDismissText(getString(R.string.showcase_gotit))
+                        .useFadeAnimation()
+                        .build()
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.empty_view))
+                        .setMaskColour(getResources().getColor(R.color.showcase_mask_color))
+                        .setContentText(getString(R.string.showcase_wellcome_text,
+                                getString(R.string.app_name)))
+                        .setDismissText(getString(R.string.showcase_start))
+                        .useFadeAnimation()
+                        .withoutShape()
+                        .build()
+        );
+        sequence.start();
     }
 }

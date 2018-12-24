@@ -36,8 +36,15 @@
 
     <!-- Support Me -->
     <string name="donate_title">Dona</string>
-    <string name="donate_desc">Qui puoi scegliere se effettuare una piccola donazione.</string>
+    <string name="donate_desc">Qui puoi scegliere se effettuare una piccola donazione supportando lo sviluppatore.</string>
     <string name="donate_new">Grazie per il supporto! &lt;3</string>
     <string name="donate_history">Grazie per il supporto!</string>
+
+    <!-- Showcase -->
+    <string name="showcase_wellcome_text">Una volta impostata la data di scadenza\n%s ti avvertirà nel giorno stabilito così da poter decidere se\ncomprarne delle nuove oppure semplicemente buttarle.</string>
+    <string name="showcase_start">INIZIAMO</string>
+    <string name="showcase_gotit">HO CAPITO</string>
+    <string name="showcase_fab">Qui potrai aggiungere nuove medicine</string>
+    <string name="showcase_drugs">Qui potrai vedere e modificare le tue medicine</string>
 
 </resources>

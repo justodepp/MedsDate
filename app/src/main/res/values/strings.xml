@@ -40,4 +40,11 @@
     <string name="donate_new">Thank you for your support! &lt;3</string>
     <string name="donate_history">Thank you for your support!</string>
 
+    <!-- Showcase -->
+    <string name="showcase_wellcome_text">Once the expiry date has been set\n%s will warn you on the scheduled day so that you can decide\nwhether to buy new ones or simply throw them away.</string>
+    <string name="showcase_start">LET\'S BEGIN</string>
+    <string name="showcase_gotit">GOT IT</string>
+    <string name="showcase_fab">Here you can add more drugs</string>
+    <string name="showcase_drugs">Here you can see and modify your drugs</string>
+
 </resources>
