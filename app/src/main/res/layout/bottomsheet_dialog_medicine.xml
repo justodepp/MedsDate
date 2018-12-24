@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="200dp"
+    android:layout_marginStart="@dimen/general_margin_16dp"
+    android:layout_marginEnd="@dimen/general_margin_16dp"
+    android:paddingTop="@dimen/general_padding_16dp"
+    android:paddingStart="@dimen/general_padding_16dp"
+    android:paddingEnd="@dimen/general_padding_16dp"
+    android:background="@drawable/white_angular_shape"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:padding="@dimen/general_padding_24dp"
+        android:src="@drawable/ic_add_photo"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_add_photo" />
+
+    <TextView
+        android:id="@+id/category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/general_padding_4dp"
+        android:paddingEnd="@dimen/general_padding_4dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        tools:text="@string/label_meds_name"
+        android:text="@string/label_meds_name"/>
+
+    <EditText
+        android:id="@+id/txt_name_medicine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_meds_name"
+        android:maxLines="2"
+        android:inputType="text"
+        android:paddingStart="@dimen/general_padding_4dp"
+        android:paddingEnd="@dimen/general_padding_4dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toStartOf="@+id/txt_date_expire"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/category_text"
+        android:textSize="16sp"
+        tools:text="@string/hint_meds_name" />
+
+    <TextView
+        android:id="@+id/txt_quantity_medicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/general_padding_4dp"
+        android:paddingEnd="@dimen/general_padding_4dp"
+        android:layout_marginTop="@dimen/general_margin_16dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_medicine"
+        android:text="@string/label_meds_quantity"
+        tools:text="@string/label_meds_quantity" />
+
+    <TextView
+        android:id="@+id/spinner_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/general_padding_4dp"
+        android:paddingEnd="@dimen/general_padding_4dp"
+        android:text="@string/label_meds_quantity_spinner"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_date_expire"
+        app:layout_constraintStart_toStartOf="@+id/txt_quantity_medicine"
+        app:layout_constraintTop_toBottomOf="@+id/txt_quantity_medicine"
+        tools:text="@string/label_meds_quantity_spinner" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/txt_date_expire"
+        android:layout_width="@dimen/item_date_width_dialog"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/general_padding_16dp"
+        android:paddingBottom="@dimen/general_padding_16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/day_number_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/general_padding_8dp"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="31" />
+
+        <TextView
+            android:id="@+id/month_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="@dimen/general_padding_8dp"
+            android:paddingEnd="@dimen/general_padding_8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/day_number_text"
+            android:textAllCaps="true"
+            tools:text="GEN" />
+
+        <TextView
+            android:id="@+id/year_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/general_margin_8dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/general_padding_8dp"
+            android:paddingEnd="@dimen/general_padding_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/month_text"
+            tools:text="2018" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+        app:layout_constraintEnd_toEndOf="@+id/btn_layout"
+        app:layout_constraintStart_toStartOf="@+id/btn_layout" />
+
+    <LinearLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general_margin_16dp"
+        android:layout_marginStart="@dimen/general_margin_16dp"
+        android:layout_marginEnd="@dimen/general_margin_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.99"
+            android:gravity="center"
+            android:padding="@dimen/general_padding_8dp"
+            android:textStyle="bold"
+            tools:text="@string/btn_cancel"
+            android:text="@string/btn_cancel"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.01"
+            android:background="@color/colorAccent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_save"
+            android:layout_weight="0.99"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/general_padding_8dp"
+            android:textStyle="bold"
+            tools:text="@string/btn_save"
+            android:text="@string/btn_save"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

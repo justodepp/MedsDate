@@ -13,8 +13,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.medsdate.billing.BillingHandler;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.notification.Receiver;
+import com.medsdate.ui.dialogs.BottomSheetDialogMedicineFragment;
 import com.medsdate.ui.dialogs.DialogCreditsFragment;
-import com.medsdate.ui.dialogs.DialogMedicineFragment;
 import com.medsdate.ui.main.MedsAdapter;
 import com.medsdate.ui.viewmodel.MedsViewModel;
 import com.medsdate.utils.ItemClickSupport;
@@ -38,7 +38,7 @@ import timber.log.Timber;
 
 import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, DialogMedicineFragment.OnDialogMedicineListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetDialogMedicineFragment.OnDialogMedicineListener,
     BillingHandler.BillingCallbacks{
 
     private MedsViewModel mViewModel;
@@ -102,7 +102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 List<MedicineEntry> medicine = mAdapter.getMeds();
 
-                DialogMedicineFragment.newInstance(true, medicine.get(position).getId(),
+                /*DialogMedicineFragment.newInstance(true, medicine.get(position).getId(),
+                        MainActivity.this)
+                        .show(getSupportFragmentManager(), "DialogMedicineFragment");*/
+
+                BottomSheetDialogMedicineFragment.newInstance(true, medicine.get(position).getId(),
                         MainActivity.this)
                         .show(getSupportFragmentManager(), "DialogMedicineFragment");
             }
@@ -129,7 +133,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
-            DialogMedicineFragment.newInstance(false, this)
+            /*DialogMedicineFragment.newInstance(false, this)
+                        .show(getSupportFragmentManager(), "DialogMedicineFragment");*/
+
+            BottomSheetDialogMedicineFragment.newInstance(false,
+                    MainActivity.this)
                     .show(getSupportFragmentManager(), "DialogMedicineFragment");
         }
     }
