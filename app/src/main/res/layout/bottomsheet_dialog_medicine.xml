@@ -20,7 +20,7 @@
         android:layout_marginBottom="8dp"
         android:padding="@dimen/general_padding_24dp"
         android:src="@drawable/ic_add_photo"
-        android:background="@color/colorAccent"
+        android:tint="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/btn_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
