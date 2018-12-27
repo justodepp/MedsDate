@@ -12,11 +12,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 
 import com.medsdate.MainActivity;
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
+
+import java.util.Calendar;
+
+import androidx.core.app.NotificationCompat;
 
 public class Receiver extends BroadcastReceiver {
 
@@ -104,7 +107,12 @@ public class Receiver extends BroadcastReceiver {
         assert alarms != null;
         alarms.set(AlarmManager.RTC_WAKEUP, alarmTime, operation);
 
-        // Toast.makeText(context, context.getString(R.string.text_alarm_set), Toast.LENGTH_SHORT).show();
+        // First alarm, 2 days before the expiration date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(medicine.getExpireAt());
+        calendar.add(Calendar.DAY_OF_MONTH, -2);
+        Long prevAlarmTime = calendar.getTime().getTime()+10*60*60*1000;
+        alarms.set(AlarmManager.RTC_WAKEUP, prevAlarmTime, operation);
     }
 
     public static void cancelAlarmNotification(Context context, MedicineEntry medicine) {
