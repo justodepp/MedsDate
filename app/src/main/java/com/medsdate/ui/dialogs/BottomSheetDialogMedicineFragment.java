@@ -21,6 +21,7 @@ package com.medsdate.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -182,7 +183,8 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
                             .asDrawable()
                             .load(Utility.loadImage(getContext(), name))
                             .into(mImage);
-                    mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    mImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent)));
                 }
             }).show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
         }
@@ -237,7 +239,8 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
                     .asDrawable()
                     .load(Utility.loadImage(getContext(), medicineEntry.getImage()))
                     .into(mImage);
-            mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            mImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent)));
         }
     }
 

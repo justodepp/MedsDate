@@ -1,7 +1,6 @@
 package com.medsdate.ui.main;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHolder> {
 
@@ -96,7 +98,7 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
             mTitle.setText(medicineEntry.getName());
             mQuantity.setText(String.valueOf(medicineEntry.getQuantity()));
 
-            if (Utility.getDatePart(medicineEntry.getExpireAt()) == Utility.getDatePart(Calendar.getInstance().getTime())) {
+            /*if (Utility.getDatePart(medicineEntry.getExpireAt()) == Utility.getDatePart(Calendar.getInstance().getTime())) {
                 itemView.findViewById(R.id.constraintLayout).setBackgroundColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
                 mDay.setTextColor(itemView.getContext().getResources().getColor(android.R.color.white));
                 mMonth.setTextColor(itemView.getContext().getResources().getColor(android.R.color.white));
@@ -106,6 +108,11 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
                 mDay.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
                 mMonth.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
                 mYear.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
+            }*/
+            if (Utility.getDatePart(medicineEntry.getExpireAt()) == Utility.getDatePart(Calendar.getInstance().getTime())) {
+                itemView.findViewById(R.id.img_expired).setVisibility(View.VISIBLE);
+            } else {
+                itemView.findViewById(R.id.img_expired).setVisibility(View.GONE);
             }
 
             Calendar myCalendar = Calendar.getInstance();
@@ -121,7 +128,13 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
                         .load(Utility.loadImage(itemView.getContext(), medicineEntry.getImage()))
                         .into(mImage);
 
-                mImage.setBackgroundColor(itemView.getContext().getResources().getColor(android.R.color.transparent));
+                //mImage.setBackgroundColor(itemView.getContext().getResources().getColor(android.R.color.transparent));
+                mImage.setImageTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(android.R.color.transparent)));
+            } else {
+                GlideApp.with(itemView.getContext())
+                        .load(R.drawable.ic_add_photo)
+                        .into(mImage);
+                mImage.setImageTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.colorAccent)));
             }
         }
     }
