@@ -36,6 +36,8 @@ captures/
 # User-specific configurations
 /gradle.properties
 medsdate_keystore
+*.DS_Store
+art/*
 
 # IntelliJ
 *.iml
