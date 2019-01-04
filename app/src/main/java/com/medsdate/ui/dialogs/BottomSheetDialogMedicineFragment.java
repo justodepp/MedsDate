@@ -181,7 +181,7 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
                     imageName = name;
                     GlideApp.with(getContext())
                             .asDrawable()
-                            .load(Utility.loadImage(getContext(), name))
+                            .load(Utility.INSTANCE.loadImage(getContext(), name))
                             .into(mImage);
                     //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     mImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent)));
@@ -237,7 +237,7 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
         if(!medicineEntry.getImage().equals("")) {
             GlideApp.with(getContext())
                     .asDrawable()
-                    .load(Utility.loadImage(getContext(), medicineEntry.getImage()))
+                    .load(Utility.INSTANCE.loadImage(getContext(), medicineEntry.getImage()))
                     .into(mImage);
             //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             mImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent)));

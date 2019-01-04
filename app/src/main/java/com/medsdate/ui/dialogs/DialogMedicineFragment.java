@@ -164,7 +164,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                     imageName = name;
                     GlideApp.with(getContext())
                             .asDrawable()
-                            .load(Utility.loadImage(getContext(), name))
+                            .load(Utility.INSTANCE.loadImage(getContext(), name))
                             .into(mImage);
                     mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 }
@@ -219,7 +219,7 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         if(!medicineEntry.getImage().equals("")) {
             GlideApp.with(getContext())
                     .asDrawable()
-                    .load(Utility.loadImage(getContext(), medicineEntry.getImage()))
+                    .load(Utility.INSTANCE.loadImage(getContext(), medicineEntry.getImage()))
                     .into(mImage);
             mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         }

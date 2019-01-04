@@ -55,7 +55,7 @@ public class GalleryImageAdapter extends BaseAdapter {
 
         //sets the image from path
         GlideApp.with(mContext)
-                .load(Utility.loadImage(mContext, currentItem))
+                .load(Utility.INSTANCE.loadImage(mContext, currentItem))
                 .into(imageView);
 
         // returns the view for the current row

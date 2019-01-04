@@ -109,7 +109,7 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
                 mMonth.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
                 mYear.setTextColor(itemView.getContext().getResources().getColor(android.R.color.tab_indicator_text));
             }*/
-            if (Utility.getDatePart(medicineEntry.getExpireAt()) == Utility.getDatePart(Calendar.getInstance().getTime())) {
+            if (Utility.INSTANCE.getDatePart(medicineEntry.getExpireAt()) == Utility.INSTANCE.getDatePart(Calendar.getInstance().getTime())) {
                 itemView.findViewById(R.id.img_expired).setVisibility(View.VISIBLE);
             } else {
                 itemView.findViewById(R.id.img_expired).setVisibility(View.GONE);
@@ -125,7 +125,7 @@ public class MedsAdapter extends RecyclerView.Adapter<MedsAdapter.MedicineViewHo
             if(!medicineEntry.getImage().equals("")){
                 GlideApp.with(itemView.getContext())
                         .asDrawable()
-                        .load(Utility.loadImage(itemView.getContext(), medicineEntry.getImage()))
+                        .load(Utility.INSTANCE.loadImage(itemView.getContext(), medicineEntry.getImage()))
                         .into(mImage);
 
                 //mImage.setBackgroundColor(itemView.getContext().getResources().getColor(android.R.color.transparent));

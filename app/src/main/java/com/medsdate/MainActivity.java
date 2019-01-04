@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utility.getSpan(this)));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utility.INSTANCE.getSpan(this)));
 
         // Initialize the adapter and attach it to the RecyclerView
         mAdapter = new MedsAdapter();
