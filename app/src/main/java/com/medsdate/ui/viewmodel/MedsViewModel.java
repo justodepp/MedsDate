@@ -17,8 +17,6 @@
 package com.medsdate.ui.viewmodel;
 
 import android.app.Application;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.medsdate.data.db.AppDatabase;
 import com.medsdate.data.db.MedsRepository;
@@ -26,6 +24,9 @@ import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.utils.AppExecutors;
 
 import java.util.List;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class MedsViewModel extends AndroidViewModel {
 

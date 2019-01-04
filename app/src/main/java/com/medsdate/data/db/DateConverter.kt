@@ -3,7 +3,7 @@ package com.medsdate.data.db
 import androidx.room.TypeConverter
 import java.util.*
 
-object DateConverter {
+class DateConverter {
     @TypeConverter
     fun toDate(timestamp: Long?): Date? {
         return if (timestamp == null) null else Date(timestamp)
