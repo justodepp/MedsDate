@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -60,6 +61,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
     // Room
     implementation "androidx.room:room-runtime:$rootProject.xRoomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.xRoomVersion"
     annotationProcessor "androidx.room:room-compiler:$rootProject.xRoomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.xRoomVersion"
     // ViewModel and LiveData
