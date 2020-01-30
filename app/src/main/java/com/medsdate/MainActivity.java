@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViewModel() {
-        mViewModel.getMeds().observe(this, new Observer<List<MedicineEntry>>() {
+        mViewModel.meds.observe(this, new Observer<List<MedicineEntry>>() {
             @Override
             public void onChanged(@Nullable List<MedicineEntry> medsEntries) {
                 Timber.d("Updating list of Meds from LiveData in ViewModel");
