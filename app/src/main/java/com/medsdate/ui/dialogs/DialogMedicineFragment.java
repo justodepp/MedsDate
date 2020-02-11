@@ -2,13 +2,8 @@ package com.medsdate.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -18,11 +13,15 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.viewmodel.MedsViewModel;
-import com.medsdate.utils.GlideApp;
-import com.medsdate.utils.Utility;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -162,10 +161,10 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
                 @Override
                 public void setImageFromGallery(String name) {
                     imageName = name;
-                    GlideApp.with(getContext())
+                    /*GlideApp.with(getContext())
                             .asDrawable()
                             .load(Utility.INSTANCE.loadImage(getContext(), name))
-                            .into(mImage);
+                            .into(mImage);*/
                     mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 }
             }).show(getActivity().getSupportFragmentManager(), "DialogGalleryFragment");
@@ -217,10 +216,10 @@ public class DialogMedicineFragment extends DialogFragment implements View.OnCli
         mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
 
         if(!medicineEntry.getImage().equals("")) {
-            GlideApp.with(getContext())
+            /*GlideApp.with(getContext())
                     .asDrawable()
                     .load(Utility.INSTANCE.loadImage(getContext(), medicineEntry.getImage()))
-                    .into(mImage);
+                    .into(mImage);*/
             mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         }
     }

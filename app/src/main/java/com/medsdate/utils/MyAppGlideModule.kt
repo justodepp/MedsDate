@@ -27,9 +27,11 @@ import com.bumptech.glide.request.RequestOptions
 
 @GlideModule
 class MyAppGlideModule : AppGlideModule() {
-    override fun applyOptions(context: Context, builder: GlideBuilder) { // Glide default Bitmap Format is set to RGB_565 since it
-// consumed just 50% memory footprint compared to ARGB_8888.
-// Increase memory usage for quality with:
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
+        // Glide default Bitmap Format is set to RGB_565 since it
+        // consumed just 50% memory footprint compared to ARGB_8888.
+        // Increase memory usage for quality with:
+
         builder.setDefaultRequestOptions(RequestOptions().format(DecodeFormat.PREFER_ARGB_8888))
     }
 }

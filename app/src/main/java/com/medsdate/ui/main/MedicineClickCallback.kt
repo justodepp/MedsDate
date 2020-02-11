@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.medsdate.ui.main
 
-package com.medsdate.ui.main;
+import com.medsdate.data.db.model.MedicineEntry
 
-import com.medsdate.data.db.model.MedicineEntry;
-
-public interface MedicineClickCallback {
-    void onClick(MedicineEntry medicine);
+interface MedicineClickCallback {
+    fun onClick(medicine: MedicineEntry?)
 }

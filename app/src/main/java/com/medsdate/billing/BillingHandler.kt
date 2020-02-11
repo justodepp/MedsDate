@@ -80,6 +80,7 @@ class BillingHandler(private val mActivity: Activity, private val mCb: BillingCa
         val listener = Listener()
         mBilling = BillingClient.newBuilder(mActivity)
                 .setListener(listener)
+                .enablePendingPurchases()
                 .build()
         mBilling.startConnection(listener)
     }

@@ -31,7 +31,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.medsdate.R
+import com.medsdate.utils.RecyclerItemClickListener
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -105,6 +107,17 @@ fun AlertDialog.Builder.negativeButton(text: String = "Cancel", handleClick: (wh
     this.setNegativeButton(text, { dialogInterface, which-> handleClick(which) })
 }
 //endregion Alert
+
+@JvmOverloads
+fun RecyclerView.recycleOnItemClicks(onClick: ((position: Int, view: View) -> Unit)? = null, onLongClick: ((position: Int, view: View) -> Unit)? = null) {
+    this.addOnChildAttachStateChangeListener(
+            RecyclerItemClickListener(
+                    this,
+                    onClick,
+                    onLongClick
+            )
+    )
+}
 
 /**
  * Inflate the layout specified by [layoutRes].

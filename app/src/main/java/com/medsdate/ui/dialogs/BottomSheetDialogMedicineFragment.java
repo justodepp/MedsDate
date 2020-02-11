@@ -33,20 +33,20 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.medsdate.R;
 import com.medsdate.data.db.model.MedicineEntry;
 import com.medsdate.ui.viewmodel.MedsViewModel;
-import com.medsdate.utils.GlideApp;
 import com.medsdate.utils.Utility;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment implements View.OnClickListener{
 
@@ -179,7 +179,7 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
                 @Override
                 public void setImageFromGallery(String name) {
                     imageName = name;
-                    GlideApp.with(getContext())
+                    Glide.with(getContext())
                             .asDrawable()
                             .load(Utility.INSTANCE.loadImage(getContext(), name))
                             .into(mImage);
@@ -235,7 +235,7 @@ public class BottomSheetDialogMedicineFragment extends BottomSheetDialogFragment
         mYear.setText(String.valueOf(myCalendar.get(Calendar.YEAR)));
 
         if(!medicineEntry.getImage().equals("")) {
-            GlideApp.with(getContext())
+            Glide.with(getContext())
                     .asDrawable()
                     .load(Utility.INSTANCE.loadImage(getContext(), medicineEntry.getImage()))
                     .into(mImage);

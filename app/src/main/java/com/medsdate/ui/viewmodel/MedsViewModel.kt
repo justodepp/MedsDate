@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 
 class MedsViewModel(application: Application) : AndroidViewModel(application) {
 
-    var _meds= MediatorLiveData<List<MedicineEntry>>()
+    private var _meds= MediatorLiveData<List<MedicineEntry>>()
     val meds: LiveData<List<MedicineEntry>> get() = _meds
     private var sourceList: LiveData<List<MedicineEntry>> = MutableLiveData()
 
@@ -37,11 +37,9 @@ class MedsViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getMeds() = viewModelScope.launch(Dispatchers.Main) {
         _meds.removeSource(sourceList) // We make sure there is only one source of livedata (allowing us properly refresh)
-        withContext(Dispatchers.IO) {
-            sourceList = medsRepository.loadMedicines()
-            _meds.addSource(sourceList) {
-                _meds.value = it
-            }
+        withContext(Dispatchers.IO) { sourceList = medsRepository.loadMedicines() }
+        _meds.addSource(sourceList) {
+            _meds.value = it
         }
     }
 
