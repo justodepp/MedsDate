@@ -57,7 +57,7 @@ class MedsLocalDataSource(context: Context) {
 
     suspend fun deleteMedicine(medicineEntry: MedicineEntry) {
         withContext(Dispatchers.IO) {
-            appDatabase.medicineDao().updateMedicine(medicineEntry)
+            appDatabase.medicineDao().deleteMedicine(medicineEntry)
         }
     }
 }
