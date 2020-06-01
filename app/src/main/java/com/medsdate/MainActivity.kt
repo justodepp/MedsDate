@@ -21,11 +21,12 @@ import com.medsdate.data.db.model.MedicineEntry
 import com.medsdate.notification.Receiver.Companion.cancelAlarmNotification
 import com.medsdate.notification.Receiver.Companion.setAlarmNotification
 import com.medsdate.ui.dialogs.BottomSheetDialogMedicineFragment
-import com.medsdate.ui.dialogs.DialogCreditsFragment
 import com.medsdate.ui.main.MedsAdapter
 import com.medsdate.ui.viewmodel.MedsViewModel
 import com.medsdate.utils.Utility.getSpan
+import com.medsdate.utils.extensions.positiveButton
 import com.medsdate.utils.extensions.recycleOnItemClicks
+import com.medsdate.utils.extensions.showAlertDialog
 import timber.log.Timber
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
@@ -151,8 +152,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, BottomSheetDialo
     override fun onOptionsItemSelected(item: MenuItem): Boolean { // Handle item selection
         return when (item.itemId) {
             R.id.action_credits -> {
-                DialogCreditsFragment.newInstance()
-                        .show(supportFragmentManager, "DialogCreditsFragment")
+                showAlertDialog {
+                    setTitle(R.string.title_credits_text)
+                    setMessage(R.string.msg_credits_text)
+                    positiveButton("CLOSE") {}
+                }
                 true
             }
             R.id.action_donate -> {
