@@ -19,7 +19,7 @@ class BasicApp : Application() {
         val core = CrashlyticsCore.Builder()
                 .disabled(BuildConfig.DEBUG)
                 .build()
-        Fabric.with(this, Crashlytics.Builder().core(core).build())
+        //Fabric.with(this, Crashlytics.Builder().core(core).build())
         Stetho.initializeWithDefaults(this)
         Timber.plant(Timber.DebugTree())
     }
