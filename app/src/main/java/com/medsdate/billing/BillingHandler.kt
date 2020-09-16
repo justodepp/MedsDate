@@ -11,7 +11,7 @@ class BillingHandler(private val mActivity: Activity, private val mCb: BillingCa
     val skus: Collection<SkuDetails>
         get() = mSkus.values
 
-    fun buy(sku: SkuDetails?) {
+    fun buy(sku: SkuDetails) {
         val response = mBilling.launchBillingFlow(mActivity, BillingFlowParams.newBuilder()
                 .setSkuDetails(sku)
                 .build()).responseCode
@@ -41,14 +41,6 @@ class BillingHandler(private val mActivity: Activity, private val mCb: BillingCa
             mCb.onStateChanged(false)
         }
 
-        override fun onPurchaseHistoryResponse(billingResult: BillingResult, purchasesList: List<PurchaseHistoryRecord>) {
-            Timber.w("onPurchaseHistoryResponse ${billingResult.responseCode}")
-            for (purchase in purchasesList) {
-                val sku = mSkus[purchase.sku]
-                mCb.onPurchased(sku, false)
-            }
-        }
-
         override fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
             Timber.w( "onPurchaseUpdated ${billingResult.responseCode}")
             if (purchases != null) {
@@ -65,14 +57,26 @@ class BillingHandler(private val mActivity: Activity, private val mCb: BillingCa
             }
         }
 
-        override fun onSkuDetailsResponse(billingResult: BillingResult, skuDetailsList: List<SkuDetails>) {
-            Timber.w("onSkuDetailsResponse ${billingResult.responseCode} ${skuDetailsList.size}")
-            mSkus.clear()
-            for (sku in skuDetailsList) {
-                mSkus[sku.sku] = sku
+        override fun onPurchaseHistoryResponse(billingResult: BillingResult, purchasesList: MutableList<PurchaseHistoryRecord>?) {
+            Timber.w("onPurchaseHistoryResponse ${billingResult.responseCode}")
+            purchasesList?.let{
+                for (purchase in it) {
+                    val sku = mSkus[purchase.sku]
+                    mCb.onPurchased(sku, false)
+                }
             }
-            mCb.onStateChanged(true)
-            mBilling.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, this)
+        }
+
+        override fun onSkuDetailsResponse(billingResult: BillingResult, skuDetailsList: MutableList<SkuDetails>?) {
+            Timber.w("onSkuDetailsResponse ${billingResult.responseCode} ${skuDetailsList?.size}")
+            mSkus.clear()
+            skuDetailsList?.let {
+                for (sku in it) {
+                    mSkus[sku.sku] = sku
+                }
+                mCb.onStateChanged(true)
+                mBilling.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, this)
+            }
         }
     }
 
