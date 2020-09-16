@@ -59,8 +59,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.xLibVersion"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "com.google.android.material:material:1.1.0"
-    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+    implementation "com.google.android.material:material:1.2.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.1"
     // Room
     implementation "androidx.room:room-runtime:$rootProject.xRoomVersion"
     kapt "androidx.room:room-compiler:$rootProject.xRoomVersion"
@@ -69,27 +69,25 @@ dependencies {
     // ViewModel and LiveData
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$rootProject.kotlin_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.xLifecycleVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.xLifecycleVersion"
     // Lifecycle
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.xLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.xLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.xLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.xLifecycleVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.xLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.xLifecycleVersion"
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     // Billing
-    implementation 'com.android.billingclient:billing:2.2.1'
+    implementation 'com.android.billingclient:billing:3.0.0'
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     // Recommended: Add the Firebase SDK for Google Analytics.
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
     // Add the Firebase Crashlytics SDK.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
     // Showcase
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
     // Test
@@ -97,8 +95,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.orhanobut:logger:2.2.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
