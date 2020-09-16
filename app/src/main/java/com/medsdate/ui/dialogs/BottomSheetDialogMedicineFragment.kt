@@ -82,8 +82,10 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
             showNumberPicker(currentQuantity)
         } else if (view.id == R.id.txt_date_expire) {
             dateChooser()
-            DatePickerDialog(context!!, date, myCalendar!!.get(Calendar.YEAR), myCalendar!![Calendar.MONTH],
-                    myCalendar!![Calendar.DAY_OF_MONTH]).show()
+            val dpd = DatePickerDialog(context!!, date, myCalendar!!.get(Calendar.YEAR), myCalendar!![Calendar.MONTH],
+                    myCalendar!![Calendar.DAY_OF_MONTH])
+            dpd.datePicker.minDate = System.currentTimeMillis()
+            dpd.show()
         } else if (view.id == R.id.txt_cancel) {
             dismiss()
         } else if (view.id == R.id.txt_save) {
