@@ -76,6 +76,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.xLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.xLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.xLifecycleVersion"
+    // CameraX
+    implementation "androidx.camera:camera-camera2:1.0.0-beta08"
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:1.0.0-beta08"
+    // If you want to additionally use the CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha15"
+    // If you want to additionally use the CameraX Extensions library
+    implementation "androidx.camera:camera-extensions:1.0.0-alpha15"
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
