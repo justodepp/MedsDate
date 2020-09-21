@@ -47,4 +47,10 @@
     <string name="showcase_fab">Qui potrai aggiungere nuove medicine</string>
     <string name="showcase_drugs">Qui potrai vedere e modificare le tue medicine</string>
 
+    <!-- Picker Image -->
+    <string name="lbl_set_profile_photo">Scegli l\'immagine da: </string>
+    <string name="lbl_take_camera_picture">Fai una foto</string>
+    <string name="lbl_choose_from_gallery">Galleria</string>
+    <string name="lbl_choose_from_internal">Precaricate</string>
+
 </resources>

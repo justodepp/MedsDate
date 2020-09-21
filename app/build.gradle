@@ -98,6 +98,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
     // Showcase
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
+    // Permission
+    implementation 'com.karumi:dexter:6.2.1'
     // Test
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'

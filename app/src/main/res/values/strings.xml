@@ -47,4 +47,10 @@
     <string name="showcase_fab">Here you can add more drugs</string>
     <string name="showcase_drugs">Here you can see and modify your drugs</string>
 
+    <!-- Picker Image -->
+    <string name="lbl_set_profile_photo">Choose image from:</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Gallery</string>
+    <string name="lbl_choose_from_internal">Internal image</string>
+
 </resources>

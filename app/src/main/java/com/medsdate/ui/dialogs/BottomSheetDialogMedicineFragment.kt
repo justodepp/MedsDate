@@ -18,12 +18,19 @@
  */
 package com.medsdate.ui.dialogs
 
+import android.R.attr
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.MediaStore.Images.Media.getBitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,12 +41,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.medsdate.R
 import com.medsdate.data.db.model.MedicineEntry
-import com.medsdate.ui.dialogs.BottomSheetDialogMedicineFragment
 import com.medsdate.ui.dialogs.DialogGalleryFragment.Companion.newInstance
 import com.medsdate.ui.dialogs.DialogGalleryFragment.OnDialogGalleryListener
 import com.medsdate.ui.viewmodel.MedsViewModel
 import com.medsdate.utils.Utility.loadImage
+import java.io.IOException
 import java.util.*
+
 
 class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private var wantCancelable = false
@@ -111,17 +119,59 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
                 showAlertWithMessage(getString(R.string.error_insert_update))
             }
         } else if (view.id == R.id.imageView) {
-            newInstance(true, object : OnDialogGalleryListener {
-                override fun setImageFromGallery(name: String?) {
-                    imageName = name
-                    Glide.with(context!!)
-                            .asDrawable()
-                            .load(loadImage(context!!, name!!))
-                            .into(mImage!!)
-                    //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    mImage!!.imageTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent))
-                }
-            }).show(activity!!.supportFragmentManager, "DialogGalleryFragment")
+            showImagePickerOptions(this.requireContext())
+
+        }
+    }
+
+    private fun showImagePickerOptions(context: Context) {
+        // setup the alert builder
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(context.getString(R.string.lbl_set_profile_photo))
+
+        // add a list
+        val animals = arrayOf(context.getString(R.string.lbl_take_camera_picture),
+                context.getString(R.string.lbl_choose_from_gallery),
+                context.getString(R.string.lbl_choose_from_internal))
+        builder.setItems(animals) { dialog: DialogInterface?, which: Int ->
+            when (which) {
+                0 -> onTakeCameraSelected()
+                1 -> onChooseGallerySelected()
+                2 -> internalImage()
+            }
+        }
+
+        // create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun internalImage() {
+        newInstance(true, object : OnDialogGalleryListener {
+            override fun setImageFromGallery(name: String?) {
+                imageName = name
+                Glide.with(context!!)
+                        .asDrawable()
+                        .load(loadImage(context!!, name!!))
+                        .into(mImage!!)
+                //mImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                mImage!!.imageTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent))
+            }
+        }).show(activity!!.supportFragmentManager, "DialogGalleryFragment")
+    }
+
+    private fun onChooseGallerySelected() {
+        val pickPhoto = Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, REQUEST_IMAGE)
+    }
+
+    private fun onTakeCameraSelected() {
+        val fileName = System.currentTimeMillis().toString() + ".jpg"
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileName)
+        if (takePictureIntent.resolveActivity(activity?.packageManager!!) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE)
         }
     }
 
@@ -227,8 +277,30 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
         dialog.show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val uri = data?.data
+                try {
+                    // You can update this bitmap to your server
+                    val bitmap = getBitmap(this.context?.contentResolver, uri)
+
+                    // loading image
+                    Glide.with(context!!)
+                            .asDrawable()
+                            .load(bitmap)
+                            .into(mImage!!)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     companion object {
         const val EXTRA_TASK_ID = "extraTaskId"
+        const val REQUEST_IMAGE = 0
 
         // Constant for default task id to be used when not in update mode
         private const val DEFAULT_TASK_ID = -1
