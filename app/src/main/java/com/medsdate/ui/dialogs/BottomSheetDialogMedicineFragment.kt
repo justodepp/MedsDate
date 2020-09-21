@@ -284,7 +284,7 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
                 try {
                     // You can update this bitmap to your server
                     val bitmap = getBitmap(this.context?.contentResolver, uri)
-
+                    imageName = uri.toString()
                     // loading image
                     Glide.with(context!!)
                             .asDrawable()

@@ -2,7 +2,10 @@ package com.medsdate.utils
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.MediaStore.Images.Media.getBitmap
 import com.medsdate.R
 import java.io.IOException
 import java.util.*
@@ -41,7 +44,7 @@ object Utility {
             // set image to ImageView
             return Drawable.createFromStream(ims, null)
         } catch (ex: IOException) {
-            return null
+            return null //BitmapDrawable(getBitmap(context.applicationContext.contentResolver, Uri.parse(name)))
         }
     }
 }
