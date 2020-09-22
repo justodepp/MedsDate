@@ -18,7 +18,7 @@
  */
 package com.medsdate.ui.dialogs
 
-import android.R.attr
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -27,10 +27,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Images.Media.getBitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,12 +38,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.medsdate.R
 import com.medsdate.data.db.model.MedicineEntry
 import com.medsdate.ui.dialogs.DialogGalleryFragment.Companion.newInstance
 import com.medsdate.ui.dialogs.DialogGalleryFragment.OnDialogGalleryListener
 import com.medsdate.ui.viewmodel.MedsViewModel
+import com.medsdate.utils.Utility
 import com.medsdate.utils.Utility.loadImage
+import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -119,8 +125,22 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
                 showAlertWithMessage(getString(R.string.error_insert_update))
             }
         } else if (view.id == R.id.imageView) {
-            showImagePickerOptions(this.requireContext())
+            Dexter.withContext(this.requireContext())
+                    .withPermissions(
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .withListener(object : MultiplePermissionsListener {
+                        override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                            if (report.areAllPermissionsGranted()) {
+                                showImagePickerOptions(this@BottomSheetDialogMedicineFragment.requireContext())
+                            }
+                        }
 
+                        override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest?>?, token: PermissionToken) {
+                            token.continuePermissionRequest()
+                        }
+                    }).check()
         }
     }
 
@@ -130,10 +150,10 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
         builder.setTitle(context.getString(R.string.lbl_set_profile_photo))
 
         // add a list
-        val animals = arrayOf(context.getString(R.string.lbl_take_camera_picture),
+        val selections = arrayOf(context.getString(R.string.lbl_take_camera_picture),
                 context.getString(R.string.lbl_choose_from_gallery),
                 context.getString(R.string.lbl_choose_from_internal))
-        builder.setItems(animals) { dialog: DialogInterface?, which: Int ->
+        builder.setItems(selections) { dialog: DialogInterface?, which: Int ->
             when (which) {
                 0 -> onTakeCameraSelected()
                 1 -> onChooseGallerySelected()
@@ -161,9 +181,10 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
     }
 
     private fun onChooseGallerySelected() {
-        val pickPhoto = Intent(Intent.ACTION_PICK,
+        val photoPickerIntent = Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickPhoto, REQUEST_IMAGE)
+        photoPickerIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        startActivityForResult(photoPickerIntent, REQUEST_IMAGE)
     }
 
     private fun onTakeCameraSelected() {
@@ -282,13 +303,11 @@ class BottomSheetDialogMedicineFragment : BottomSheetDialogFragment(), View.OnCl
             if (resultCode == Activity.RESULT_OK) {
                 val uri = data?.data
                 try {
-                    // You can update this bitmap to your server
-                    val bitmap = getBitmap(this.context?.contentResolver, uri)
-                    imageName = uri.toString()
+                    imageName = Utility.getRealPathFromUri(this.requireContext(), uri!!)
                     // loading image
                     Glide.with(context!!)
                             .asDrawable()
-                            .load(bitmap)
+                            .load(File(imageName).absolutePath)
                             .into(mImage!!)
                 } catch (e: IOException) {
                     e.printStackTrace()
