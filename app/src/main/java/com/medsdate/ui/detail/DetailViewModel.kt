@@ -7,8 +7,6 @@ import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import timber.log.Timber
 
 /**
@@ -17,10 +15,9 @@ import timber.log.Timber
  * Displays medicine details and handles delete operations.
  */
 class DetailViewModel(
+    private val context: Context,
     private val repository: MedicineRepository
-) : ViewModel(), KoinComponent {
-
-    private val context: Context by inject()
+) : ViewModel() {
 
     // UI State
     private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)

@@ -5,7 +5,6 @@ import com.google.firebase.FirebaseApp
 import com.medsdate.di.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import timber.log.Timber
@@ -35,9 +34,6 @@ class MedsDateApplication : Application() {
 
             // Reference Android context
             androidContext(this@MedsDateApplication)
-
-            // Setup WorkManager factory for Koin
-            workManagerFactory()
 
             // Load modules
             modules(appModules)

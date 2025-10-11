@@ -13,14 +13,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Koin module for Android context and system dependencies.
- */
-val androidModule = module {
-    // Application Context
-    single { androidContext() }
-}
-
-/**
  * Koin module for database and data layer dependencies.
  */
 val databaseModule = module {
@@ -57,10 +49,10 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
 
     // Add/Edit ViewModel
-    viewModel { AddEditViewModel(get(), get()) }
+    viewModel { AddEditViewModel(androidContext(), get(), get()) }
 
     // Detail ViewModel
-    viewModel { DetailViewModel(get()) }
+    viewModel { DetailViewModel(androidContext(), get()) }
 
     // Settings ViewModel
     viewModel { SettingsViewModel(get()) }
@@ -70,7 +62,6 @@ val viewModelModule = module {
  * List of all Koin modules for the app.
  */
 val appModules = listOf(
-    androidModule,
     databaseModule,
     repositoryModule,
     viewModelModule

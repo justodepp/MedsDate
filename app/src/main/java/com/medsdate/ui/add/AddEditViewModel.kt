@@ -8,8 +8,6 @@ import com.medsdate.data.repository.SettingsRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.Date
 
@@ -19,11 +17,10 @@ import java.util.Date
  * Handles form state, validation, and saving/updating medicines.
  */
 class AddEditViewModel(
+    private val context: Context,
     private val repository: MedicineRepository,
     private val settingsRepository: SettingsRepository
-) : ViewModel(), KoinComponent {
-
-    private val context: Context by inject()
+) : ViewModel() {
 
     // UI State
     private val _uiState = MutableStateFlow(AddEditUiState())

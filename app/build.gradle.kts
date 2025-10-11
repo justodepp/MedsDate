@@ -161,7 +161,6 @@ dependencies {
     val koinVersion = "3.5.3"
     implementation("io.insert-koin:koin-android:$koinVersion")
     implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
