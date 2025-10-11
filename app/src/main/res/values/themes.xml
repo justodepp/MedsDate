@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Material3 Compose Theme
+        This theme is just a placeholder for the Activity.
+        Actual theming is done in Compose via MedsDateTheme.
+        See: ui/theme/Theme.kt
+    -->
+    <style name="Theme.MedsDate" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!--
+        Include/exclude rules for backup.
+        By default, all files are backed up.
+    -->
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
+    <include domain="file" path="." />
+
+    <!-- Exclude cache and temporary files -->
+    <exclude domain="file" path="cache" />
+    <exclude domain="file" path="images/temp" />
+</full-backup-content>

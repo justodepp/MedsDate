@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew:*)",
+      "Bash(find:*)",
+      "Bash(java:*)",
+      "Bash(/usr/libexec/java_home:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
