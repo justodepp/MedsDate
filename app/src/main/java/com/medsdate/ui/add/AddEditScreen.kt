@@ -141,6 +141,7 @@ fun AddEditScreen(
                 onValueChange = viewModel::onNameChange,
                 label = { Text("Medicine Name *") },
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
                 isError = uiState.nameError != null,
                 supportingText = uiState.nameError?.let { { Text(it) } }
             )
@@ -172,6 +173,7 @@ fun AddEditScreen(
                 value = uiState.notes,
                 onValueChange = viewModel::onNotesChange,
                 label = { Text("Notes") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -184,6 +186,10 @@ fun AddEditScreen(
             Button(
                 onClick = viewModel::saveMedicine,
                 modifier = Modifier.fillMaxWidth(),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 2.dp,
+                    pressedElevation = 0.dp
+                ),
                 enabled = !uiState.isSaving
             ) {
                 if (uiState.isSaving) {
@@ -499,6 +505,7 @@ private fun ExpiryDatePicker(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { datePickerDialog.show() },
+        shape = RoundedCornerShape(16.dp),
         readOnly = true,
         enabled = false,
         isError = error != null,
@@ -545,13 +552,13 @@ private fun PhotoSection(
                 showChooserDialog = showChooserDialog.not()
             },
             shape = RoundedCornerShape(16.dp),
-            border = ButtonDefaults.outlinedButtonBorder.copy(width = 0.dp),
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant
             )
         ) {
             Column(
+                modifier = Modifier.padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -565,14 +572,16 @@ private fun PhotoSection(
                     "Camera",
                     style = TextStyle(
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 Text(
                     "Scatta o carica una foto dalla libreria",
                     style = TextStyle(
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.W300
+                        fontWeight = FontWeight.W300,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }

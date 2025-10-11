@@ -50,7 +50,7 @@ data class Medicine(
         val days = daysUntilExpiry()
         return when {
             days < 0 -> ExpiryStatus.EXPIRED
-            days <= 7 -> ExpiryStatus.EXPIRING_SOON
+            days < 7 -> ExpiryStatus.EXPIRING_SOON
             else -> ExpiryStatus.VALID
         }
     }

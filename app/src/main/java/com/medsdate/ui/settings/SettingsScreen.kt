@@ -113,6 +113,10 @@ fun SettingsScreen(
         Button(
             onClick = viewModel::saveSettings,
             modifier = Modifier.fillMaxWidth(),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 2.dp,
+                pressedElevation = 0.dp
+            ),
             enabled = saveState !is SaveState.Saving
         ) {
             when (saveState) {
