@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.medsdate.ui.components.MedicineCard
 import com.medsdate.ui.theme.ExpiredRedLight
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * Home screen displaying list of medicines grouped by expiry status.
@@ -33,7 +33,7 @@ import com.medsdate.ui.theme.ExpiredRedLight
 fun HomeScreen(
     onMedicineClick: (Int) -> Unit,
     onSearchClick: () -> Unit,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = koinViewModel()
 ) {
     val groupedMedicines by viewModel.groupedMedicines.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()

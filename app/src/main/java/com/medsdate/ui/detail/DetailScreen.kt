@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +34,7 @@ fun DetailScreen(
     onNavigateBack: () -> Unit,
     onEdit: (Int) -> Unit,
     onDeleteSuccess: () -> Unit,
-    viewModel: DetailViewModel = viewModel()
+    viewModel: DetailViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }

@@ -1,12 +1,11 @@
 package com.medsdate.ui.home
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.medsdate.MedsDateApplication
+import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.domain.model.Medicine
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -14,9 +13,9 @@ import timber.log.Timber
  *
  * Manages the list of medicines, search functionality, and grouping by expiry status.
  */
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = (application as MedsDateApplication).medicineRepository
+class HomeViewModel(
+    private val repository: MedicineRepository
+) : ViewModel() {
 
     // Search query state
     private val _searchQuery = MutableStateFlow("")
@@ -26,6 +25,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val allMedicines: Flow<List<Medicine>> = repository.getAllMedicines()
 
     // Filtered medicines based on search
+    @OptIn(ExperimentalCoroutinesApi::class)
     val medicines: StateFlow<List<Medicine>> = searchQuery
         .flatMapLatest { query ->
             if (query.isBlank()) {

@@ -1,12 +1,15 @@
 package com.medsdate.ui.add
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.medsdate.MedsDateApplication
+import com.medsdate.data.repository.MedicineRepository
+import com.medsdate.data.repository.SettingsRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.Date
 
@@ -15,11 +18,12 @@ import java.util.Date
  *
  * Handles form state, validation, and saving/updating medicines.
  */
-class AddEditViewModel(application: Application) : AndroidViewModel(application) {
+class AddEditViewModel(
+    private val repository: MedicineRepository,
+    private val settingsRepository: SettingsRepository
+) : ViewModel(), KoinComponent {
 
-    private val app = application as MedsDateApplication
-    private val repository = app.medicineRepository
-    private val settingsRepository = app.settingsRepository
+    private val context: Context by inject()
 
     // UI State
     private val _uiState = MutableStateFlow(AddEditUiState())
@@ -144,7 +148,7 @@ class AddEditViewModel(application: Application) : AndroidViewModel(application)
                 ?: com.medsdate.domain.model.NotificationSettings()
 
             com.medsdate.worker.NotificationScheduler.scheduleMedicineNotifications(
-                getApplication(),
+                context,
                 medicine,
                 settings
             )

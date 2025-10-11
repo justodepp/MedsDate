@@ -2,28 +2,23 @@ package com.medsdate
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
-import com.medsdate.data.local.AppDatabase
-import com.medsdate.data.repository.MedicineRepository
-import com.medsdate.data.repository.SettingsRepository
+import com.medsdate.di.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import timber.log.Timber
 
 /**
  * Application class for MedsDate.
  *
  * Initializes app-wide dependencies including:
+ * - Koin dependency injection
  * - Timber logging
  * - Firebase
- * - Room database
- * - Repositories
  */
 class MedsDateApplication : Application() {
-
-    // Database instance
-    private val database by lazy { AppDatabase.getInstance(this) }
-
-    // Repositories
-    val medicineRepository by lazy { MedicineRepository(database.medicineDao()) }
-    val settingsRepository by lazy { SettingsRepository(database.settingsDao()) }
 
     override fun onCreate() {
         super.onCreate()
@@ -33,9 +28,24 @@ class MedsDateApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
+        // Initialize Koin for dependency injection
+        startKoin {
+            // Log Koin into Android logger
+            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
+
+            // Reference Android context
+            androidContext(this@MedsDateApplication)
+
+            // Setup WorkManager factory for Koin
+            workManagerFactory()
+
+            // Load modules
+            modules(appModules)
+        }
+
         // Initialize Firebase
         FirebaseApp.initializeApp(this)
 
-        Timber.d("MedsDateApplication initialized")
+        Timber.d("MedsDateApplication initialized with Koin DI")
     }
 }

@@ -152,6 +152,12 @@ dependencies {
     // Timber for logging
     implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // Koin for Dependency Injection
+    val koinVersion = "3.5.3"
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
 /**
@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
  */
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = viewModel()
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val settings by viewModel.settings.collectAsState()
     val saveState by viewModel.saveState.collectAsState()

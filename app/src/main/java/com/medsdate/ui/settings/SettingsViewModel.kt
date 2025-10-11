@@ -1,9 +1,8 @@
 package com.medsdate.ui.settings
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.medsdate.MedsDateApplication
+import com.medsdate.data.repository.SettingsRepository
 import com.medsdate.domain.model.NotificationSettings
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,9 +13,9 @@ import timber.log.Timber
  *
  * Manages notification preferences including alert timing and toggle options.
  */
-class SettingsViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = (application as MedsDateApplication).settingsRepository
+class SettingsViewModel(
+    private val repository: SettingsRepository
+) : ViewModel() {
 
     // Settings state
     val settings: StateFlow<NotificationSettings> = repository.getSettings()

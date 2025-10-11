@@ -1,12 +1,14 @@
 package com.medsdate.ui.detail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.medsdate.MedsDateApplication
+import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
 /**
@@ -14,9 +16,11 @@ import timber.log.Timber
  *
  * Displays medicine details and handles delete operations.
  */
-class DetailViewModel(application: Application) : AndroidViewModel(application) {
+class DetailViewModel(
+    private val repository: MedicineRepository
+) : ViewModel(), KoinComponent {
 
-    private val repository = (application as MedsDateApplication).medicineRepository
+    private val context: Context by inject()
 
     // UI State
     private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
@@ -59,7 +63,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
                 // Cancel notifications first
                 com.medsdate.worker.NotificationScheduler.cancelMedicineNotifications(
-                    getApplication(),
+                    context,
                     medicine.id
                 )
 

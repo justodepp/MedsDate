@@ -68,7 +68,7 @@ abstract class AppDatabase : RoomDatabase() {
          * 2. Renames columns for consistency (expire_at -> expiry_date, category removed, image -> image_path)
          * 3. Creates new settings table for notification preferences
          */
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Create a new medicine table with updated schema
                 database.execSQL(
