@@ -13,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.medsdate.domain.model.Medicine
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -269,6 +271,93 @@ private fun DetailField(
         Text(
             text = value,
             style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+// ==================== Previews ====================
+
+/**
+ * Helper function to create sample medicine for previews.
+ */
+private fun createSampleMedicine(daysOffset: Int): Medicine {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_MONTH, daysOffset)
+
+    return Medicine(
+        id = 1,
+        name = "Aspirin",
+        expiryDate = calendar.time,
+        imagePath = null,
+        notes = "Take with food. Maximum 2 tablets per day.",
+        updatedAt = Date()
+    )
+}
+
+/**
+ * Preview for DetailContent (expired medicine).
+ */
+@Preview(showBackground = true)
+@Composable
+private fun DetailContentExpiredPreview() {
+    MaterialTheme {
+        DetailContent(
+            medicine = createSampleMedicine(-30) // 30 days expired
+        )
+    }
+}
+
+/**
+ * Preview for DetailContent (expiring soon).
+ */
+@Preview(showBackground = true)
+@Composable
+private fun DetailContentExpiringSoonPreview() {
+    MaterialTheme {
+        DetailContent(
+            medicine = createSampleMedicine(5) // Expires in 5 days
+        )
+    }
+}
+
+/**
+ * Preview for DetailContent (active).
+ */
+@Preview(showBackground = true)
+@Composable
+private fun DetailContentActivePreview() {
+    MaterialTheme {
+        DetailContent(
+            medicine = createSampleMedicine(180) // Expires in 6 months
+        )
+    }
+}
+
+/**
+ * Preview for DetailField.
+ */
+@Preview(showBackground = true)
+@Composable
+private fun DetailFieldPreview() {
+    MaterialTheme {
+        DetailField(
+            label = "Medicine Name",
+            value = "Aspirin 500mg"
+        )
+    }
+}
+
+/**
+ * Preview for DetailAppBar.
+ */
+@Preview(showBackground = true)
+@Composable
+private fun DetailAppBarPreview() {
+    MaterialTheme {
+        DetailAppBar(
+            onNavigateBack = {},
+            onEdit = {},
+            onDelete = {}
         )
     }
 }

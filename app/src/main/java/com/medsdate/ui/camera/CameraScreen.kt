@@ -25,10 +25,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.medsdate.utils.ImageUtils
 import timber.log.Timber
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -244,7 +243,7 @@ private fun takePicture(
     onError: (ImageCaptureException) -> Unit
 ) {
     // Create output file
-    val photoFile = createImageFile(context)
+    val photoFile = ImageUtils.createImageFile(context)
 
     val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
@@ -253,9 +252,10 @@ private fun takePicture(
         ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                val savedUri = Uri.fromFile(photoFile)
-                Timber.d("Image saved successfully: $savedUri")
-                onImageCaptured(savedUri)
+                Timber.d("Image saved successfully: ${photoFile.absolutePath}")
+                // Return URI with just the file path as string for database storage
+                // We convert to URI temporarily for navigation, but the path is what gets stored
+                onImageCaptured(Uri.parse("file://${photoFile.absolutePath}"))
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -266,18 +266,60 @@ private fun takePicture(
     )
 }
 
+// ==================== Previews ====================
+
 /**
- * Creates a file for storing the captured image.
+ * Preview for CameraAppBar.
  */
-private fun createImageFile(context: android.content.Context): File {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val imageFileName = "MEDICINE_$timeStamp"
-    val storageDir = File(context.filesDir, "images")
-
-    // Create directory if it doesn't exist
-    if (!storageDir.exists()) {
-        storageDir.mkdirs()
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+private fun CameraAppBarPreview() {
+    MaterialTheme {
+        CameraAppBar(
+            onNavigateBack = {},
+            onFlipCamera = {}
+        )
     }
+}
 
-    return File(storageDir, "$imageFileName.jpg")
+/**
+ * Preview for CaptureButton (ready state).
+ */
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+private fun CaptureButtonReadyPreview() {
+    MaterialTheme {
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            CaptureButton(
+                isCapturing = false,
+                onClick = {}
+            )
+        }
+    }
+}
+
+/**
+ * Preview for CaptureButton (capturing state).
+ */
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+private fun CaptureButtonCapturingPreview() {
+    MaterialTheme {
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            CaptureButton(
+                isCapturing = true,
+                onClick = {}
+            )
+        }
+    }
 }

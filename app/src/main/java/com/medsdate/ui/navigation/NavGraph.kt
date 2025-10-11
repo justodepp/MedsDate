@@ -36,6 +36,7 @@ fun NavGraph(
         // Home screen
         composable(route = Screen.Home.route) {
             HomeScreen(
+                navController = navController,
                 onMedicineClick = { medicineId ->
                     navController.navigate(Screen.Detail.createRoute(medicineId))
                 },
@@ -57,6 +58,7 @@ fun NavGraph(
                 ?.remove<String>("captured_image_uri")
 
             AddEditScreen(
+                navController = navController,
                 medicineId = null,
                 onNavigateBack = {
                     navController.popBackStack()
@@ -89,6 +91,7 @@ fun NavGraph(
                 ?.remove<String>("captured_image_uri")
 
             AddEditScreen(
+                navController = navController,
                 medicineId = medicineId,
                 onNavigateBack = {
                     navController.popBackStack()
@@ -127,7 +130,7 @@ fun NavGraph(
 
         // Settings screen
         composable(route = Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(navController = navController)
         }
 
         // Camera screen

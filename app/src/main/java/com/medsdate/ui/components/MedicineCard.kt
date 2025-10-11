@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Egg
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -61,16 +62,17 @@ fun MedicineCard(
     val cornerValue = 20.dp
     val expiryStatus = medicine.getExpiryStatus()
     val backgroundColor = when (expiryStatus) {
-        ExpiryStatus.EXPIRED -> ExpiredRedLight.copy(alpha = 0.3f)
+        ExpiryStatus.EXPIRED -> ExpiredRedLight
         ExpiryStatus.EXPIRING_SOON -> WarningYellowLight
         ExpiryStatus.VALID -> MaterialTheme.colorScheme.surface
     }
 
-    val currentShape = when (index) {
+    var currentShape = when (index) {
         0 -> RoundedCornerShape(topStart = cornerValue, topEnd = cornerValue)
         medicineCount - 1 -> RoundedCornerShape(bottomStart = cornerValue, bottomEnd = cornerValue)
         else -> RectangleShape
     }
+    currentShape = if (medicineCount == 1) RoundedCornerShape(cornerValue) else currentShape
 
     Card(
         modifier = modifier
@@ -175,7 +177,7 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
     }
 
     val iconApplied = when (status) {
-        ExpiryStatus.EXPIRED -> Icons.Outlined.Egg
+        ExpiryStatus.EXPIRED -> Icons.Outlined.Error
         ExpiryStatus.EXPIRING_SOON -> Icons.Outlined.Warning
         else -> return
     }
@@ -202,18 +204,114 @@ private fun formatExpiryDate(date: Date): String {
 }
 
 
-@Preview
+// ==================== Previews ====================
+
+/**
+ * Preview for MedicineCard (expired medicine).
+ */
+@Preview(showBackground = true)
 @Composable
-fun MedicineCardPreview() {
-    MedicineCard(
-        medicine = Medicine(
-            id = 1,
-            name = "Medicine Name",
-            imagePath = "https://example.com/image.jpg",
-            expiryDate = Date()
-        ),
-        index = 1,
-        medicineCount = 3,
-        onClick = {}
-    )
+fun MedicineCardExpiredPreview() {
+    MaterialTheme {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, -30)
+
+        MedicineCard(
+            medicine = Medicine(
+                id = 1,
+                name = "Aspirin 500mg",
+                imagePath = null,
+                expiryDate = calendar.time,
+                notes = "Take with food",
+                updatedAt = Date()
+            ),
+            index = 0,
+            medicineCount = 3,
+            onClick = {}
+        )
+    }
+}
+
+/**
+ * Preview for MedicineCard (expiring soon).
+ */
+@Preview(showBackground = true)
+@Composable
+fun MedicineCardExpiringSoonPreview() {
+    MaterialTheme {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, 5)
+
+        MedicineCard(
+            medicine = Medicine(
+                id = 2,
+                name = "Vitamin D Supplements",
+                imagePath = null,
+                expiryDate = calendar.time,
+                notes = null,
+                updatedAt = Date()
+            ),
+            index = 1,
+            medicineCount = 3,
+            onClick = {}
+        )
+    }
+}
+
+/**
+ * Preview for MedicineCard (valid medicine).
+ */
+@Preview(showBackground = true)
+@Composable
+fun MedicineCardValidPreview() {
+    MaterialTheme {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.add(java.util.Calendar.MONTH, 6)
+
+        MedicineCard(
+            medicine = Medicine(
+                id = 3,
+                name = "Ibuprofen",
+                imagePath = null,
+                expiryDate = calendar.time,
+                notes = "For headaches",
+                updatedAt = Date()
+            ),
+            index = 2,
+            medicineCount = 3,
+            onClick = {}
+        )
+    }
+}
+
+/**
+ * Preview for MedicineImage (placeholder).
+ */
+@Preview(showBackground = true)
+@Composable
+private fun MedicineImagePlaceholderPreview() {
+    MaterialTheme {
+        MedicineImage(
+            imagePath = null,
+            contentDescription = "Aspirin",
+            modifier = Modifier.size(56.dp)
+        )
+    }
+}
+
+/**
+ * Preview for ExpiryWarningIcon (expired).
+ */
+@Preview(showBackground = true)
+@Composable
+private fun ExpiryWarningIconExpiredPreview() {
+    MaterialTheme {
+        Row(
+            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            ExpiryWarningIcon(status = ExpiryStatus.EXPIRED)
+            ExpiryWarningIcon(status = ExpiryStatus.EXPIRING_SOON)
+        }
+    }
 }

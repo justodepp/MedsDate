@@ -8,8 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.medsdate.ui.navigation.Screen
 
 /**
@@ -39,6 +41,7 @@ fun MedsBottomNavigation(navController: NavController) {
                         contentDescription = item.label
                     )
                 },
+                alwaysShowLabel = false,
                 label = { Text(item.label) },
                 selected = currentRoute == item.route,
                 onClick = {
@@ -85,6 +88,21 @@ private data class BottomNavItem(
             route = Screen.Settings.route,
             label = "Settings",
             icon = Icons.Default.Settings
+        )
+    }
+}
+
+// ==================== Previews ====================
+
+/**
+ * Preview for MedsBottomNavigation.
+ */
+@Preview(showBackground = true)
+@Composable
+fun MedsBottomNavigationPreview() {
+    MaterialTheme {
+        MedsBottomNavigation(
+            navController = rememberNavController()
         )
     }
 }
