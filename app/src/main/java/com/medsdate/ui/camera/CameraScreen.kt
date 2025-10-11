@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.medsdate.ui.theme.MedsDateTheme
 import com.medsdate.utils.ImageUtils
 import timber.log.Timber
 import java.io.File
@@ -180,7 +181,7 @@ private fun CameraAppBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.primaryContainer
                 )
             }
         },
@@ -189,13 +190,13 @@ private fun CameraAppBar(
                 Icon(
                     imageVector = Icons.Default.FlipCameraAndroid,
                     contentDescription = "Flip Camera",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.primaryContainer
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black,
-            titleContentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.primaryContainer
         )
     )
 }
@@ -274,7 +275,7 @@ private fun takePicture(
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 private fun CameraAppBarPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         CameraAppBar(
             onNavigateBack = {},
             onFlipCamera = {}
@@ -288,7 +289,7 @@ private fun CameraAppBarPreview() {
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 private fun CaptureButtonReadyPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         Box(
             modifier = Modifier
                 .size(120.dp)
@@ -309,7 +310,7 @@ private fun CaptureButtonReadyPreview() {
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 private fun CaptureButtonCapturingPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         Box(
             modifier = Modifier
                 .size(120.dp)

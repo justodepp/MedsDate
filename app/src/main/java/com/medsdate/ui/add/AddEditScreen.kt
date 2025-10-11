@@ -7,13 +7,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,14 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
+import com.medsdate.ui.theme.MedsDateTheme
 import com.medsdate.utils.ImageUtils
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -231,7 +235,7 @@ private fun PhotoSectionPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun AddEditFormPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         Scaffold(
             topBar = {
                 MedsAppBar(
@@ -325,7 +329,7 @@ private fun AddEditFormPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun EditFormPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         Scaffold(
             topBar = {
                 MedsAppBar(
@@ -420,7 +424,7 @@ private fun EditFormPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun AddEditFormWithErrorsPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -489,18 +493,16 @@ private fun ExpiryDatePicker(
         value = dateFormatter.format(selectedDate),
         onValueChange = {},
         label = { Text("Expiry Date *") },
+        trailingIcon = {
+            Icon(Icons.Outlined.Today, contentDescription = "Calendar")
+        },
         modifier = Modifier
             .fillMaxWidth()
             .clickable { datePickerDialog.show() },
         readOnly = true,
         enabled = false,
         isError = error != null,
-        supportingText = error?.let { { Text(it) } },
-        colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.onSurface,
-            disabledBorderColor = MaterialTheme.colorScheme.outline,
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        supportingText = error?.let { { Text(it) } }
     )
 }
 
@@ -513,6 +515,8 @@ private fun PhotoSection(
     onCameraClick: () -> Unit,
     onGalleryClick: () -> Unit
 ) {
+    var showChooserDialog by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -536,28 +540,71 @@ private fun PhotoSection(
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-        // Camera and Gallery buttons
-        Row(
+        OutlinedButton(
+            onClick = {
+                showChooserDialog = showChooserDialog.not()
+            },
+            shape = RoundedCornerShape(16.dp),
+            border = ButtonDefaults.outlinedButtonBorder.copy(width = 0.dp),
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
         ) {
-            OutlinedButton(
-                onClick = onCameraClick,
-                modifier = Modifier.weight(1f)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(Icons.Default.CameraAlt, contentDescription = "Camera")
+                Icon(
+                    Icons.Outlined.AddAPhoto,
+                    contentDescription = "Camera",
+                    modifier = Modifier.size(40.dp)
+                )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Camera")
+                Text(
+                    "Camera",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+                Text(
+                    "Scatta o carica una foto dalla libreria",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W300
+                    )
+                )
             }
+        }
 
-            OutlinedButton(
-                onClick = onGalleryClick,
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(Icons.Default.Image, contentDescription = "Gallery")
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Gallery")
-            }
+        // Camera and Gallery buttons
+        if (showChooserDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showChooserDialog = false
+                },
+                title = {
+                    Text("What's your choice?")
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        onCameraClick()
+                        showChooserDialog = false
+                    }) {
+                        Text("Camera")
+                    }
+                },
+                dismissButton =
+                    {
+                        TextButton(onClick = {
+                            onGalleryClick()
+                            showChooserDialog = false
+                        }) {
+                            Text("Gallery")
+                        }
+                    }
+            )
         }
     }
 }

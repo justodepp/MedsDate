@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.medsdate.ui.navigation.Screen
+import com.medsdate.ui.theme.MedsDateTheme
 
 /**
  * Bottom navigation bar for main app navigation.
@@ -29,7 +30,9 @@ fun MedsBottomNavigation(navController: NavController) {
         BottomNavItem.Settings
     )
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+    ){
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
@@ -100,7 +103,7 @@ private data class BottomNavItem(
 @Preview(showBackground = true)
 @Composable
 fun MedsBottomNavigationPreview() {
-    MaterialTheme {
+    MedsDateTheme {
         MedsBottomNavigation(
             navController = rememberNavController()
         )
