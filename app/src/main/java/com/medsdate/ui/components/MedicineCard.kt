@@ -6,16 +6,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Egg
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.medsdate.domain.model.ExpiryStatus
@@ -38,9 +43,12 @@ import java.util.*
 @Composable
 fun MedicineCard(
     medicine: Medicine,
+    index: Int,
+    medicineCount: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val cornerValue = 20.dp
     val expiryStatus = medicine.getExpiryStatus()
     val backgroundColor = when (expiryStatus) {
         ExpiryStatus.EXPIRED -> ExpiredRedLight.copy(alpha = 0.3f)
@@ -48,11 +56,17 @@ fun MedicineCard(
         ExpiryStatus.VALID -> MaterialTheme.colorScheme.surface
     }
 
+    val currentShape = when (index) {
+        0 -> RoundedCornerShape( topStart = cornerValue, topEnd = cornerValue)
+        medicineCount - 1 -> RoundedCornerShape(bottomStart = cornerValue, bottomEnd = cornerValue)
+        else -> RectangleShape
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = currentShape,
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor
         ),
@@ -150,6 +164,12 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
         ExpiryStatus.VALID -> return // No icon for valid medicines
     }
 
+    val iconApplied = when (status) {
+        ExpiryStatus.EXPIRED -> Icons.Outlined.Egg
+        ExpiryStatus.EXPIRING_SOON -> Icons.Outlined.Warning
+        else -> return
+    }
+
     Box(
         modifier = Modifier
             .size(32.dp)
@@ -158,7 +178,7 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = Icons.Default.Warning,
+            imageVector = iconApplied,
             contentDescription = when (status) {
                 ExpiryStatus.EXPIRED -> "Expired"
                 ExpiryStatus.EXPIRING_SOON -> "Expiring soon"
@@ -176,4 +196,21 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
 private fun formatExpiryDate(date: Date): String {
     val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     return "Expires: ${formatter.format(date)}"
+}
+
+
+@Preview
+@Composable
+fun MedicineCardPreview() {
+    MedicineCard(
+        medicine = Medicine(
+            id = 1,
+            name = "Medicine Name",
+            imagePath = "https://example.com/image.jpg",
+            expiryDate = Date()
+        ),
+        index = 1,
+        medicineCount = 3,
+        onClick = {}
+    )
 }

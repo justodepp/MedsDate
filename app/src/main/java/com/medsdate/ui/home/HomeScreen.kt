@@ -1,14 +1,37 @@
 package com.medsdate.ui.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -135,8 +158,7 @@ private fun MedicineList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        contentPadding = PaddingValues(16.dp)
     ) {
         // Search button when not searching
         if (!isSearchActive && (groupedMedicines.expired.isNotEmpty() || groupedMedicines.active.isNotEmpty())) {
@@ -166,9 +188,13 @@ private fun MedicineList(
                 )
             }
 
-            items(groupedMedicines.expired, key = { it.id }) { medicine ->
+            itemsIndexed(
+                groupedMedicines.expired,
+                key = { index, medicine -> medicine.id }) { index, medicine ->
                 MedicineCard(
                     medicine = medicine,
+                    index = index,
+                    medicineCount = groupedMedicines.expired.size,
                     onClick = { onMedicineClick(medicine.id) }
                 )
             }
@@ -190,9 +216,11 @@ private fun MedicineList(
                 )
             }
 
-            items(groupedMedicines.active, key = { it.id }) { medicine ->
+            itemsIndexed(groupedMedicines.active, key = { index, medicine -> medicine.id }) { index, medicine ->
                 MedicineCard(
                     medicine = medicine,
+                    index = index,
+                    medicineCount = groupedMedicines.active.size,
                     onClick = { onMedicineClick(medicine.id) }
                 )
             }
@@ -215,10 +243,12 @@ private fun SectionHeader(
             .padding(vertical = 8.dp)
             .then(
                 if (isExpired) {
-                    Modifier.background(
-                        ExpiredRedLight.copy(alpha = 0.2f),
-                        shape = MaterialTheme.shapes.small
-                    ).padding(horizontal = 12.dp, vertical = 8.dp)
+                    Modifier
+                        .background(
+                            ExpiredRedLight.copy(alpha = 0.2f),
+                            shape = MaterialTheme.shapes.small
+                        )
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
                 } else {
                     Modifier.padding(horizontal = 4.dp)
                 }

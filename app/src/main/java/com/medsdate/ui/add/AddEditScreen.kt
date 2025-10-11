@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.medsdate.ui.components.MedsAppBar
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +49,6 @@ fun AddEditScreen(
     viewModel: AddEditViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
 
     // Handle captured image from camera
     LaunchedEffect(capturedImageUri) {
@@ -90,9 +91,10 @@ fun AddEditScreen(
 
     Scaffold(
         topBar = {
-            MedAppBarWithBack(
+            MedsAppBar(
                 title = if (uiState.isEditMode) "Edit Medicine" else "Add Medicine",
-                onNavigateBack = onNavigateBack
+                onNavigationClick = onNavigateBack,
+                showNavigationIcon = true
             )
         }
     ) { paddingValues ->
@@ -168,30 +170,13 @@ fun AddEditScreen(
     }
 }
 
-/**
- * Top app bar with back navigation.
- */
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
-private fun MedAppBarWithBack(
-    title: String,
-    onNavigateBack: () -> Unit
-) {
-    TopAppBar(
-        title = { Text(title) },
-        navigationIcon = {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+fun AddEditScreenPreview() {
+    AddEditScreen(
+        medicineId = 1,
+        onNavigateBack = {},
+        onSaveSuccess = {}
     )
 }
 
