@@ -2,20 +2,28 @@ package com.medsdate.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -28,8 +36,10 @@ import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.theme.ExpiredRed
 import com.medsdate.ui.theme.ExpiredRedLight
 import com.medsdate.ui.theme.WarningYellow
+import com.medsdate.ui.theme.WarningYellowLight
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * Card component displaying medicine information.
@@ -52,12 +62,12 @@ fun MedicineCard(
     val expiryStatus = medicine.getExpiryStatus()
     val backgroundColor = when (expiryStatus) {
         ExpiryStatus.EXPIRED -> ExpiredRedLight.copy(alpha = 0.3f)
-        ExpiryStatus.EXPIRING_SOON -> MaterialTheme.colorScheme.surfaceVariant
+        ExpiryStatus.EXPIRING_SOON -> WarningYellowLight
         ExpiryStatus.VALID -> MaterialTheme.colorScheme.surface
     }
 
     val currentShape = when (index) {
-        0 -> RoundedCornerShape( topStart = cornerValue, topEnd = cornerValue)
+        0 -> RoundedCornerShape(topStart = cornerValue, topEnd = cornerValue)
         medicineCount - 1 -> RoundedCornerShape(bottomStart = cornerValue, bottomEnd = cornerValue)
         else -> RectangleShape
     }
@@ -158,9 +168,9 @@ private fun MedicineImage(
  */
 @Composable
 private fun ExpiryWarningIcon(status: ExpiryStatus) {
-    val (iconColor, backgroundColor) = when (status) {
-        ExpiryStatus.EXPIRED -> Pair(Color.White, ExpiredRed)
-        ExpiryStatus.EXPIRING_SOON -> Pair(Color.Black, WarningYellow)
+    val iconColor = when (status) {
+        ExpiryStatus.EXPIRED -> ExpiredRed
+        ExpiryStatus.EXPIRING_SOON -> WarningYellow
         ExpiryStatus.VALID -> return // No icon for valid medicines
     }
 
@@ -170,24 +180,17 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
         else -> return
     }
 
-    Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background(backgroundColor),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = iconApplied,
-            contentDescription = when (status) {
-                ExpiryStatus.EXPIRED -> "Expired"
-                ExpiryStatus.EXPIRING_SOON -> "Expiring soon"
-                ExpiryStatus.VALID -> ""
-            },
-            tint = iconColor,
-            modifier = Modifier.size(20.dp)
-        )
-    }
+    Icon(
+        imageVector = iconApplied,
+        contentDescription = when (status) {
+            ExpiryStatus.EXPIRED -> "Expired"
+            ExpiryStatus.EXPIRING_SOON -> "Expiring soon"
+            ExpiryStatus.VALID -> ""
+        },
+        tint = iconColor,
+        modifier = Modifier.size(20.dp)
+    )
+
 }
 
 /**

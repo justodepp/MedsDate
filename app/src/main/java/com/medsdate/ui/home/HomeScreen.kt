@@ -62,7 +62,7 @@ fun HomeScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     var isSearchActive by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background)) {
         // Search bar or regular state
         if (isSearchActive) {
             SearchBar(
