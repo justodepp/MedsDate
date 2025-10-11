@@ -1,6 +1,7 @@
 package com.medsdate.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,15 +20,18 @@ import com.medsdate.ui.settings.SettingsScreen
  *
  * @param navController The navigation controller
  * @param startDestination The initial destination (defaults to Home)
+ * @param modifier Modifier to apply to the NavHost
  */
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Home.route,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        modifier = modifier
     ) {
         // Home screen
         composable(route = Screen.Home.route) {

@@ -4,7 +4,8 @@
       "Bash(./gradlew:*)",
       "Bash(find:*)",
       "Bash(java:*)",
-      "Bash(/usr/libexec/java_home:*)"
+      "Bash(/usr/libexec/java_home:*)",
+      "Read(//Users/gianni/Library/Java/JavaVirtualMachines/jbr-17.0.14/Contents/Home/bin/**)"
     ],
     "deny": [],
     "ask": []

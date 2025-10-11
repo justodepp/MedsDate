@@ -62,7 +62,8 @@ fun MedsDateApp() {
     ) { paddingValues ->
         NavGraph(
             navController = navController,
-            startDestination = Screen.Home.route
+            startDestination = Screen.Home.route,
+            modifier = Modifier.padding(paddingValues)
         )
     }
 }
