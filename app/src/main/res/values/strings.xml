@@ -119,6 +119,8 @@
     <string name="medicine_expiring_soon_icon">In scadenza</string>
     <string name="medicine_expires_label">Scade: %s</string>
     <string name="delete_medicine">Elimina</string>
+    <string name="delete_medicine_title">Eliminare Medicina?</string>
+    <string name="delete_medicine_message">Sei sicuro di voler eliminare %s?</string>
     <string name="swipe_to_delete">Scorri per eliminare</string>
 
     <!-- Bottom Navigation -->

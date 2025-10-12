@@ -119,6 +119,8 @@
     <string name="medicine_expiring_soon_icon">Expiring soon</string>
     <string name="medicine_expires_label">Expires: %s</string>
     <string name="delete_medicine">Delete</string>
+    <string name="delete_medicine_title">Delete Medicine?</string>
+    <string name="delete_medicine_message">Are you sure you want to delete %s?</string>
     <string name="swipe_to_delete">Swipe to delete</string>
 
     <!-- Bottom Navigation -->

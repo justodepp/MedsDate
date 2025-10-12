@@ -217,7 +217,8 @@ private fun MedicineList(
                     index = index,
                     medicineCount = groupedMedicines.expired.size,
                     onDelete = { viewModel.deleteMedicine(medicine) },
-                    onClick = { onMedicineClick(medicine.id) }
+                    onClick = { onMedicineClick(medicine.id) },
+                    showConfirmDialog = true // Show confirmation dialog before deleting
                 )
             }
 
@@ -244,7 +245,8 @@ private fun MedicineList(
                     index = index,
                     medicineCount = groupedMedicines.active.size,
                     onDelete = { viewModel.deleteMedicine(medicine) },
-                    onClick = { onMedicineClick(medicine.id) }
+                    onClick = { onMedicineClick(medicine.id) },
+                    showConfirmDialog = true // Show confirmation dialog before deleting
                 )
             }
         }
