@@ -27,11 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.medsdate.R
 import com.medsdate.domain.model.ExpiryStatus
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.theme.ExpiredRed
@@ -182,13 +184,15 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
         else -> return
     }
 
+    val contentDescription = when (status) {
+        ExpiryStatus.EXPIRED -> stringResource(R.string.medicine_expired_icon)
+        ExpiryStatus.EXPIRING_SOON -> stringResource(R.string.medicine_expiring_soon_icon)
+        ExpiryStatus.VALID -> ""
+    }
+
     Icon(
         imageVector = iconApplied,
-        contentDescription = when (status) {
-            ExpiryStatus.EXPIRED -> "Expired"
-            ExpiryStatus.EXPIRING_SOON -> "Expiring soon"
-            ExpiryStatus.VALID -> ""
-        },
+        contentDescription = contentDescription,
         tint = iconColor,
         modifier = Modifier.size(20.dp)
     )
@@ -198,9 +202,10 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
 /**
  * Formats expiry date for display.
  */
+@Composable
 private fun formatExpiryDate(date: Date): String {
     val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-    return "Expires: ${formatter.format(date)}"
+    return stringResource(R.string.medicine_expires_label, formatter.format(date))
 }
 
 

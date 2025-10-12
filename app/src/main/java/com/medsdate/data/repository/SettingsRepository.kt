@@ -39,7 +39,8 @@ private fun SettingsEntity.toDomainModel(): NotificationSettings {
         enableNotifications = this.enableNotifications,
         firstNotificationDays = this.firstNotificationDays,
         secondNotificationDays = this.secondNotificationDays,
-        enableSecondNotification = this.enableSecondNotification
+        enableSecondNotification = this.enableSecondNotification,
+        languageCode = this.languageCode
     )
 }
 
@@ -52,6 +53,7 @@ private fun NotificationSettings.toEntity(): SettingsEntity {
         enableNotifications = this.enableNotifications,
         firstNotificationDays = this.firstNotificationDays,
         secondNotificationDays = this.secondNotificationDays,
-        enableSecondNotification = this.enableSecondNotification
+        enableSecondNotification = this.enableSecondNotification,
+        languageCode = this.languageCode
     )
 }

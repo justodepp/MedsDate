@@ -39,9 +39,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.medsdate.R
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
@@ -85,7 +87,7 @@ fun HomeScreen(
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(
                                 imageVector = Icons.Default.Search,
-                                contentDescription = "Search"
+                                contentDescription = stringResource(R.string.home_search_description)
                             )
                         }
                     }
@@ -143,7 +145,7 @@ private fun SearchBar(
                 value = query,
                 onValueChange = onQueryChange,
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Search medicines...") },
+                placeholder = { Text(stringResource(R.string.home_search_placeholder)) },
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
@@ -159,7 +161,7 @@ private fun SearchBar(
         navigationIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.home_search_description),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = 8.dp)
             )
@@ -168,7 +170,7 @@ private fun SearchBar(
             IconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close search",
+                    contentDescription = stringResource(R.string.home_close_search),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -200,7 +202,7 @@ private fun MedicineList(
         if (groupedMedicines.expired.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Expired Medicines",
+                    title = stringResource(R.string.home_expired_medicines),
                     count = groupedMedicines.expired.size,
                     isExpired = true
                 )
@@ -228,7 +230,7 @@ private fun MedicineList(
         if (groupedMedicines.active.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Active Medicines",
+                    title = stringResource(R.string.home_active_medicines),
                     count = groupedMedicines.active.size,
                     isExpired = false
                 )
@@ -292,13 +294,13 @@ private fun EmptyState() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No Medicines Yet",
+            text = stringResource(R.string.home_empty_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Add your first medicine using the + button below",
+            text = stringResource(R.string.home_empty_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">Meds Date</string>
+
+    <string name="empty_view_title_text">It\'s a bit lonely here&#8230;</string>
+    <string name="empty_view_subtitle_text">Get started by adding a medicine</string>
+
+    <!-- Menu -->
+    <string name="menu_credits">Credits</string>
+    <string name="menu_donate">Donate</string>
+
+    <!-- Message -->
+    <string name="error_insert_update">Complete the fields</string>
+
+    <!-- Credits -->
+    <string name="title_credits_text">Credits</string>
+    <string name="msg_credits_text">Icon credits to Smashicons, Good Ware, smalllikeart and Freepik from flaticon.com</string>
+
+    <!-- Push -->
+    <string name="notification_title">Attention!</string>
+    <string name="notification_message">Your meds <b>%1$s</b> are about to expire!</string>
+    <string name="default_notification_channel_id" translatable="false">default_channel</string>
+    <string name="default_notification_channel_name">Alarm</string>
+
+    <!-- Dialog Medicine -->
+    <string name="label_meds_name">Name</string>
+    <string name="hint_meds_name">Medicine Name</string>
+    <string name="label_meds_quantity">Quantity</string>
+    <string name="label_meds_quantity_spinner">Select&#8230;</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <!-- Toast -->
+    <string name="text_med_updated">Medicine updated!</string>
+    <string name="text_alarm_set">Alarm is set!</string>
+    <string name="text_alarm_unset">Alarm is unset!</string>
+
+    <!-- Support Me -->
+    <string name="donate_title">Support me</string>
+    <string name="donate_desc">Here you can send me a donation if you want to.</string>
+    <string name="donate_new">Thank you for your support! &lt;3</string>
+    <string name="donate_history">Thank you for your support!</string>
+
+    <!-- Showcase -->
+    <string name="showcase_wellcome_text">Once the expiry date has been set\n%s will warn you on the scheduled day so that you can decide\nwhether to buy new ones or simply throw them away.</string>
+    <string name="showcase_start">LET\'S BEGIN</string>
+    <string name="showcase_gotit">GOT IT</string>
+    <string name="showcase_fab">Here you can add more drugs</string>
+    <string name="showcase_drugs">Here you can see and modify your drugs</string>
+
+    <!-- Picker Image -->
+    <string name="lbl_set_profile_photo">Choose image from:</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Gallery</string>
+    <string name="lbl_choose_from_internal">Internal image</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_notification_title">Notification Settings</string>
+    <string name="settings_enable_notifications">Enable Notifications</string>
+    <string name="settings_enable_notifications_desc">Receive alerts before medicines expire</string>
+    <string name="settings_first_notification">First Notification</string>
+    <string name="settings_second_notification">Second Notification</string>
+    <string name="settings_enable_second_notification">Enable Second Notification</string>
+    <string name="settings_enable_second_notification_desc">Receive a second reminder closer to expiry</string>
+    <string name="settings_save">Save Settings</string>
+    <string name="settings_saved">Saved!</string>
+    <string name="settings_how_it_works">How it works</string>
+    <string name="settings_how_it_works_desc">You will receive notifications before your medicines expire based on the days you set above. For example, if set to 7 days, you\'ll be notified one week before expiry.</string>
+    <string name="settings_days_singular">%d day</string>
+    <string name="settings_days_plural">%d days</string>
+    <string name="settings_days_min">1 day</string>
+    <string name="settings_days_max">30 days</string>
+
+    <!-- Language -->
+    <string name="language_menu_title">Language</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_english">English</string>
+
+    <!-- Home Screen -->
+    <string name="home_search_placeholder">Search medicines...</string>
+    <string name="home_search_description">Search</string>
+    <string name="home_close_search">Close search</string>
+    <string name="home_expired_medicines">Expired Medicines</string>
+    <string name="home_active_medicines">Active Medicines</string>
+    <string name="home_empty_title">No Medicines Yet</string>
+    <string name="home_empty_subtitle">Add your first medicine using the + button below</string>
+
+    <!-- Add/Edit Screen -->
+    <string name="add_medicine_title">Add Medicine</string>
+    <string name="edit_medicine_title">Edit Medicine</string>
+    <string name="medicine_name_label">Medicine Name *</string>
+    <string name="medicine_name_required">Name is required</string>
+    <string name="expiry_date_label">Expiry Date *</string>
+    <string name="expiry_date_required">Select a date</string>
+    <string name="expiry_date_future">Expiry date must be in the future</string>
+    <string name="calendar_description">Calendar</string>
+    <string name="photo_optional">Photo (Optional)</string>
+    <string name="photo_description">Medicine photo</string>
+    <string name="camera_button">Camera</string>
+    <string name="gallery_button">Gallery</string>
+    <string name="camera_description">Camera</string>
+    <string name="gallery_description">Gallery</string>
+    <string name="photo_chooser_title">What\'s your choice?</string>
+    <string name="photo_subtitle">Take a picture or load one from gallery</string>
+    <string name="notes_label">Notes (Optional)</string>
+    <string name="save_medicine">Save Medicine</string>
+    <string name="update_medicine">Update Medicine</string>
+
+    <!-- Medicine Card -->
+    <string name="medicine_expired_icon">Expired</string>
+    <string name="medicine_expiring_soon_icon">Expiring soon</string>
+    <string name="medicine_expires_label">Expires: %s</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_screen_title">Medicine Details</string>
+    <string name="detail_back">Back</string>
+    <string name="detail_edit">Edit</string>
+    <string name="detail_delete">Delete</string>
+    <string name="detail_delete_dialog_title">Delete Medicine?</string>
+    <string name="detail_delete_dialog_message">Are you sure you want to delete this medicine? This action cannot be undone.</string>
+    <string name="detail_delete_confirm">Delete</string>
+    <string name="detail_delete_cancel">Cancel</string>
+    <string name="detail_field_name">Name</string>
+    <string name="detail_field_expiry_date">Expiry Date</string>
+    <string name="detail_field_notes">Notes (Optional)</string>
+    <string name="detail_calendar_icon">Calendar</string>
+
+</resources>

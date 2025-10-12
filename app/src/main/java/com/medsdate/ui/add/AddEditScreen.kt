@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.medsdate.R
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.ui.theme.MedsDateTheme
@@ -117,7 +118,7 @@ fun AddEditScreen(
     Scaffold(
         topBar = {
             MedsAppBar(
-                title = if (uiState.isEditMode) "Edit Medicine" else "Add Medicine",
+                title = stringResource(if (uiState.isEditMode) R.string.edit_medicine_title else R.string.add_medicine_title),
                 showAppIcon = !uiState.isEditMode,
                 showNavigationIcon = uiState.isEditMode,
                 onNavigationClick = if (uiState.isEditMode) onNavigateBack else null
@@ -139,7 +140,7 @@ fun AddEditScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::onNameChange,
-                label = { Text("Medicine Name *") },
+                label = { Text(stringResource(R.string.medicine_name_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 isError = uiState.nameError != null,
@@ -172,7 +173,7 @@ fun AddEditScreen(
             OutlinedTextField(
                 value = uiState.notes,
                 onValueChange = viewModel::onNotesChange,
-                label = { Text("Notes") },
+                label = { Text(stringResource(R.string.notes_label)) },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -198,7 +199,7 @@ fun AddEditScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text(if (uiState.isEditMode) "Update Medicine" else "Save Medicine")
+                    Text(stringResource(if (uiState.isEditMode) R.string.update_medicine else R.string.save_medicine))
                 }
             }
         }
@@ -498,9 +499,9 @@ private fun ExpiryDatePicker(
     OutlinedTextField(
         value = dateFormatter.format(selectedDate),
         onValueChange = {},
-        label = { Text("Expiry Date *") },
+        label = { Text(stringResource(R.string.expiry_date_label)) },
         trailingIcon = {
-            Icon(Icons.Outlined.Today, contentDescription = "Calendar")
+            Icon(Icons.Outlined.Today, contentDescription = stringResource(R.string.calendar_description))
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -528,7 +529,7 @@ private fun PhotoSection(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Photo (Optional)",
+            text = stringResource(R.string.photo_optional),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -538,7 +539,7 @@ private fun PhotoSection(
         if (imagePath != null) {
             AsyncImage(
                 model = imagePath,
-                contentDescription = "Medicine photo",
+                contentDescription = stringResource(R.string.photo_description),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
@@ -564,12 +565,12 @@ private fun PhotoSection(
             ) {
                 Icon(
                     Icons.Outlined.AddAPhoto,
-                    contentDescription = "Camera",
+                    contentDescription = stringResource(R.string.camera_description),
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    "Camera",
+                    stringResource(R.string.camera_button),
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
@@ -577,7 +578,7 @@ private fun PhotoSection(
                     )
                 )
                 Text(
-                    "Scatta o carica una foto dalla libreria",
+                    stringResource(R.string.photo_subtitle),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W300,
@@ -594,14 +595,14 @@ private fun PhotoSection(
                     showChooserDialog = false
                 },
                 title = {
-                    Text("What's your choice?")
+                    Text(stringResource(R.string.photo_chooser_title))
                 },
                 confirmButton = {
                     TextButton(onClick = {
                         onCameraClick()
                         showChooserDialog = false
                     }) {
-                        Text("Camera")
+                        Text(stringResource(R.string.camera_button))
                     }
                 },
                 dismissButton =
@@ -610,7 +611,7 @@ private fun PhotoSection(
                             onGalleryClick()
                             showChooserDialog = false
                         }) {
-                            Text("Gallery")
+                            Text(stringResource(R.string.gallery_button))
                         }
                     }
             )

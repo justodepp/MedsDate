@@ -8,10 +8,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.medsdate.R
 import com.medsdate.ui.navigation.Screen
 import com.medsdate.ui.theme.MedsDateTheme
 
@@ -25,9 +27,21 @@ import com.medsdate.ui.theme.MedsDateTheme
 @Composable
 fun MedsBottomNavigation(navController: NavController) {
     val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Add,
-        BottomNavItem.Settings
+        BottomNavItem(
+            route = Screen.Home.route,
+            label = stringResource(R.string.nav_home),
+            icon = Icons.Default.Home
+        ),
+        BottomNavItem(
+            route = Screen.Add.route,
+            label = stringResource(R.string.nav_add),
+            icon = Icons.Default.Add
+        ),
+        BottomNavItem(
+            route = Screen.Settings.route,
+            label = stringResource(R.string.nav_settings),
+            icon = Icons.Default.Settings
+        )
     )
 
     NavigationBar(
@@ -73,27 +87,7 @@ private data class BottomNavItem(
     val route: String,
     val label: String,
     val icon: ImageVector
-) {
-    companion object {
-        val Home = BottomNavItem(
-            route = Screen.Home.route,
-            label = "Home",
-            icon = Icons.Default.Home
-        )
-
-        val Add = BottomNavItem(
-            route = Screen.Add.route,
-            label = "Add",
-            icon = Icons.Default.Add
-        )
-
-        val Settings = BottomNavItem(
-            route = Screen.Settings.route,
-            label = "Settings",
-            icon = Icons.Default.Settings
-        )
-    }
-}
+)
 
 // ==================== Previews ====================
 

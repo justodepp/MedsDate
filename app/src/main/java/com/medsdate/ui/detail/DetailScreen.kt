@@ -41,9 +41,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.medsdate.R
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.theme.MedsDateTheme
 import org.koin.androidx.compose.koinViewModel
@@ -139,8 +141,8 @@ fun DetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Medicine?") },
-            text = { Text("Are you sure you want to delete this medicine? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.detail_delete_dialog_title)) },
+            text = { Text(stringResource(R.string.detail_delete_dialog_message)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -148,12 +150,12 @@ fun DetailScreen(
                         showDeleteDialog = false
                     }
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.detail_delete_confirm), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.detail_delete_cancel))
                 }
             }
         )
@@ -171,12 +173,12 @@ private fun DetailAppBar(
     onDelete: () -> Unit
 ) {
     TopAppBar(
-        title = { Text("Medicine Details") },
+        title = { Text(stringResource(R.string.detail_screen_title)) },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.detail_back)
                 )
             }
         },
@@ -184,13 +186,13 @@ private fun DetailAppBar(
             IconButton(onClick = onEdit) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit"
+                    contentDescription = stringResource(R.string.detail_edit)
                 )
             }
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete"
+                    contentDescription = stringResource(R.string.detail_delete)
                 )
             }
         },
@@ -238,7 +240,7 @@ private fun DetailContent(
         // Name
         DetailField(
             type = Type.Name,
-            label = "Name",
+            label = stringResource(R.string.detail_field_name),
             value = medicine.name
         )
 
@@ -246,7 +248,7 @@ private fun DetailContent(
         val dateFormatter = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
         DetailField(
             type = Type.ExpiryDate,
-            label = "Expiry Date",
+            label = stringResource(R.string.detail_field_expiry_date),
             value = dateFormatter.format(medicine.expiryDate)
         )
 
@@ -254,7 +256,7 @@ private fun DetailContent(
         if (!medicine.notes.isNullOrBlank()) {
             DetailField(
                 type = Type.Notes,
-                label = "Notes",
+                label = stringResource(R.string.detail_field_notes),
                 value = medicine.notes
             )
         }
@@ -285,7 +287,7 @@ private fun DetailField(
         Row(
             modifier = Modifier.padding(8.dp)
         ) {
-            Icon(iconType, contentDescription = "Calendar")
+            Icon(iconType, contentDescription = stringResource(R.string.detail_calendar_icon))
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(

@@ -74,6 +74,17 @@ class SettingsViewModel(
     }
 
     /**
+     * Updates the app language.
+     */
+    fun onLanguageChange(languageCode: String) {
+        viewModelScope.launch {
+            val updated = settings.value.copy(languageCode = languageCode)
+            repository.updateSettings(updated)
+            Timber.d("Language updated: $languageCode")
+        }
+    }
+
+    /**
      * Saves settings and shows feedback.
      */
     fun saveSettings() {

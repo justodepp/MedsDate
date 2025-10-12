@@ -21,10 +21,11 @@ import com.medsdate.data.local.entity.SettingsEntity
  * Version history:
  * - Version 1: Initial schema (old implementation)
  * - Version 2: Refactored schema with new column names and settings table
+ * - Version 3: Added language_code column to settings table
  */
 @Database(
     entities = [MedicineEntity::class, SettingsEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -52,7 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .fallbackToDestructiveMigration() // For development only
                     .build()
                 INSTANCE = instance
@@ -121,6 +122,23 @@ abstract class AppDatabase : RoomDatabase() {
                     """
                     INSERT INTO settings (id, enable_notifications, first_notification_days, second_notification_days, enable_second_notification)
                     VALUES (1, 1, 7, 2, 1)
+                    """.trimIndent()
+                )
+            }
+        }
+
+        /**
+         * Migration from version 2 to version 3.
+         *
+         * Changes:
+         * 1. Adds language_code column to settings table (defaults to Italian "it")
+         */
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add language_code column to settings table with Italian as default
+                database.execSQL(
+                    """
+                    ALTER TABLE settings ADD COLUMN language_code TEXT NOT NULL DEFAULT 'it'
                     """.trimIndent()
                 )
             }

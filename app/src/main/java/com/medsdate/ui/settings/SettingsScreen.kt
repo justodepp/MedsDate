@@ -1,18 +1,27 @@
 package com.medsdate.ui.settings
 
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.medsdate.R
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
+import com.medsdate.util.LocaleManager
+import com.medsdate.util.LocalePreferences
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
@@ -36,12 +45,60 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
+    val context = LocalContext.current
+    val activity = context as? Activity
+
+    var showLanguageMenu by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             MedsAppBar(
-                title = "Settings",
-                showAppIcon = true
+                title = stringResource(R.string.settings_title),
+                showAppIcon = true,
+                actions = {
+                    IconButton(onClick = { showLanguageMenu = true }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.language_menu_title)
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = showLanguageMenu,
+                        onDismissRequest = { showLanguageMenu = false }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.language_menu_title),
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Divider()
+
+                        LocaleManager.Language.entries.forEach { language ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = language.flag,
+                                        style = MaterialTheme.typography.headlineSmall
+                                    )
+                                },
+                                onClick = {
+                                    // Save to both database and SharedPreferences
+                                    viewModel.onLanguageChange(language.code)
+                                    LocalePreferences.saveLanguage(context, language.code)
+                                    showLanguageMenu = false
+                                    // Recreate activity to apply new language
+                                    activity?.let { LocaleManager.applyLocaleAndRecreate(it, language.code) }
+                                },
+                                trailingIcon = if (settings.languageCode == language.code) {
+                                    { Icon(Icons.Default.Check, contentDescription = null) }
+                                } else null
+                            )
+                        }
+                    }
+                }
             )
         },
         bottomBar = {
@@ -58,7 +115,7 @@ fun SettingsScreen(
         ) {
             // Title
             Text(
-                text = "Notification Settings",
+                text = stringResource(R.string.settings_notification_title),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -67,8 +124,8 @@ fun SettingsScreen(
 
         // Enable notifications toggle
         SettingRow(
-            title = "Enable Notifications",
-            description = "Receive alerts before medicines expire"
+            title = stringResource(R.string.settings_enable_notifications),
+            description = stringResource(R.string.settings_enable_notifications_desc)
         ) {
             Switch(
                 checked = settings.enableNotifications,
@@ -79,7 +136,7 @@ fun SettingsScreen(
         if (settings.enableNotifications) {
             // First notification slider
             NotificationSlider(
-                title = "First Notification",
+                title = stringResource(R.string.settings_first_notification),
                 value = settings.firstNotificationDays,
                 onValueChange = { viewModel.onFirstNotificationDaysChange(it.roundToInt()) }
             )
@@ -88,8 +145,8 @@ fun SettingsScreen(
 
             // Second notification toggle
             SettingRow(
-                title = "Enable Second Notification",
-                description = "Receive a second reminder closer to expiry"
+                title = stringResource(R.string.settings_enable_second_notification),
+                description = stringResource(R.string.settings_enable_second_notification_desc)
             ) {
                 Switch(
                     checked = settings.enableSecondNotification,
@@ -100,7 +157,7 @@ fun SettingsScreen(
             // Second notification slider
             if (settings.enableSecondNotification) {
                 NotificationSlider(
-                    title = "Second Notification",
+                    title = stringResource(R.string.settings_second_notification),
                     value = settings.secondNotificationDays,
                     onValueChange = { viewModel.onSecondNotificationDaysChange(it.roundToInt()) }
                 )
@@ -127,10 +184,10 @@ fun SettingsScreen(
                     )
                 }
                 is SaveState.Success -> {
-                    Text("Saved!")
+                    Text(stringResource(R.string.settings_saved))
                 }
                 else -> {
-                    Text("Save Settings")
+                    Text(stringResource(R.string.settings_save))
                 }
             }
         }
@@ -146,14 +203,13 @@ fun SettingsScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "How it works",
+                    text = stringResource(R.string.settings_how_it_works),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "You will receive notifications before your medicines expire based on the days you set above. " +
-                            "For example, if set to 7 days, you'll be notified one week before expiry.",
+                    text = stringResource(R.string.settings_how_it_works_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -218,7 +274,11 @@ private fun NotificationSlider(
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "$value day${if (value != 1) "s" else ""}",
+                text = if (value == 1) {
+                    stringResource(R.string.settings_days_singular, value)
+                } else {
+                    stringResource(R.string.settings_days_plural, value)
+                },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
@@ -241,12 +301,12 @@ private fun NotificationSlider(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "1 day",
+                text = stringResource(R.string.settings_days_min),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "30 days",
+                text = stringResource(R.string.settings_days_max),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
