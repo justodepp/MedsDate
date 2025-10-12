@@ -1,11 +1,15 @@
 package com.medsdate.ui.settings
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,7 +52,8 @@ fun SettingsScreen(
     val context = LocalContext.current
     val activity = context as? Activity
 
-    var showLanguageMenu by remember { mutableStateOf(false) }
+    var showMenu by remember { mutableStateOf(false) }
+    var showLanguageSubmenu by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -56,16 +61,55 @@ fun SettingsScreen(
                 title = stringResource(R.string.settings_title),
                 showAppIcon = true,
                 actions = {
-                    IconButton(onClick = { showLanguageMenu = true }) {
+                    IconButton(onClick = { showMenu = true }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.language_menu_title)
+                            contentDescription = stringResource(R.string.menu_more)
                         )
                     }
 
                     DropdownMenu(
-                        expanded = showLanguageMenu,
-                        onDismissRequest = { showLanguageMenu = false }
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        // Language option
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.language_menu_title)) },
+                            onClick = {
+                                showMenu = false
+                                showLanguageSubmenu = true
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Language,
+                                    contentDescription = null
+                                )
+                            }
+                        )
+
+                        // Donate option
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.menu_donate)) },
+                            onClick = {
+                                showMenu = false
+                                // Open donate URL
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/GCavalli"))
+                                context.startActivity(intent)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Favorite,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        )
+                    }
+
+                    // Language submenu
+                    DropdownMenu(
+                        expanded = showLanguageSubmenu,
+                        onDismissRequest = { showLanguageSubmenu = false }
                     ) {
                         Text(
                             text = stringResource(R.string.language_menu_title),
@@ -88,7 +132,7 @@ fun SettingsScreen(
                                     // Save to both database and SharedPreferences
                                     viewModel.onLanguageChange(language.code)
                                     LocalePreferences.saveLanguage(context, language.code)
-                                    showLanguageMenu = false
+                                    showLanguageSubmenu = false
                                     // Recreate activity to apply new language
                                     activity?.let { LocaleManager.applyLocaleAndRecreate(it, language.code) }
                                 },
