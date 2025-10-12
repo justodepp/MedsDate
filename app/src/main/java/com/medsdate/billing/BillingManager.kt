@@ -2,7 +2,15 @@ package com.medsdate.billing
 
 import android.app.Activity
 import android.content.Context
-import com.android.billingclient.api.*
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.QueryProductDetailsParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +49,10 @@ class BillingManager(private val context: Context) {
             .setListener { billingResult, purchases ->
                 handlePurchaseUpdates(billingResult, purchases)
             }
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder().enableOneTimeProducts().enablePrepaidPlans()
+                    .build()
+            )
             .build()
 
         connectToBilling()
@@ -58,10 +69,12 @@ class BillingManager(private val context: Context) {
                         Timber.d("Billing client connected successfully")
                         queryDonationProducts()
                     }
+
                     BillingClient.BillingResponseCode.BILLING_UNAVAILABLE -> {
                         Timber.w("Billing unavailable - likely debug build or emulator")
                         _purchaseState.value = PurchaseState.BillingUnavailable
                     }
+
                     else -> {
                         Timber.e("Billing client connection failed: ${billingResult.debugMessage}")
                         _purchaseState.value = PurchaseState.Error(billingResult.debugMessage)
@@ -104,8 +117,8 @@ class BillingManager(private val context: Context) {
 
         billingClient?.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                _donationProducts.value = productDetailsList
-                Timber.d("Found ${productDetailsList.size} donation products")
+                _donationProducts.value = productDetailsList.productDetailsList
+                Timber.d("Found ${productDetailsList.productDetailsList.size} donation products")
             } else {
                 Timber.e("Failed to query products: ${billingResult.debugMessage}")
                 _purchaseState.value = PurchaseState.Error(billingResult.debugMessage)
@@ -132,7 +145,8 @@ class BillingManager(private val context: Context) {
         val billingResult = billingClient?.launchBillingFlow(activity, billingFlowParams)
         if (billingResult?.responseCode != BillingClient.BillingResponseCode.OK) {
             Timber.e("Failed to launch billing flow: ${billingResult?.debugMessage}")
-            _purchaseState.value = PurchaseState.Error(billingResult?.debugMessage ?: "Unknown error")
+            _purchaseState.value =
+                PurchaseState.Error(billingResult?.debugMessage ?: "Unknown error")
         }
     }
 

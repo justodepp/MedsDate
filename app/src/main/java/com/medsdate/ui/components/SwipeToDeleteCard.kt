@@ -2,22 +2,23 @@ package com.medsdate.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxDefaults
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -27,18 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.medsdate.R
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.theme.MedsDateTheme
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
@@ -85,7 +83,7 @@ fun SwipeToDeleteCard(
     }
     currentShape = if (medicineCount == 1) RoundedCornerShape(cornerValue) else currentShape
 
-    Box(
+    /*Box(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Max)
@@ -176,6 +174,63 @@ fun SwipeToDeleteCard(
                 }
             )
         }
+    }*/
+
+    val swipeToDismissBoxState =
+        rememberSwipeToDismissBoxState(
+            SwipeToDismissBoxValue.Settled,
+            SwipeToDismissBoxDefaults.positionalThreshold
+        )
+
+    SwipeToDismissBox(
+        state = swipeToDismissBoxState,
+        modifier = modifier.height(IntrinsicSize.Max),
+        backgroundContent = {
+            when (swipeToDismissBoxState.dismissDirection) {
+                SwipeToDismissBoxValue.StartToEnd -> {
+                    Icon(
+                        if (medicine.isExpired()) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
+                        contentDescription = if (medicine.isExpired()) "Done" else "Not done",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .drawBehind {
+                                drawRect(lerp(Color.LightGray, Color.Blue, swipeToDismissBoxState.progress))
+                            }
+                            .wrapContentSize(Alignment.CenterStart)
+                            .padding(12.dp),
+                        tint = Color.White
+                    )
+                }
+                SwipeToDismissBoxValue.EndToStart -> {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Remove item",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(lerp(Color.LightGray, Color.Red, swipeToDismissBoxState.progress))
+                            .wrapContentSize(Alignment.CenterEnd)
+                            .padding(12.dp),
+                        tint = Color.White
+                    )
+                }
+                SwipeToDismissBoxValue.Settled -> {}
+            }
+        }
+    ) {
+        MedicineCard(
+            medicine = medicine,
+            index = index,
+            medicineCount = medicineCount,
+            onClick = {
+                if (isRevealed) {
+                    // If revealed, close on tap
+                    isRevealed = false
+                } else {
+                    // Otherwise, handle normal click
+                    onClick()
+                }
+            }
+        )
     }
 }
 

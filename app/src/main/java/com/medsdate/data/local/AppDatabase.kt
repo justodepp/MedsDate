@@ -26,7 +26,7 @@ import com.medsdate.data.local.entity.SettingsEntity
 @Database(
     entities = [MedicineEntity::class, SettingsEntity::class],
     version = 3,
-    exportSchema = true
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
