@@ -1,8 +1,6 @@
 package com.medsdate.ui.settings
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,11 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.medsdate.R
+import com.medsdate.billing.BillingManager
+import com.medsdate.ui.components.DonateDialog
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.util.LocaleManager
 import com.medsdate.util.LocalePreferences
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 /**
@@ -45,7 +46,8 @@ import kotlin.math.roundToInt
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    viewModel: SettingsViewModel = koinViewModel()
+    viewModel: SettingsViewModel = koinViewModel(),
+    billingManager: BillingManager = koinInject()
 ) {
     val settings by viewModel.settings.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
@@ -54,6 +56,19 @@ fun SettingsScreen(
 
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageSubmenu by remember { mutableStateOf(false) }
+    var showDonateDialog by remember { mutableStateOf(false) }
+
+    // Initialize billing manager
+    LaunchedEffect(Unit) {
+        billingManager.initialize()
+    }
+
+    // Cleanup billing manager on dispose
+    DisposableEffect(Unit) {
+        onDispose {
+            billingManager.destroy()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -92,9 +107,7 @@ fun SettingsScreen(
                             text = { Text(stringResource(R.string.menu_donate)) },
                             onClick = {
                                 showMenu = false
-                                // Open donate URL
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/GCavalli"))
-                                context.startActivity(intent)
+                                showDonateDialog = true
                             },
                             leadingIcon = {
                                 Icon(
@@ -260,6 +273,14 @@ fun SettingsScreen(
             }
         }
         }
+    }
+
+    // Donate dialog
+    if (showDonateDialog) {
+        DonateDialog(
+            billingManager = billingManager,
+            onDismiss = { showDonateDialog = false }
+        )
     }
 }
 

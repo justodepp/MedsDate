@@ -40,6 +40,13 @@
     <string name="donate_desc">Qui puoi scegliere se effettuare una piccola donazione supportando lo sviluppatore.</string>
     <string name="donate_new">Grazie per il supporto! &lt;3</string>
     <string name="donate_history">Grazie per il supporto!</string>
+    <string name="donate_small">Piccola Donazione</string>
+    <string name="donate_medium">Donazione Media</string>
+    <string name="donate_large">Grande Donazione</string>
+    <string name="donate_success">Grazie mille per la tua donazione!</string>
+    <string name="donate_error">Errore durante la donazione. Riprova più tardi.</string>
+    <string name="donate_billing_unavailable">Le donazioni in-app non sono disponibili in questa versione. Puoi comunque donare tramite PayPal.</string>
+    <string name="donate_via_paypal">Dona tramite PayPal</string>
 
     <!-- Showcase -->
     <string name="showcase_wellcome_text">Una volta impostata la data di scadenza\n%s ti avvertirà nel giorno stabilito così da poter decidere se\ncomprarne delle nuove oppure semplicemente buttarle.</string>
@@ -111,6 +118,8 @@
     <string name="medicine_expired_icon">Scaduta</string>
     <string name="medicine_expiring_soon_icon">In scadenza</string>
     <string name="medicine_expires_label">Scade: %s</string>
+    <string name="delete_medicine">Elimina</string>
+    <string name="swipe_to_delete">Scorri per eliminare</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>

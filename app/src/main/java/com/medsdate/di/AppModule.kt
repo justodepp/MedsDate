@@ -1,6 +1,7 @@
 package com.medsdate.di
 
 import androidx.room.Room
+import com.medsdate.billing.BillingManager
 import com.medsdate.data.local.AppDatabase
 import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.data.repository.SettingsRepository
@@ -21,9 +22,9 @@ val databaseModule = module {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
-            "medsdate_database"
+            AppDatabase.DATABASE_NAME
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
             .build()
     }
 
@@ -59,10 +60,19 @@ val viewModelModule = module {
 }
 
 /**
+ * Koin module for billing dependencies.
+ */
+val billingModule = module {
+    // Billing Manager (Singleton)
+    single { BillingManager(androidContext()) }
+}
+
+/**
  * List of all Koin modules for the app.
  */
 val appModules = listOf(
     databaseModule,
     repositoryModule,
-    viewModelModule
+    viewModelModule,
+    billingModule
 )

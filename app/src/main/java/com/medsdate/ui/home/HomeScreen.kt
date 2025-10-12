@@ -47,7 +47,7 @@ import com.medsdate.R
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
-import com.medsdate.ui.components.MedicineCard
+import com.medsdate.ui.components.SwipeToDeleteCard
 import com.medsdate.ui.theme.ExpiredRedLight
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -192,7 +192,8 @@ private fun MedicineList(
     groupedMedicines: GroupedMedicines,
     onMedicineClick: (Int) -> Unit,
     isSearchActive: Boolean,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    viewModel: HomeViewModel = koinViewModel()
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -211,10 +212,11 @@ private fun MedicineList(
             itemsIndexed(
                 groupedMedicines.expired,
                 key = { index, medicine -> medicine.id }) { index, medicine ->
-                MedicineCard(
+                SwipeToDeleteCard(
                     medicine = medicine,
                     index = index,
                     medicineCount = groupedMedicines.expired.size,
+                    onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) }
                 )
             }
@@ -237,10 +239,11 @@ private fun MedicineList(
             }
 
             itemsIndexed(groupedMedicines.active, key = { index, medicine -> medicine.id }) { index, medicine ->
-                MedicineCard(
+                SwipeToDeleteCard(
                     medicine = medicine,
                     index = index,
                     medicineCount = groupedMedicines.active.size,
+                    onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) }
                 )
             }

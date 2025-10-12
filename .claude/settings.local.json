@@ -11,7 +11,8 @@
       "Bash(adb:*)",
       "Read(//Users/gianni/Library/Android/sdk/platform-tools/**)",
       "Bash(~/Library/Android/sdk/platform-tools/adb uninstall:*)",
-      "Bash(~/Library/Android/sdk/platform-tools/adb install:*)"
+      "Bash(~/Library/Android/sdk/platform-tools/adb install:*)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb logcat:*)"
     ],
     "deny": [],
     "ask": []

@@ -40,6 +40,13 @@
     <string name="donate_desc">Here you can send me a donation if you want to.</string>
     <string name="donate_new">Thank you for your support! &lt;3</string>
     <string name="donate_history">Thank you for your support!</string>
+    <string name="donate_small">Small Donation</string>
+    <string name="donate_medium">Medium Donation</string>
+    <string name="donate_large">Large Donation</string>
+    <string name="donate_success">Thank you so much for your donation!</string>
+    <string name="donate_error">Error during donation. Please try again later.</string>
+    <string name="donate_billing_unavailable">In-app donations are not available in this version. You can still donate via PayPal.</string>
+    <string name="donate_via_paypal">Donate via PayPal</string>
 
     <!-- Showcase -->
     <string name="showcase_wellcome_text">Once the expiry date has been set\n%s will warn you on the scheduled day so that you can decide\nwhether to buy new ones or simply throw them away.</string>
@@ -111,6 +118,8 @@
     <string name="medicine_expired_icon">Expired</string>
     <string name="medicine_expiring_soon_icon">Expiring soon</string>
     <string name="medicine_expires_label">Expires: %s</string>
+    <string name="delete_medicine">Delete</string>
+    <string name="swipe_to_delete">Swipe to delete</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>

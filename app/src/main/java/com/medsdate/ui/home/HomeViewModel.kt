@@ -6,6 +6,7 @@ import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -66,6 +67,20 @@ class HomeViewModel(
      */
     fun clearSearch() {
         _searchQuery.value = ""
+    }
+
+    /**
+     * Deletes a medicine.
+     */
+    fun deleteMedicine(medicine: Medicine) {
+        viewModelScope.launch {
+            try {
+                repository.deleteMedicine(medicine)
+                Timber.d("Medicine deleted: ${medicine.name}")
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to delete medicine: ${medicine.name}")
+            }
+        }
     }
 }
 

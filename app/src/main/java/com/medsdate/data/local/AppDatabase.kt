@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
 
     companion object {
-        private const val DATABASE_NAME = "medicine_database"
+        const val DATABASE_NAME = "medsdate_database"
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -54,7 +54,8 @@ abstract class AppDatabase : RoomDatabase() {
                     DATABASE_NAME
                 )
                     .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                    .fallbackToDestructiveMigration() // For development only
+                    // Removed .fallbackToDestructiveMigration() for production safety
+                    // Database will crash app if migration fails - this is safer than data loss
                     .build()
                 INSTANCE = instance
                 instance
