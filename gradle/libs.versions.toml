@@ -15,7 +15,7 @@ androidxLifecycle = "2.9.4"
 androidxActivity = "1.11.0"
 
 # Compose
-composeBom = "2023.10.01"
+composeBom = "2025.10.00"
 material3 = "1.4.0"
 composeNavigation = "2.9.5"
 
