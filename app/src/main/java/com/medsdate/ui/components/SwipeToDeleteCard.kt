@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckBox
-import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SwipeToDismissBox
@@ -28,7 +26,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.lerp
@@ -185,36 +182,34 @@ fun SwipeToDeleteCard(
     SwipeToDismissBox(
         state = swipeToDismissBoxState,
         modifier = modifier.height(IntrinsicSize.Max),
+        enableDismissFromStartToEnd = false,
         backgroundContent = {
             when (swipeToDismissBoxState.dismissDirection) {
-                SwipeToDismissBoxValue.StartToEnd -> {
-                    Icon(
-                        if (medicine.isExpired()) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
-                        contentDescription = if (medicine.isExpired()) "Done" else "Not done",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .drawBehind {
-                                drawRect(lerp(Color.LightGray, Color.Blue, swipeToDismissBoxState.progress))
-                            }
-                            .wrapContentSize(Alignment.CenterStart)
-                            .padding(12.dp),
-                        tint = Color.White
-                    )
-                }
                 SwipeToDismissBoxValue.EndToStart -> {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Remove item",
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(lerp(Color.LightGray, Color.Red, swipeToDismissBoxState.progress))
+                            .background(
+                                lerp(
+                                    Color.LightGray,
+                                    Color.Red,
+                                    swipeToDismissBoxState.progress
+                                ),
+                                shape = currentShape
+                            )
                             .wrapContentSize(Alignment.CenterEnd)
                             .padding(12.dp),
                         tint = Color.White
                     )
                 }
-                SwipeToDismissBoxValue.Settled -> {}
+
+                else -> {}
             }
+        },
+        onDismiss = {
+            onDelete()
         }
     ) {
         MedicineCard(

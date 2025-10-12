@@ -5,7 +5,16 @@ import android.app.DatePickerDialog
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -14,8 +23,24 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +62,9 @@ import com.medsdate.ui.theme.MedsDateTheme
 import com.medsdate.utils.ImageUtils
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /**
  * Add/Edit medicine screen with form validation.
@@ -125,7 +152,8 @@ fun AddEditScreen(
             )
         },
         bottomBar = {
-            MedsBottomNavigation(navController = navController)
+            if (uiState.isEditMode) null
+            else MedsBottomNavigation(navController = navController)
         }
     ) { paddingValues ->
         Column(
@@ -501,7 +529,10 @@ private fun ExpiryDatePicker(
         onValueChange = {},
         label = { Text(stringResource(R.string.expiry_date_label)) },
         trailingIcon = {
-            Icon(Icons.Outlined.Today, contentDescription = stringResource(R.string.calendar_description))
+            Icon(
+                Icons.Outlined.Today,
+                contentDescription = stringResource(R.string.calendar_description)
+            )
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -602,7 +633,10 @@ private fun PhotoSection(
                         onCameraClick()
                         showChooserDialog = false
                     }) {
-                        Text(stringResource(R.string.camera_button))
+                        Text(
+                            stringResource(R.string.camera_button),
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        )
                     }
                 },
                 dismissButton =
@@ -611,7 +645,10 @@ private fun PhotoSection(
                             onGalleryClick()
                             showChooserDialog = false
                         }) {
-                            Text(stringResource(R.string.gallery_button))
+                            Text(
+                                stringResource(R.string.gallery_button),
+                                color = MaterialTheme.colorScheme.primaryContainer
+                            )
                         }
                     }
             )
