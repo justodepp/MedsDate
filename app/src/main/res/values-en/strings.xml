@@ -104,12 +104,12 @@
     <string name="calendar_description">Calendar</string>
     <string name="photo_optional">Photo (Optional)</string>
     <string name="photo_description">Medicine photo</string>
-    <string name="camera_button">Camera</string>
+    <string name="camera_button">Immagine</string>
     <string name="gallery_button">Gallery</string>
-    <string name="camera_description">Camera</string>
+    <string name="camera_description">Immagine</string>
     <string name="gallery_description">Gallery</string>
     <string name="photo_chooser_title">What\'s your choice?</string>
-    <string name="photo_subtitle">Take a picture or load one from gallery</string>
+    <string name="photo_subtitle">Load a picture from gallery</string>
     <string name="notes_label">Notes (Optional)</string>
     <string name="save_medicine">Save Medicine</string>
     <string name="update_medicine">Update Medicine</string>

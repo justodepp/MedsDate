@@ -16,10 +16,6 @@
     <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- Storage permissions (not needed for API 26+ with scoped storage, but keep for gallery access) -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />

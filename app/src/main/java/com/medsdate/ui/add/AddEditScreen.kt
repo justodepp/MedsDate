@@ -22,6 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.AddAPhoto
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -581,7 +583,8 @@ private fun PhotoSection(
 
         OutlinedButton(
             onClick = {
-                showChooserDialog = showChooserDialog.not()
+                //showChooserDialog = showChooserDialog.not()
+                onGalleryClick()
             },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth(),
@@ -595,19 +598,11 @@ private fun PhotoSection(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    Icons.Outlined.AddAPhoto,
+                    Icons.Outlined.AddPhotoAlternate,
                     contentDescription = stringResource(R.string.camera_description),
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    stringResource(R.string.camera_button),
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                )
                 Text(
                     stringResource(R.string.photo_subtitle),
                     style = TextStyle(
