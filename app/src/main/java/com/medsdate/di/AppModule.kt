@@ -9,6 +9,7 @@ import com.medsdate.ui.add.AddEditViewModel
 import com.medsdate.ui.detail.DetailViewModel
 import com.medsdate.ui.home.HomeViewModel
 import com.medsdate.ui.settings.SettingsViewModel
+import com.medsdate.ui.stats.StatsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,7 +25,7 @@ val databaseModule = module {
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4)
             .build()
     }
 
@@ -47,7 +48,7 @@ val repositoryModule = module {
  */
 val viewModelModule = module {
     // Home ViewModel
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
 
     // Add/Edit ViewModel
     viewModel { AddEditViewModel(androidContext(), get(), get()) }
@@ -57,6 +58,9 @@ val viewModelModule = module {
 
     // Settings ViewModel
     viewModel { SettingsViewModel(get()) }
+
+    // Stats ViewModel
+    viewModel { StatsViewModel(get(), get()) }
 }
 
 /**

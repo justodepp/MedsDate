@@ -44,6 +44,7 @@ class AddEditViewModel(
                             medicineId = medicine.id,
                             name = medicine.name,
                             expiryDate = medicine.expiryDate,
+                            quantity = medicine.quantity,
                             imagePath = medicine.imagePath,
                             notes = medicine.notes ?: ""
                         )
@@ -73,9 +74,10 @@ class AddEditViewModel(
         _uiState.update { it.copy(imagePath = path) }
     }
 
-    /**
-     * Updates notes.
-     */
+    fun onQuantityChange(quantity: Int) {
+        _uiState.update { it.copy(quantity = quantity.coerceIn(1, 99)) }
+    }
+
     fun onNotesChange(notes: String) {
         _uiState.update { it.copy(notes = notes) }
     }
@@ -110,6 +112,7 @@ class AddEditViewModel(
                     id = currentState.medicineId,
                     name = currentState.name,
                     expiryDate = currentState.expiryDate,
+                    quantity = currentState.quantity,
                     imagePath = currentState.imagePath,
                     notes = currentState.notes.ifBlank { null },
                     updatedAt = Date()
@@ -163,6 +166,7 @@ data class AddEditUiState(
     val medicineId: Int = 0,
     val name: String = "",
     val expiryDate: Date = Date(),
+    val quantity: Int = 1,
     val imagePath: String? = null,
     val notes: String = "",
     val nameError: String? = null,

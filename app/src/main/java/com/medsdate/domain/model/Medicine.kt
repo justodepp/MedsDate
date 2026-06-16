@@ -43,14 +43,11 @@ data class Medicine(
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
     }
 
-    /**
-     * Gets the expiry status for UI display.
-     */
-    fun getExpiryStatus(): ExpiryStatus {
+    fun getExpiryStatus(expiringSoonDays: Int = 7): ExpiryStatus {
         val days = daysUntilExpiry()
         return when {
             days < 0 -> ExpiryStatus.EXPIRED
-            days < 7 -> ExpiryStatus.EXPIRING_SOON
+            days < expiringSoonDays -> ExpiryStatus.EXPIRING_SOON
             else -> ExpiryStatus.VALID
         }
     }

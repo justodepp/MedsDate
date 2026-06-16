@@ -179,6 +179,15 @@ fun SettingsScreen(
 
             Divider()
 
+        // Expiring soon threshold — always visible, affects card colors
+        NotificationSlider(
+            title = stringResource(R.string.settings_expiring_soon_days),
+            value = settings.expiringSoonDays,
+            onValueChange = { viewModel.onExpiringSoonDaysChange(it.roundToInt()) }
+        )
+
+        Divider()
+
         // Enable notifications toggle
         SettingRow(
             title = stringResource(R.string.settings_enable_notifications),

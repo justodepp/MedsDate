@@ -12,6 +12,7 @@ import com.medsdate.ui.camera.CameraScreen
 import com.medsdate.ui.detail.DetailScreen
 import com.medsdate.ui.home.HomeScreen
 import com.medsdate.ui.settings.SettingsScreen
+import com.medsdate.ui.stats.StatsScreen
 
 /**
  * Main navigation graph for the app.
@@ -131,6 +132,13 @@ fun NavGraph(
         // Settings screen
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController)
+        }
+
+        // Stats screen
+        composable(route = Screen.Stats.route) {
+            StatsScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         // Camera screen

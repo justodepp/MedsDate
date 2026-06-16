@@ -56,6 +56,7 @@ fun SwipeToDeleteCard(
     onDelete: () -> Unit,
     onClick: () -> Unit,
     showConfirmDialog: Boolean = true,
+    expiringSoonDays: Int = 7,
     modifier: Modifier = Modifier
 ) {
     // Track if confirmation dialog should be shown
@@ -156,12 +157,12 @@ fun SwipeToDeleteCard(
             }
         }
     ) {
-        // The medicine card itself
         MedicineCard(
             medicine = medicine,
             index = index,
             medicineCount = medicineCount,
-            onClick = onClick
+            onClick = onClick,
+            expiringSoonDays = expiringSoonDays
         )
     }
 }

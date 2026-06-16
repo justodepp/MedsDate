@@ -40,13 +40,11 @@ private fun SettingsEntity.toDomainModel(): NotificationSettings {
         firstNotificationDays = this.firstNotificationDays,
         secondNotificationDays = this.secondNotificationDays,
         enableSecondNotification = this.enableSecondNotification,
-        languageCode = this.languageCode
+        languageCode = this.languageCode,
+        expiringSoonDays = this.expiringSoonDays
     )
 }
 
-/**
- * Extension function to convert NotificationSettings domain model to SettingsEntity.
- */
 private fun NotificationSettings.toEntity(): SettingsEntity {
     return SettingsEntity(
         id = 1,
@@ -54,6 +52,7 @@ private fun NotificationSettings.toEntity(): SettingsEntity {
         firstNotificationDays = this.firstNotificationDays,
         secondNotificationDays = this.secondNotificationDays,
         enableSecondNotification = this.enableSecondNotification,
-        languageCode = this.languageCode
+        languageCode = this.languageCode,
+        expiringSoonDays = this.expiringSoonDays
     )
 }

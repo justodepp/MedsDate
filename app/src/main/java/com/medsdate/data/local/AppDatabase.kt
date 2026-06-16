@@ -22,10 +22,11 @@ import com.medsdate.data.local.entity.SettingsEntity
  * - Version 1: Initial schema (old implementation)
  * - Version 2: Refactored schema with new column names and settings table
  * - Version 3: Added language_code column to settings table
+ * - Version 4: Added expiring_soon_days column to settings table
  */
 @Database(
     entities = [MedicineEntity::class, SettingsEntity::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -53,7 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     // Removed .fallbackToDestructiveMigration() for production safety
                     // Database will crash app if migration fails - this is safer than data loss
                     .build()
@@ -136,11 +137,16 @@ abstract class AppDatabase : RoomDatabase() {
          */
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add language_code column to settings table with Italian as default
                 database.execSQL(
-                    """
-                    ALTER TABLE settings ADD COLUMN language_code TEXT NOT NULL DEFAULT 'it'
-                    """.trimIndent()
+                    "ALTER TABLE settings ADD COLUMN language_code TEXT NOT NULL DEFAULT 'it'"
+                )
+            }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE settings ADD COLUMN expiring_soon_days INTEGER NOT NULL DEFAULT 7"
                 )
             }
         }

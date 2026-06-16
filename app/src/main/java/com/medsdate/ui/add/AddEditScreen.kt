@@ -19,14 +19,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -175,6 +178,13 @@ fun AddEditScreen(
                 shape = RoundedCornerShape(16.dp),
                 isError = uiState.nameError != null,
                 supportingText = uiState.nameError?.let { { Text(it) } }
+            )
+
+            // Quantity stepper
+            QuantityStepper(
+                quantity = uiState.quantity,
+                onDecrease = { viewModel.onQuantityChange(uiState.quantity - 1) },
+                onIncrease = { viewModel.onQuantityChange(uiState.quantity + 1) }
             )
 
             // Expiry date picker (required)
@@ -488,6 +498,48 @@ private fun AddEditFormWithErrorsPreview() {
                 isError = true,
                 supportingText = { Text("Expiry date must be in the future") }
             )
+        }
+    }
+}
+
+/**
+ * Quantity stepper with - / + buttons.
+ */
+@Composable
+private fun QuantityStepper(
+    quantity: Int,
+    onDecrease: () -> Unit,
+    onIncrease: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(R.string.label_meds_quantity),
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            FilledTonalIconButton(
+                onClick = onDecrease,
+                enabled = quantity > 1
+            ) {
+                Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.quantity_decrease))
+            }
+            Text(
+                text = quantity.toString(),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontWeight = FontWeight.SemiBold
+            )
+            FilledTonalIconButton(
+                onClick = onIncrease,
+                enabled = quantity < 99
+            ) {
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.quantity_increase))
+            }
         }
     }
 }

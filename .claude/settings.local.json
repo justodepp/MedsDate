@@ -14,7 +14,9 @@
       "Bash(~/Library/Android/sdk/platform-tools/adb install:*)",
       "Bash(~/Library/Android/sdk/platform-tools/adb logcat:*)",
       "WebSearch",
-      "WebFetch(domain:composables.com)"
+      "WebFetch(domain:composables.com)",
+      "Bash(git -C /Users/gianni/AndroidStudioProjects/MedsDate log --oneline -10)",
+      "mcp__plugin_claude-mem_mcp-search__smart_outline"
     ],
     "deny": [],
     "ask": []

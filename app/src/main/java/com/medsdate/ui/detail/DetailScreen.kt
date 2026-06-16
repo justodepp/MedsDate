@@ -252,6 +252,13 @@ private fun DetailContent(
             value = dateFormatter.format(medicine.expiryDate)
         )
 
+        // Quantity
+        DetailField(
+            type = Type.Quantity,
+            label = stringResource(R.string.detail_field_quantity),
+            value = medicine.quantity.toString()
+        )
+
         // Notes
         if (!medicine.notes.isNullOrBlank()) {
             DetailField(
@@ -277,6 +284,7 @@ private fun DetailField(
         Type.ExpiryDate -> Icons.Outlined.Today
         Type.DaysUntilExpiry -> Icons.Outlined.Today
         Type.Notes -> Icons.Outlined.Notes
+        Type.Quantity -> Icons.Outlined.Notes
     }
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -328,7 +336,8 @@ enum class Type {
     Name,
     ExpiryDate,
     DaysUntilExpiry,
-    Notes
+    Notes,
+    Quantity
 }
 
 /**

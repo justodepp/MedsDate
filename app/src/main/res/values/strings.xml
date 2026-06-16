@@ -72,6 +72,7 @@
     <string name="settings_enable_second_notification_desc">Ricevi un secondo promemoria più vicino alla scadenza</string>
     <string name="settings_save">Salva Impostazioni</string>
     <string name="settings_saved">Salvato!</string>
+    <string name="settings_expiring_soon_days">Avviso Scadenza Imminente</string>
     <string name="settings_how_it_works">Come funziona</string>
     <string name="settings_how_it_works_desc">Riceverai notifiche prima della scadenza dei tuoi medicinali in base ai giorni che imposti sopra. Ad esempio, se imposti 7 giorni, sarai avvisato una settimana prima della scadenza.</string>
     <string name="settings_days_singular">%d giorno</string>
@@ -84,12 +85,25 @@
     <string name="language_italian">Italiano</string>
     <string name="language_english">English</string>
 
+    <!-- Stats Screen -->
+    <string name="stats_title">Statistiche</string>
+    <string name="stats_total">Totale Medicinali</string>
+    <string name="stats_expired">Scaduti</string>
+    <string name="stats_expiring_soon">In Scadenza</string>
+    <string name="stats_valid">Validi</string>
+    <string name="stats_open">Apri statistiche</string>
+
     <!-- Home Screen -->
     <string name="home_search_placeholder">Cerca medicinali...</string>
     <string name="home_search_description">Cerca</string>
     <string name="home_close_search">Chiudi ricerca</string>
     <string name="home_expired_medicines">Medicine Scadute</string>
     <string name="home_active_medicines">Medicine Attive</string>
+    <string name="home_sort">Ordina</string>
+    <string name="home_sort_expiry_asc">Scadenza ↑</string>
+    <string name="home_sort_expiry_desc">Scadenza ↓</string>
+    <string name="home_sort_name_asc">Nome A–Z</string>
+    <string name="home_sort_name_desc">Nome Z–A</string>
     <string name="home_empty_title">Nessuna Medicina</string>
     <string name="home_empty_subtitle">Aggiungi la tua prima medicina usando il pulsante + qui sotto</string>
 
@@ -111,6 +125,9 @@
     <string name="photo_chooser_title">Qual è la tua scelta?</string>
     <string name="photo_subtitle">Carica un\'immagine dalla libreria</string>
     <string name="notes_label">Note (Opzionale)</string>
+    <string name="quantity_decrease">Diminuisci quantità</string>
+    <string name="quantity_increase">Aumenta quantità</string>
+    <string name="detail_field_quantity">Quantità</string>
     <string name="save_medicine">Salva Medicina</string>
     <string name="update_medicine">Aggiorna Medicina</string>
 
@@ -122,6 +139,14 @@
     <string name="delete_medicine_title">Eliminare Medicina?</string>
     <string name="delete_medicine_message">Sei sicuro di voler eliminare %s?</string>
     <string name="swipe_to_delete">Scorri per eliminare</string>
+    <string name="medicine_deleted_snackbar">%s eliminata</string>
+    <string name="action_undo">Annulla</string>
+    <string name="medicine_days_left_singular">%d giorno rimanente</string>
+    <string name="medicine_days_left_plural">%d giorni rimanenti</string>
+    <string name="medicine_expires_today">Scade oggi</string>
+    <string name="medicine_expired_today">Scaduta oggi</string>
+    <string name="medicine_expired_days_ago_singular">Scaduta da %d giorno</string>
+    <string name="medicine_expired_days_ago_plural">Scaduta da %d giorni</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>

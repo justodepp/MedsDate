@@ -73,9 +73,14 @@ class SettingsViewModel(
         }
     }
 
-    /**
-     * Updates the app language.
-     */
+    fun onExpiringSoonDaysChange(days: Int) {
+        viewModelScope.launch {
+            val updated = settings.value.copy(expiringSoonDays = days)
+            repository.updateSettings(updated)
+            Timber.d("Expiring soon days updated: $days")
+        }
+    }
+
     fun onLanguageChange(languageCode: String) {
         viewModelScope.launch {
             val updated = settings.value.copy(languageCode = languageCode)

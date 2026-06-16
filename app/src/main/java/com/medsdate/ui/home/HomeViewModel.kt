@@ -3,8 +3,12 @@ package com.medsdate.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.medsdate.data.repository.MedicineRepository
+import com.medsdate.data.repository.SettingsRepository
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -15,31 +19,54 @@ import timber.log.Timber
  * Manages the list of medicines, search functionality, and grouping by expiry status.
  */
 class HomeViewModel(
-    private val repository: MedicineRepository
+    private val repository: MedicineRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
-    // Search query state
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // All medicines from repository
-    private val allMedicines: Flow<List<Medicine>> = repository.getAllMedicines()
+    private val _pendingDelete = MutableStateFlow<Medicine?>(null)
+    private var pendingDeleteJob: Job? = null
 
-    // Filtered medicines based on search
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val medicines: StateFlow<List<Medicine>> = searchQuery
-        .flatMapLatest { query ->
-            if (query.isBlank()) {
-                allMedicines
-            } else {
-                repository.searchMedicines(query)
-            }
-        }
+    private val _events = Channel<HomeEvent>(Channel.BUFFERED)
+    val events = _events.receiveAsFlow()
+
+    private val _sortOrder = MutableStateFlow(SortOrder.EXPIRY_ASC)
+    val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
+
+    val expiringSoonDays: StateFlow<Int> = settingsRepository.getSettings()
+        .map { it.expiringSoonDays }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
+            initialValue = 7
         )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val filteredMedicines: Flow<List<Medicine>> = searchQuery
+        .flatMapLatest { query ->
+            if (query.isBlank()) repository.getAllMedicines()
+            else repository.searchMedicines(query)
+        }
+
+    val medicines: StateFlow<List<Medicine>> = combine(
+        filteredMedicines,
+        _pendingDelete,
+        _sortOrder
+    ) { list, pending, sort ->
+        val filtered = if (pending != null) list.filter { it.id != pending.id } else list
+        when (sort) {
+            SortOrder.EXPIRY_ASC -> filtered.sortedBy { it.expiryDate }
+            SortOrder.EXPIRY_DESC -> filtered.sortedByDescending { it.expiryDate }
+            SortOrder.NAME_ASC -> filtered.sortedBy { it.name.lowercase() }
+            SortOrder.NAME_DESC -> filtered.sortedByDescending { it.name.lowercase() }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     // Grouped medicines (expired and active)
     val groupedMedicines: StateFlow<GroupedMedicines> = medicines
@@ -69,25 +96,41 @@ class HomeViewModel(
         _searchQuery.value = ""
     }
 
-    /**
-     * Deletes a medicine.
-     */
     fun deleteMedicine(medicine: Medicine) {
-        viewModelScope.launch {
+        pendingDeleteJob?.cancel()
+        _pendingDelete.value = medicine
+        pendingDeleteJob = viewModelScope.launch {
+            _events.send(HomeEvent.ShowUndoSnackbar(medicine.name))
+            delay(5_000)
             try {
                 repository.deleteMedicine(medicine)
                 Timber.d("Medicine deleted: ${medicine.name}")
             } catch (e: Exception) {
                 Timber.e(e, "Failed to delete medicine: ${medicine.name}")
+            } finally {
+                _pendingDelete.value = null
             }
         }
     }
+
+    fun undoDelete() {
+        pendingDeleteJob?.cancel()
+        _pendingDelete.value = null
+        Timber.d("Delete undone")
+    }
+
+    fun onSortOrderChange(order: SortOrder) {
+        _sortOrder.value = order
+    }
 }
 
-/**
- * Data class for grouped medicines.
- */
 data class GroupedMedicines(
     val expired: List<Medicine>,
     val active: List<Medicine>
 )
+
+sealed class HomeEvent {
+    data class ShowUndoSnackbar(val medicineName: String) : HomeEvent()
+}
+
+enum class SortOrder { EXPIRY_ASC, EXPIRY_DESC, NAME_ASC, NAME_DESC }

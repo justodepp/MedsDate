@@ -15,14 +15,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SwapVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,6 +41,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +59,7 @@ import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.ui.components.SwipeToDeleteCard
+import com.medsdate.ui.navigation.Screen
 import com.medsdate.ui.theme.ExpiredRedLight
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -75,7 +87,29 @@ fun HomeScreen(
 ) {
     val groupedMedicines by viewModel.groupedMedicines.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val sortOrder by viewModel.sortOrder.collectAsState()
+    val expiringSoonDays by viewModel.expiringSoonDays.collectAsState()
     var isSearchActive by remember { mutableStateOf(false) }
+    var showSortMenu by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is HomeEvent.ShowUndoSnackbar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = context.getString(R.string.medicine_deleted_snackbar, event.medicineName),
+                        actionLabel = context.getString(R.string.action_undo),
+                        duration = SnackbarDuration.Short
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.undoDelete()
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -84,6 +118,40 @@ fun HomeScreen(
                     title = "MedsDate",
                     showAppIcon = true,
                     actions = {
+                        IconButton(onClick = { navController.navigate(Screen.Stats.route) }) {
+                            Icon(
+                                imageVector = Icons.Default.BarChart,
+                                contentDescription = stringResource(R.string.stats_open)
+                            )
+                        }
+                        IconButton(onClick = { showSortMenu = true }) {
+                            Icon(
+                                imageVector = Icons.Default.SwapVert,
+                                contentDescription = stringResource(R.string.home_sort)
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showSortMenu,
+                            onDismissRequest = { showSortMenu = false }
+                        ) {
+                            listOf(
+                                SortOrder.EXPIRY_ASC to R.string.home_sort_expiry_asc,
+                                SortOrder.EXPIRY_DESC to R.string.home_sort_expiry_desc,
+                                SortOrder.NAME_ASC to R.string.home_sort_name_asc,
+                                SortOrder.NAME_DESC to R.string.home_sort_name_desc
+                            ).forEach { (order, labelRes) ->
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(labelRes)) },
+                                    onClick = {
+                                        viewModel.onSortOrderChange(order)
+                                        showSortMenu = false
+                                    },
+                                    trailingIcon = if (sortOrder == order) {
+                                        { Icon(Icons.Default.Check, contentDescription = null) }
+                                    } else null
+                                )
+                            }
+                        }
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(
                                 imageVector = Icons.Default.Search,
@@ -105,7 +173,8 @@ fun HomeScreen(
         },
         bottomBar = {
             MedsBottomNavigation(navController = navController)
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -121,7 +190,8 @@ fun HomeScreen(
                     groupedMedicines = groupedMedicines,
                     onMedicineClick = onMedicineClick,
                     isSearchActive = isSearchActive,
-                    onSearchClick = { isSearchActive = true }
+                    onSearchClick = { isSearchActive = true },
+                    expiringSoonDays = expiringSoonDays
                 )
             }
         }
@@ -193,6 +263,7 @@ private fun MedicineList(
     onMedicineClick: (Int) -> Unit,
     isSearchActive: Boolean,
     onSearchClick: () -> Unit,
+    expiringSoonDays: Int = 7,
     viewModel: HomeViewModel = koinViewModel()
 ) {
     LazyColumn(
@@ -218,7 +289,8 @@ private fun MedicineList(
                     medicineCount = groupedMedicines.expired.size,
                     onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) },
-                    showConfirmDialog = true // Show confirmation dialog before deleting
+                    showConfirmDialog = false,
+                    expiringSoonDays = expiringSoonDays
                 )
             }
 
@@ -246,7 +318,8 @@ private fun MedicineList(
                     medicineCount = groupedMedicines.active.size,
                     onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) },
-                    showConfirmDialog = true // Show confirmation dialog before deleting
+                    showConfirmDialog = false,
+                    expiringSoonDays = expiringSoonDays
                 )
             }
         }

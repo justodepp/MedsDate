@@ -34,5 +34,8 @@ data class SettingsEntity(
     val enableSecondNotification: Boolean = true,
 
     @ColumnInfo(name = "language_code")
-    val languageCode: String = "it" // Default to Italian
+    val languageCode: String = "it",
+
+    @ColumnInfo(name = "expiring_soon_days")
+    val expiringSoonDays: Int = 7
 )

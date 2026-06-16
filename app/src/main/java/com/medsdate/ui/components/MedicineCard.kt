@@ -59,10 +59,11 @@ fun MedicineCard(
     index: Int,
     medicineCount: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    expiringSoonDays: Int = 7
 ) {
     val cornerValue = 20.dp
-    val expiryStatus = medicine.getExpiryStatus()
+    val expiryStatus = medicine.getExpiryStatus(expiringSoonDays)
     val backgroundColor = when (expiryStatus) {
         ExpiryStatus.EXPIRED -> ExpiredRedLight
         ExpiryStatus.EXPIRING_SOON -> WarningYellowLight
@@ -122,6 +123,10 @@ fun MedicineCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                DaysBadge(days = medicine.daysUntilExpiry(), status = expiryStatus)
             }
 
             // Warning/Error icon
@@ -197,6 +202,41 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
         modifier = Modifier.size(20.dp)
     )
 
+}
+
+/**
+ * Small text showing days remaining or days since expiry.
+ */
+@Composable
+private fun DaysBadge(days: Long, status: ExpiryStatus) {
+    val (text, color) = when {
+        days == 0L && status == ExpiryStatus.EXPIRED -> stringResource(R.string.medicine_expired_today) to ExpiredRed
+        days == 0L -> stringResource(R.string.medicine_expires_today) to WarningYellow
+        days < 0 -> {
+            val absDays = (-days).toInt()
+            val label = if (absDays == 1)
+                stringResource(R.string.medicine_expired_days_ago_singular, absDays)
+            else
+                stringResource(R.string.medicine_expired_days_ago_plural, absDays)
+            label to ExpiredRed
+        }
+        else -> {
+            val d = days.toInt()
+            val label = if (d == 1)
+                stringResource(R.string.medicine_days_left_singular, d)
+            else
+                stringResource(R.string.medicine_days_left_plural, d)
+            val textColor = if (status == ExpiryStatus.EXPIRING_SOON) WarningYellow
+            else MaterialTheme.colorScheme.onSurfaceVariant
+            label to textColor
+        }
+    }
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        color = color,
+        fontWeight = FontWeight.Medium
+    )
 }
 
 /**

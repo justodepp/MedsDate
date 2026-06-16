@@ -14,7 +14,8 @@ data class NotificationSettings(
     val firstNotificationDays: Int = 7,
     val secondNotificationDays: Int = 2,
     val enableSecondNotification: Boolean = true,
-    val languageCode: String = "it" // Default to Italian
+    val languageCode: String = "it",
+    val expiringSoonDays: Int = 7
 ) {
     /**
      * Validates that notification days are within acceptable range (1-30).
