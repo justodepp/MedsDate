@@ -34,12 +34,15 @@ proguard/
 captures/
 
 # User-specific configurations
-/gradle.properties
 medsdate_keystore
 *.DS_Store
 art/*
 
-# IntelliJ
+# IntelliJ (keep shared code style and copyright only)
+.idea/*
+!.idea/codeStyles/
+!.idea/copyright/
+.claude/settings.local.json
 *.iml
 .idea/workspace.xml
 .idea/tasks.xml
