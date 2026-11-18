@@ -27,7 +27,7 @@ import com.medsdate.data.local.entity.SettingsEntity
 @Database(
     entities = [MedicineEntity::class, SettingsEntity::class],
     version = 4,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -92,10 +92,12 @@ abstract class AppDatabase : RoomDatabase() {
                 // Copy data from old table to new table
                 // Old schema: id, category, name, quantity, image, expire_at, updated_at
                 // New schema: id, name, expiry_date, quantity, image_path, notes, created_at, updated_at
+                // v1 name/expire_at/updated_at were nullable; COALESCE avoids NOT NULL failures on legacy rows
                 database.execSQL(
                     """
                     INSERT INTO medicine_new (id, name, expiry_date, quantity, image_path, notes, created_at, updated_at)
-                    SELECT id, name, expire_at, quantity, image, NULL, updated_at, updated_at
+                    SELECT id, COALESCE(name, ''), COALESCE(expire_at, 0), quantity, image, NULL,
+                           COALESCE(updated_at, 0), COALESCE(updated_at, 0)
                     FROM medicine
                     """.trimIndent()
                 )

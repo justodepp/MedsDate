@@ -51,6 +51,11 @@ android {
         jvmTarget = "17"
     }
 
+    sourceSets {
+        // Room schemas are used by MigrationTestHelper
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -61,6 +66,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 // Configure Kotlin to use JDK 17
