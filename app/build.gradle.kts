@@ -138,6 +138,9 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
 
 
+    // AppCompat: per-app language (AppCompatDelegate.setApplicationLocales)
+    implementation(libs.androidx.appcompat)
+
     // WorkManager for notifications
     implementation(libs.androidx.work.runtime.ktx)
 

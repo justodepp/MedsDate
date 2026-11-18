@@ -6,5 +6,5 @@
         Actual theming is done in Compose via MedsDateTheme.
         See: ui/theme/Theme.kt
     -->
-    <style name="Theme.MedsDate" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MedsDate" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

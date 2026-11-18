@@ -1,16 +1,16 @@
 package com.medsdate.util
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
-import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import java.util.Locale
 
 /**
- * Utility object for managing app localization.
+ * App language on top of AppCompat per-app locales.
  *
- * This manager handles runtime locale changes and provides a consistent
- * way to apply language settings across the app.
+ * AppCompat persists the choice, recreates the activity and, on API 33+, keeps it in sync with the
+ * system "App languages" setting. With no choice made the app follows the system language and
+ * falls back to the default resources (Italian).
  */
 object LocaleManager {
 
@@ -22,8 +22,8 @@ object LocaleManager {
      * @property flag Emoji flag for the language
      */
     enum class Language(val code: String, val displayName: String, val flag: String) {
-        ITALIAN("it", "Italiano", "\uD83C\uDDEE\uD83C\uDDF9"), // 🇮🇹
-        ENGLISH("en", "English", "\uD83C\uDDEC\uD83C\uDDE7"); // 🇬🇧
+        ITALIAN("it", "Italiano", "🇮🇹"), // 🇮🇹
+        ENGLISH("en", "English", "🇬🇧"); // 🇬🇧
 
         companion object {
             fun fromCode(code: String): Language {
@@ -32,52 +32,25 @@ object LocaleManager {
         }
     }
 
-    /**
-     * Applies the given locale to the context.
-     *
-     * @param context The context to update
-     * @param languageCode The ISO 639-1 language code (e.g., "it", "en")
-     * @return Updated context with the new locale
-     */
-    fun setLocale(context: Context, languageCode: String): Context {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
+    /** Applies and persists [language]; AppCompat recreates the activity. */
+    fun setLanguage(language: Language) {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.code))
+    }
 
-        val configuration = Configuration(context.resources.configuration)
-        configuration.setLocale(locale)
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.createConfigurationContext(configuration)
-        } else {
-            @Suppress("DEPRECATION")
-            context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
-            context
-        }
+    /** Language in use: the app choice if any, else the system one. */
+    fun currentLanguage(): Language {
+        val code = AppCompatDelegate.getApplicationLocales()[0]?.language ?: Locale.getDefault().language
+        return Language.fromCode(code)
     }
 
     /**
-     * Gets the currently applied locale from context.
-     *
-     * @param context The context
-     * @return The current locale
+     * One-shot: moves the language saved by the old SharedPreferences implementation into
+     * AppCompat, then clears it. Users who never picked a language have no saved value.
      */
-    fun getCurrentLocale(context: Context): Locale {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales[0]
-        } else {
-            @Suppress("DEPRECATION")
-            context.resources.configuration.locale
-        }
-    }
-
-    /**
-     * Applies locale and recreates the activity to reflect changes.
-     *
-     * @param activity The activity to recreate
-     * @param languageCode The ISO 639-1 language code (e.g., "it", "en")
-     */
-    fun applyLocaleAndRecreate(activity: Activity, languageCode: String) {
-        setLocale(activity, languageCode)
-        activity.recreate()
+    fun migrateLegacyLanguage(context: Context) {
+        val prefs = context.getSharedPreferences("locale_prefs", Context.MODE_PRIVATE)
+        val legacy = prefs.getString("language_code", null) ?: return
+        if (AppCompatDelegate.getApplicationLocales().isEmpty) setLanguage(Language.fromCode(legacy))
+        prefs.edit().clear().apply()
     }
 }

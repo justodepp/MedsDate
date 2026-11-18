@@ -3,6 +3,7 @@ package com.medsdate
 import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.medsdate.di.appModules
+import com.medsdate.util.LocaleManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -38,6 +39,9 @@ class MedsDateApplication : Application() {
             // Load modules
             modules(appModules)
         }
+
+        // Carry over the language chosen with the pre-AppCompat implementation
+        LocaleManager.migrateLegacyLanguage(this)
 
         // Initialize Firebase
         FirebaseApp.initializeApp(this)

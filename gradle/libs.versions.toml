@@ -25,6 +25,9 @@ coroutines = "1.10.2"
 # Room
 room = "2.8.2"
 
+# AppCompat (per-app language)
+appcompat = "1.7.1"
+
 # WorkManager
 workManager = "2.10.5"
 
@@ -91,6 +94,9 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+# AppCompat
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # WorkManager
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }

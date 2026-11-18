@@ -1,6 +1,5 @@
 package com.medsdate.ui.settings
 
-import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +23,6 @@ import com.medsdate.ui.components.DonateDialog
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.util.LocaleManager
-import com.medsdate.util.LocalePreferences
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
@@ -51,8 +48,7 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
-    val context = LocalContext.current
-    val activity = context as? Activity
+    val currentLanguage = LocaleManager.currentLanguage()
 
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageSubmenu by remember { mutableStateOf(false) }
@@ -142,14 +138,11 @@ fun SettingsScreen(
                                     )
                                 },
                                 onClick = {
-                                    // Save to both database and SharedPreferences
-                                    viewModel.onLanguageChange(language.code)
-                                    LocalePreferences.saveLanguage(context, language.code)
                                     showLanguageSubmenu = false
-                                    // Recreate activity to apply new language
-                                    activity?.let { LocaleManager.applyLocaleAndRecreate(it, language.code) }
+                                    // AppCompat persists the choice and recreates the activity
+                                    LocaleManager.setLanguage(language)
                                 },
-                                trailingIcon = if (settings.languageCode == language.code) {
+                                trailingIcon = if (currentLanguage == language) {
                                     { Icon(Icons.Default.Check, contentDescription = null) }
                                 } else null
                             )
