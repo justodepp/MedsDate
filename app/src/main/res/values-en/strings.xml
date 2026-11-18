@@ -142,4 +142,28 @@
     <string name="detail_field_notes">Notes (Optional)</string>
     <string name="detail_calendar_icon">Calendar</string>
 
+    <string name="settings_expiring_soon_days">Expiring Soon Alert</string>
+    <string name="stats_title">Statistics</string>
+    <string name="stats_total">Total Medicines</string>
+    <string name="stats_expired">Expired</string>
+    <string name="stats_expiring_soon">Expiring Soon</string>
+    <string name="stats_valid">Valid</string>
+    <string name="stats_open">Open statistics</string>
+    <string name="home_sort">Sort</string>
+    <string name="home_sort_expiry_asc">Expiry ↑</string>
+    <string name="home_sort_expiry_desc">Expiry ↓</string>
+    <string name="home_sort_name_asc">Name A–Z</string>
+    <string name="home_sort_name_desc">Name Z–A</string>
+    <string name="quantity_decrease">Decrease quantity</string>
+    <string name="quantity_increase">Increase quantity</string>
+    <string name="detail_field_quantity">Quantity</string>
+    <string name="medicine_deleted_snackbar">%s deleted</string>
+    <string name="action_undo">Undo</string>
+    <string name="medicine_days_left_singular">%d day left</string>
+    <string name="medicine_days_left_plural">%d days left</string>
+    <string name="medicine_expires_today">Expires today</string>
+    <string name="medicine_expired_today">Expired today</string>
+    <string name="medicine_expired_days_ago_singular">Expired %d day ago</string>
+    <string name="medicine_expired_days_ago_plural">Expired %d days ago</string>
+
 </resources>
