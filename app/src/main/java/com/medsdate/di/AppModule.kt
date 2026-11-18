@@ -1,6 +1,5 @@
 package com.medsdate.di
 
-import androidx.room.Room
 import com.medsdate.billing.BillingManager
 import com.medsdate.data.local.AppDatabase
 import com.medsdate.data.repository.MedicineRepository
@@ -19,15 +18,7 @@ import org.koin.dsl.module
  */
 val databaseModule = module {
     // Room Database (Singleton)
-    single {
-        Room.databaseBuilder(
-            androidContext(),
-            AppDatabase::class.java,
-            AppDatabase.DATABASE_NAME
-        )
-            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4)
-            .build()
-    }
+    single { AppDatabase.builder(androidContext()).build() }
 
     // DAOs
     single { get<AppDatabase>().medicineDao() }

@@ -2,7 +2,6 @@ package com.medsdate.data.local
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.flow.first
@@ -36,9 +35,7 @@ class MigrationTest {
         }
     }
 
-    private fun open() = Room.databaseBuilder(context, AppDatabase::class.java, name)
-        .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4)
-        .build()
+    private fun open() = AppDatabase.builder(context, name).build()
 
     @Test
     fun migrate1To4_keepsDataAndSurvivesNullColumns() {

@@ -38,30 +38,14 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "medsdate_database"
 
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
         /**
-         * Gets the singleton database instance.
-         *
-         * @param context Application context
-         * @return The database instance
+         * Single place that builds the database with every migration registered.
+         * Singleton scope is owned by Koin (see databaseModule).
+         * No fallbackToDestructiveMigration: a failed migration crashes instead of wiping user data.
          */
-        fun getInstance(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    DATABASE_NAME
-                )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
-                    // Removed .fallbackToDestructiveMigration() for production safety
-                    // Database will crash app if migration fails - this is safer than data loss
-                    .build()
-                INSTANCE = instance
-                instance
-            }
-        }
+        fun builder(context: Context, name: String = DATABASE_NAME): RoomDatabase.Builder<AppDatabase> =
+            Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, name)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
 
         /**
          * Migration from version 1 to version 2.
