@@ -44,11 +44,6 @@ sealed class Screen(val route: String) {
     object Settings : Screen("settings")
 
     /**
-     * Camera screen for taking medicine photos.
-     */
-    object Camera : Screen("camera")
-
-    /**
      * Statistics screen.
      */
     object Stats : Screen("stats")

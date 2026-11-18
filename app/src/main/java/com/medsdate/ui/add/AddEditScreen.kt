@@ -1,8 +1,8 @@
 package com.medsdate.ui.add
 
-import android.Manifest
 import android.app.DatePickerDialog
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,14 +20,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.ButtonDefaults
@@ -38,14 +36,11 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -58,8 +53,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.medsdate.R
 import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
@@ -77,37 +70,19 @@ import java.util.Locale
  * @param navController Navigation controller for bottom nav
  * @param medicineId Medicine ID for edit mode, null for add mode
  * @param onNavigateBack Callback to navigate back
- * @param onNavigateToCamera Callback to navigate to camera screen
- * @param capturedImageUri URI of captured image from camera (from savedStateHandle)
  * @param onSaveSuccess Callback when save is successful
  * @param viewModel The AddEditViewModel
  */
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AddEditScreen(
     navController: NavController,
     medicineId: Int?,
     onNavigateBack: () -> Unit,
-    onNavigateToCamera: () -> Unit = {},
-    capturedImageUri: String? = null,
     onSaveSuccess: () -> Unit,
     viewModel: AddEditViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
-
-    // Handle captured image from camera
-    LaunchedEffect(capturedImageUri) {
-        capturedImageUri?.let { uriString ->
-            // Extract file path from URI (camera returns file:// URIs)
-            val path = if (uriString.startsWith("file://")) {
-                uriString.removePrefix("file://")
-            } else {
-                uriString
-            }
-            viewModel.onImagePathChange(path)
-        }
-    }
 
     // Load medicine if editing
     LaunchedEffect(medicineId) {
@@ -126,17 +101,9 @@ fun AddEditScreen(
         }
     }
 
-    // Permission state
-    val permissionsState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_MEDIA_IMAGES
-        )
-    )
-
-    // Gallery launcher - copies selected image to app storage
+    // Photo picker (no storage permission needed) - copies selected image to app storage
     val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let { selectedUri ->
             // Copy the image to app storage so it persists
@@ -197,15 +164,8 @@ fun AddEditScreen(
             // Photo section (optional)
             PhotoSection(
                 imagePath = uiState.imagePath,
-                onCameraClick = {
-                    if (permissionsState.allPermissionsGranted) {
-                        onNavigateToCamera()
-                    } else {
-                        permissionsState.launchMultiplePermissionRequest()
-                    }
-                },
                 onGalleryClick = {
-                    galleryLauncher.launch("image/*")
+                    galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
             )
 
@@ -270,7 +230,6 @@ private fun PhotoSectionPreview() {
     MaterialTheme {
         PhotoSection(
             imagePath = null,
-            onCameraClick = {},
             onGalleryClick = {}
         )
     }
@@ -329,14 +288,6 @@ private fun AddEditFormPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    OutlinedButton(
-                        onClick = {},
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(Icons.Default.CameraAlt, contentDescription = "Camera")
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Camera")
-                    }
                     OutlinedButton(
                         onClick = {},
                         modifier = Modifier.weight(1f)
@@ -424,14 +375,6 @@ private fun EditFormPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    OutlinedButton(
-                        onClick = {},
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(Icons.Default.CameraAlt, contentDescription = "Camera")
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Camera")
-                    }
                     OutlinedButton(
                         onClick = {},
                         modifier = Modifier.weight(1f)
@@ -600,15 +543,13 @@ private fun ExpiryDatePicker(
 }
 
 /**
- * Photo section with camera and gallery options.
+ * Photo section: opens the system photo picker.
  */
 @Composable
 private fun PhotoSection(
     imagePath: String?,
-    onCameraClick: () -> Unit,
     onGalleryClick: () -> Unit
 ) {
-    var showChooserDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -634,10 +575,7 @@ private fun PhotoSection(
         }
 
         OutlinedButton(
-            onClick = {
-                //showChooserDialog = showChooserDialog.not()
-                onGalleryClick()
-            },
+            onClick = onGalleryClick,
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.outlinedButtonColors(
@@ -664,41 +602,6 @@ private fun PhotoSection(
                     )
                 )
             }
-        }
-
-        // Camera and Gallery buttons
-        if (showChooserDialog) {
-            AlertDialog(
-                onDismissRequest = {
-                    showChooserDialog = false
-                },
-                title = {
-                    Text(stringResource(R.string.photo_chooser_title))
-                },
-                confirmButton = {
-                    TextButton(onClick = {
-                        onCameraClick()
-                        showChooserDialog = false
-                    }) {
-                        Text(
-                            stringResource(R.string.camera_button),
-                            color = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    }
-                },
-                dismissButton =
-                    {
-                        TextButton(onClick = {
-                            onGalleryClick()
-                            showChooserDialog = false
-                        }) {
-                            Text(
-                                stringResource(R.string.gallery_button),
-                                color = MaterialTheme.colorScheme.primaryContainer
-                            )
-                        }
-                    }
-            )
         }
     }
 }

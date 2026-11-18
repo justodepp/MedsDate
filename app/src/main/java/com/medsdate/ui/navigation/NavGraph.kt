@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.medsdate.ui.add.AddEditScreen
-import com.medsdate.ui.camera.CameraScreen
 import com.medsdate.ui.detail.DetailScreen
 import com.medsdate.ui.home.HomeScreen
 import com.medsdate.ui.settings.SettingsScreen
@@ -49,25 +48,12 @@ fun NavGraph(
 
         // Add medicine screen
         composable(route = Screen.Add.route) { backStackEntry ->
-            val capturedImageUri = navController.currentBackStackEntry
-                ?.savedStateHandle
-                ?.get<String>("captured_image_uri")
-
-            // Clear the saved state after reading
-            navController.currentBackStackEntry
-                ?.savedStateHandle
-                ?.remove<String>("captured_image_uri")
-
             AddEditScreen(
                 navController = navController,
                 medicineId = null,
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToCamera = {
-                    navController.navigate(Screen.Camera.route)
-                },
-                capturedImageUri = capturedImageUri,
                 onSaveSuccess = {
                     navController.popBackStack()
                 }
@@ -82,25 +68,12 @@ fun NavGraph(
             )
         ) { backStackEntry ->
             val medicineId = backStackEntry.arguments?.getInt("medicineId")
-            val capturedImageUri = navController.currentBackStackEntry
-                ?.savedStateHandle
-                ?.get<String>("captured_image_uri")
-
-            // Clear the saved state after reading
-            navController.currentBackStackEntry
-                ?.savedStateHandle
-                ?.remove<String>("captured_image_uri")
-
             AddEditScreen(
                 navController = navController,
                 medicineId = medicineId,
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToCamera = {
-                    navController.navigate(Screen.Camera.route)
-                },
-                capturedImageUri = capturedImageUri,
                 onSaveSuccess = {
                     navController.popBackStack()
                 }
@@ -138,22 +111,6 @@ fun NavGraph(
         composable(route = Screen.Stats.route) {
             StatsScreen(
                 onNavigateBack = { navController.popBackStack() }
-            )
-        }
-
-        // Camera screen
-        composable(route = Screen.Camera.route) {
-            CameraScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onImageCaptured = { uri ->
-                    // Navigate back with result
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.set("captured_image_uri", uri.toString())
-                    navController.popBackStack()
-                }
             )
         }
     }

@@ -103,19 +103,4 @@ object ImageUtils {
             false
         }
     }
-
-    /**
-     * Gets a content URI for a file using FileProvider.
-     *
-     * @param context The application context
-     * @param file The file to get URI for
-     * @return The content URI
-     */
-    fun getUriForFile(context: Context, file: File): Uri {
-        return androidx.core.content.FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.provider",
-            file
-        )
-    }
 }

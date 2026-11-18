@@ -57,7 +57,6 @@
 
     <!-- Picker Image -->
     <string name="lbl_set_profile_photo">Scegli l\'immagine da: </string>
-    <string name="lbl_take_camera_picture">Fai una foto</string>
     <string name="lbl_choose_from_gallery">Galleria</string>
     <string name="lbl_choose_from_internal">Precaricate</string>
 
@@ -118,11 +117,8 @@
     <string name="calendar_description">Calendario</string>
     <string name="photo_optional">Foto (Opzionale)</string>
     <string name="photo_description">Foto medicina</string>
-    <string name="camera_button">Immagine</string>
-    <string name="gallery_button">Galleria</string>
     <string name="camera_description">Immagine</string>
     <string name="gallery_description">Galleria</string>
-    <string name="photo_chooser_title">Qual è la tua scelta?</string>
     <string name="photo_subtitle">Carica un\'immagine dalla libreria</string>
     <string name="notes_label">Note (Opzionale)</string>
     <string name="quantity_decrease">Diminuisci quantità</string>
