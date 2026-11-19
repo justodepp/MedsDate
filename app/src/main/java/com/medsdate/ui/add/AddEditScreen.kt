@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -66,7 +67,6 @@ import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 /**
  * Add/Edit medicine screen with form validation.
@@ -516,7 +516,7 @@ private fun ExpiryDatePicker(
     error: String?
 ) {
     val context = LocalContext.current
-    val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    val dateFormatter = SimpleDateFormat("MMM dd, yyyy", LocalConfiguration.current.locales[0])
 
     val datePickerDialog = remember {
         val calendar = Calendar.getInstance().apply {

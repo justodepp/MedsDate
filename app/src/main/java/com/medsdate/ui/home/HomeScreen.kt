@@ -49,7 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,15 +92,15 @@ fun HomeScreen(
     var isSearchActive by remember { mutableStateOf(false) }
     var showSortMenu by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
+    val resources = LocalResources.current
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is HomeEvent.ShowUndoSnackbar -> {
                     val result = snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.medicine_deleted_snackbar, event.medicineName),
-                        actionLabel = context.getString(R.string.action_undo),
+                        message = resources.getString(R.string.medicine_deleted_snackbar, event.medicineName),
+                        actionLabel = resources.getString(R.string.action_undo),
                         duration = SnackbarDuration.Short
                     )
                     if (result == SnackbarResult.ActionPerformed) {

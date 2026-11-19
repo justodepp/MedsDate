@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +41,6 @@ import com.medsdate.ui.theme.expiredColors
 import com.medsdate.ui.theme.warningColors
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 /**
  * Card component displaying medicine information.
@@ -244,7 +244,7 @@ private fun DaysBadge(days: Long, status: ExpiryStatus) {
  */
 @Composable
 private fun formatExpiryDate(date: Date): String {
-    val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("MMM dd, yyyy", LocalConfiguration.current.locales[0])
     return stringResource(R.string.medicine_expires_label, formatter.format(date))
 }
 

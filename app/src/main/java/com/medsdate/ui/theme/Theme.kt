@@ -3,7 +3,10 @@ package com.medsdate.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -92,7 +95,7 @@ fun warningColors(): StatusColors =
     else StatusColors(WarningYellowLight, WarningYellowOnLight)
 
 /**
- * MedsDate Material3 theme.
+ * MedsDate Material 3 Expressive theme (material3 1.5, expressive APIs are experimental).
  *
  * Supports dynamic color on Android 12+ and provides fallback color schemes
  * for older versions. The theme can be easily customized by modifying the
@@ -102,6 +105,7 @@ fun warningColors(): StatusColors =
  * @param dynamicColor Whether to use dynamic color (Android 12+)
  * @param content The composable content to theme
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MedsDateTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -126,8 +130,9 @@ fun MedsDateTheme(
         }
     }
 
-    MaterialTheme(
+    MaterialExpressiveTheme(
         colorScheme = colorScheme,
+        motionScheme = MotionScheme.expressive(),
         typography = Typography,
         content = content
     )
