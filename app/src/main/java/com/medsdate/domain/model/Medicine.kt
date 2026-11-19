@@ -1,7 +1,9 @@
 package com.medsdate.domain.model
 
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 /**
  * Domain model representing a medicine.
@@ -29,22 +31,22 @@ data class Medicine(
     val updatedAt: Date = Date()
 ) {
     /**
-     * Checks if the medicine is expired.
+     * Checks if the medicine is expired: it stays valid through the end of its expiry day.
      */
-    fun isExpired(): Boolean {
-        return expiryDate.before(Date())
+    fun isExpired(today: LocalDate = LocalDate.now()): Boolean {
+        return daysUntilExpiry(today) < 0
     }
 
     /**
-     * Gets the number of days until expiry (negative if expired).
+     * Calendar days from [today] to the expiry day (0 = expires today, negative if expired).
      */
-    fun daysUntilExpiry(): Long {
-        val diff = expiryDate.time - Date().time
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+    fun daysUntilExpiry(today: LocalDate = LocalDate.now()): Long {
+        val expiryDay = expiryDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        return ChronoUnit.DAYS.between(today, expiryDay)
     }
 
-    fun getExpiryStatus(expiringSoonDays: Int = 7): ExpiryStatus {
-        val days = daysUntilExpiry()
+    fun getExpiryStatus(expiringSoonDays: Int = 7, today: LocalDate = LocalDate.now()): ExpiryStatus {
+        val days = daysUntilExpiry(today)
         return when {
             days < 0 -> ExpiryStatus.EXPIRED
             days < expiringSoonDays -> ExpiryStatus.EXPIRING_SOON

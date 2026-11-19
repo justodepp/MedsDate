@@ -210,7 +210,6 @@ private fun DaysBadge(days: Long, status: ExpiryStatus) {
     val expired = expiredColors().accent
     val warning = warningColors().accent
     val (text, color) = when {
-        days == 0L && status == ExpiryStatus.EXPIRED -> stringResource(R.string.medicine_expired_today) to expired
         days == 0L -> stringResource(R.string.medicine_expires_today) to warning
         days < 0 -> {
             val absDays = (-days).toInt()
