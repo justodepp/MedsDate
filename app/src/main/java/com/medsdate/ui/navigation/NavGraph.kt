@@ -1,6 +1,9 @@
 package com.medsdate.ui.navigation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.medsdate.ui.add.AddEditScreen
+import com.medsdate.ui.components.LocalAnimatedVisibilityScope
+import com.medsdate.ui.components.LocalSharedTransitionScope
 import com.medsdate.ui.detail.DetailScreen
 import com.medsdate.ui.home.HomeScreen
 import com.medsdate.ui.settings.SettingsScreen
@@ -22,12 +27,15 @@ import com.medsdate.ui.stats.StatsScreen
  * @param startDestination The initial destination (defaults to Home)
  * @param modifier Modifier to apply to the NavHost
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NavGraph(
     navController: NavHostController,
     startDestination: String = Screen.Home.route,
     modifier: Modifier = Modifier
 ) {
+    SharedTransitionLayout {
+    CompositionLocalProvider(LocalSharedTransitionScope provides this) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -35,15 +43,17 @@ fun NavGraph(
     ) {
         // Home screen
         composable(route = Screen.Home.route) {
-            HomeScreen(
-                navController = navController,
-                onMedicineClick = { medicineId ->
-                    navController.navigate(Screen.Detail.createRoute(medicineId))
-                },
-                onSearchClick = {
-                    // Search is handled within HomeScreen
-                }
-            )
+            CompositionLocalProvider(LocalAnimatedVisibilityScope provides this) {
+                HomeScreen(
+                    navController = navController,
+                    onMedicineClick = { medicineId ->
+                        navController.navigate(Screen.Detail.createRoute(medicineId))
+                    },
+                    onSearchClick = {
+                        // Search is handled within HomeScreen
+                    }
+                )
+            }
         }
 
         // Add medicine screen
@@ -88,18 +98,20 @@ fun NavGraph(
             )
         ) { backStackEntry ->
             val medicineId = backStackEntry.arguments?.getInt("medicineId") ?: return@composable
-            DetailScreen(
-                medicineId = medicineId,
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onEdit = { id ->
-                    navController.navigate(Screen.Edit.createRoute(id))
-                },
-                onDeleteSuccess = {
-                    navController.popBackStack()
-                }
-            )
+            CompositionLocalProvider(LocalAnimatedVisibilityScope provides this) {
+                DetailScreen(
+                    medicineId = medicineId,
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onEdit = { id ->
+                        navController.navigate(Screen.Edit.createRoute(id))
+                    },
+                    onDeleteSuccess = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         // Settings screen
@@ -113,5 +125,7 @@ fun NavGraph(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
+    }
+    }
     }
 }

@@ -97,7 +97,9 @@ fun MedicineCard(
             MedicineImage(
                 imagePath = medicine.imagePath,
                 contentDescription = medicine.name,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp).let {
+                    if (medicine.imagePath != null) it.medicineImageTransition(medicine.id) else it
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))

@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.medsdate.R
 import com.medsdate.domain.model.Medicine
+import com.medsdate.ui.components.medicineImageTransition
 import com.medsdate.ui.theme.MedsDateTheme
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -231,7 +232,8 @@ private fun DetailContent(
                     contentDescription = medicine.name,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp),
+                        .height(250.dp)
+                        .medicineImageTransition(medicine.id),
                     contentScale = ContentScale.Crop
                 )
             }
