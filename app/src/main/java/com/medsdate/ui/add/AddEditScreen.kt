@@ -2,6 +2,11 @@ package com.medsdate.ui.add
 
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.runtime.saveable.rememberSaveable
+import android.net.Uri
+import android.content.ActivityNotFoundException
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -68,6 +73,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import timber.log.Timber
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -131,6 +137,19 @@ fun AddEditScreen(
             }
         }
     }
+
+    // System camera: no CAMERA permission needed, the photo is written to a temporary FileProvider uri
+    var cameraUri by rememberSaveable { mutableStateOf<Uri?>(null) }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { taken ->
+        cameraUri?.let { uri ->
+            if (taken) ImageUtils.copyImageToAppStorage(context, uri)?.let(viewModel::onImagePathChange)
+            context.contentResolver.delete(uri, null, null)
+        }
+        cameraUri = null
+    }
+    val hasCamera = remember { context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY) }
 
     // Android 13+: ask for notification permission on save; the medicine is saved whatever the answer
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
@@ -197,6 +216,17 @@ fun AddEditScreen(
             // Photo section (optional)
             PhotoSection(
                 imagePath = uiState.imagePath,
+                onCameraClick = if (hasCamera) {
+                    {
+                        try {
+                            val uri = ImageUtils.createCameraTempUri(context)
+                            cameraUri = uri
+                            cameraLauncher.launch(uri)
+                        } catch (e: ActivityNotFoundException) {
+                            Timber.e(e, "No camera app")
+                        }
+                    }
+                } else null,
                 onGalleryClick = {
                     galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
@@ -263,6 +293,7 @@ private fun PhotoSectionPreview() {
     MaterialTheme {
         PhotoSection(
             imagePath = null,
+            onCameraClick = {},
             onGalleryClick = {}
         )
     }
@@ -597,14 +628,15 @@ private fun Long.toLocalDayStart(): Date =
     Date.from(Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant())
 
 /**
- * Photo section: opens the system photo picker.
+ * Photo section: take a photo with the system camera or pick one with the system photo picker.
+ * [onCameraClick] is null on devices without a camera.
  */
 @Composable
 private fun PhotoSection(
     imagePath: String?,
+    onCameraClick: (() -> Unit)?,
     onGalleryClick: () -> Unit
 ) {
-
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -615,47 +647,58 @@ private fun PhotoSection(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Image preview or placeholder
         if (imagePath != null) {
             AsyncImage(
                 model = imagePath,
                 contentDescription = stringResource(R.string.photo_description),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-        OutlinedButton(
-            onClick = onGalleryClick,
-            shape = RoundedCornerShape(16.dp),
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.AddPhotoAlternate,
-                    contentDescription = stringResource(R.string.camera_description),
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    stringResource(R.string.photo_subtitle),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W300,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+            if (onCameraClick != null) {
+                PhotoButton(
+                    icon = Icons.Outlined.AddAPhoto,
+                    label = stringResource(R.string.photo_take),
+                    onClick = onCameraClick,
+                    modifier = Modifier.weight(1f)
                 )
             }
+            PhotoButton(
+                icon = Icons.Outlined.AddPhotoAlternate,
+                label = stringResource(R.string.photo_pick),
+                onClick = onGalleryClick,
+                modifier = Modifier.weight(1f)
+            )
         }
+    }
+}
+
+@Composable
+private fun PhotoButton(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier.height(56.dp),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(label)
     }
 }

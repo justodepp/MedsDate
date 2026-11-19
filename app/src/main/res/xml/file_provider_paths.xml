@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Temporary photo taken with the system camera, deleted right after it is copied to app storage -->
+    <cache-path name="camera" path="camera/" />
+</paths>
