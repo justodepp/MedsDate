@@ -37,8 +37,8 @@ private val LightColorScheme = lightColorScheme(
     tertiaryContainer = md_theme_light_tertiaryContainer,
     onTertiaryContainer = md_theme_light_onTertiaryContainer,
     error = md_theme_light_error,
-    errorContainer = md_theme_light_errorContainer,
     onError = md_theme_light_onError,
+    errorContainer = md_theme_light_errorContainer,
     onErrorContainer = md_theme_light_onErrorContainer,
     background = md_theme_light_background,
     onBackground = md_theme_light_onBackground,
@@ -47,6 +47,19 @@ private val LightColorScheme = lightColorScheme(
     surfaceVariant = md_theme_light_surfaceVariant,
     onSurfaceVariant = md_theme_light_onSurfaceVariant,
     outline = md_theme_light_outline,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
+    inverseSurface = md_theme_light_inverseSurface,
+    inverseOnSurface = md_theme_light_inverseOnSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    surfaceDim = md_theme_light_surfaceDim,
+    surfaceBright = md_theme_light_surfaceBright,
+    surfaceContainerLowest = md_theme_light_surfaceContainerLowest,
+    surfaceContainerLow = md_theme_light_surfaceContainerLow,
+    surfaceContainer = md_theme_light_surfaceContainer,
+    surfaceContainerHigh = md_theme_light_surfaceContainerHigh,
+    surfaceContainerHighest = md_theme_light_surfaceContainerHighest,
 )
 
 /**
@@ -66,8 +79,8 @@ private val DarkColorScheme = darkColorScheme(
     tertiaryContainer = md_theme_dark_tertiaryContainer,
     onTertiaryContainer = md_theme_dark_onTertiaryContainer,
     error = md_theme_dark_error,
-    errorContainer = md_theme_dark_errorContainer,
     onError = md_theme_dark_onError,
+    errorContainer = md_theme_dark_errorContainer,
     onErrorContainer = md_theme_dark_onErrorContainer,
     background = md_theme_dark_background,
     onBackground = md_theme_dark_onBackground,
@@ -76,6 +89,19 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = md_theme_dark_surfaceVariant,
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
     outline = md_theme_dark_outline,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
+    inverseSurface = md_theme_dark_inverseSurface,
+    inverseOnSurface = md_theme_dark_inverseOnSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    surfaceDim = md_theme_dark_surfaceDim,
+    surfaceBright = md_theme_dark_surfaceBright,
+    surfaceContainerLowest = md_theme_dark_surfaceContainerLowest,
+    surfaceContainerLow = md_theme_dark_surfaceContainerLow,
+    surfaceContainer = md_theme_dark_surfaceContainer,
+    surfaceContainerHigh = md_theme_dark_surfaceContainerHigh,
+    surfaceContainerHighest = md_theme_dark_surfaceContainerHighest,
 )
 
 /**
@@ -85,14 +111,15 @@ private val DarkColorScheme = darkColorScheme(
 data class StatusColors(val container: Color, val accent: Color)
 
 @Composable
-fun expiredColors(): StatusColors =
-    if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) StatusColors(ExpiredRedDark, ExpiredRedOnDark)
-    else StatusColors(ExpiredRedLight, ExpiredRedOnLight)
+fun expiredColors(): StatusColors = MaterialTheme.colorScheme.let {
+    if (it.surface.luminance() < 0.5f) StatusColors(ExpiredContainerDark, it.error)
+    else StatusColors(it.errorContainer, it.onErrorContainer)
+}
 
 @Composable
 fun warningColors(): StatusColors =
-    if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) StatusColors(WarningYellowDark, WarningYellow)
-    else StatusColors(WarningYellowLight, WarningYellowOnLight)
+    if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) StatusColors(WarningContainerDark, WarningOnContainerDark)
+    else StatusColors(WarningContainerLight, WarningOnContainerLight)
 
 /**
  * MedsDate Material 3 Expressive theme (material3 1.5, expressive APIs are experimental).
@@ -125,8 +152,8 @@ fun MedsDateTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colorScheme.surface.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

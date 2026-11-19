@@ -72,7 +72,6 @@ import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.ui.components.SwipeToDeleteCard
 import com.medsdate.ui.navigation.Screen
-import com.medsdate.ui.theme.ExpiredRedLight
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
 import java.util.Date
@@ -207,13 +206,13 @@ private fun SearchBar(
                 placeholder = { Text(stringResource(R.string.home_search_placeholder)) },
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.primary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
                     unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
-                    focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    cursorColor = MaterialTheme.colorScheme.onPrimary
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
@@ -221,7 +220,7 @@ private fun SearchBar(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(R.string.home_search_description),
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 8.dp)
             )
         },
@@ -230,16 +229,9 @@ private fun SearchBar(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(R.string.home_close_search),
-                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        }
     )
 }
 
@@ -344,18 +336,12 @@ private fun HomeTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.starter_image),
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(start = 16.dp, end = 4.dp).size(28.dp)
             )
         },
         actions = actions,
-        scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            scrolledContainerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        scrollBehavior = scrollBehavior
     )
 }
 
@@ -399,7 +385,7 @@ private fun SortRow(
                 shapes = if (i == 0) ButtonGroupDefaults.connectedLeadingButtonShapes()
                 else ButtonGroupDefaults.connectedTrailingButtonShapes(),
                 colors = ToggleButtonDefaults.colors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     checkedContainerColor = MaterialTheme.colorScheme.primary,
                     checkedContentColor = MaterialTheme.colorScheme.onPrimary
@@ -423,7 +409,7 @@ private fun SortRow(
 @Composable
 private fun LoadingState() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        LoadingIndicator(color = MaterialTheme.colorScheme.secondary)
+        LoadingIndicator()
     }
 }
 

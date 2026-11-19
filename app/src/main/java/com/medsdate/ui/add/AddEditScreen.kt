@@ -605,18 +605,15 @@ private fun ExpiryDatePicker(
                         state.selectedDateMillis?.let { onDateSelected(it.toLocalDayStart()) }
                         showPicker = false
                     },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
                 ) { Text(stringResource(R.string.action_ok)) }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showPicker = false },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
                 ) { Text(stringResource(R.string.action_cancel)) }
             },
-            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
-            DatePicker(state = state, colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surface))
+            DatePicker(state = state)
         }
     }
 }

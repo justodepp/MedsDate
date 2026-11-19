@@ -109,7 +109,7 @@ fun SwipeToDeleteCard(
                         R.string.delete_medicine_message,
                         medicine.name
                     ),
-                    color = MaterialTheme.colorScheme.primaryContainer
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {

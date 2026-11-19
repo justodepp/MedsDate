@@ -185,10 +185,7 @@ fun DonateDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(
-                    stringResource(R.string.detail_delete_cancel),
-                    color = MaterialTheme.colorScheme.primaryContainer
-                )
+                Text(stringResource(R.string.detail_delete_cancel))
             }
         }
     )
@@ -228,13 +225,13 @@ private fun DonationButton(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = price,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

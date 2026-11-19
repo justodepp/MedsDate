@@ -44,9 +44,7 @@ fun MedsBottomNavigation(navController: NavController) {
         )
     )
 
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ){
+    NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 

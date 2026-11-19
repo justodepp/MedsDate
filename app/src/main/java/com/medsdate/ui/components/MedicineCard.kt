@@ -66,7 +66,7 @@ fun MedicineCard(
     val backgroundColor = when (expiryStatus) {
         ExpiryStatus.EXPIRED -> expiredColors().container
         ExpiryStatus.EXPIRING_SOON -> warningColors().container
-        ExpiryStatus.VALID -> MaterialTheme.colorScheme.surface
+        ExpiryStatus.VALID -> MaterialTheme.colorScheme.surfaceContainerLow
     }
 
     var currentShape = when (index) {

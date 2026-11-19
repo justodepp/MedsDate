@@ -53,7 +53,7 @@ fun MedsAppBar(
                         painter = painterResource(id = R.drawable.starter_image),
                         contentDescription = "MedsDate",
                         modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                 }
@@ -75,12 +75,6 @@ fun MedsAppBar(
             }
         },
         actions = actions,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
     )
 }
 

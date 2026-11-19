@@ -2,82 +2,87 @@ package com.medsdate.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Primary colors - customized for MedsDate
-val md_theme_light_primary = Color(0xFFC8E6CA) // #C8E6CA - Light mint green
-val md_theme_light_onPrimary = Color(0xFF1C5E20) // #1C5E20 - Dark green accent
-val md_theme_light_primaryContainer = Color(0xFF1C5E20) // #1C5E20 - Dark green for containers
-val md_theme_light_onPrimaryContainer = Color(0xFFFFFFFF) // White text on dark green
+// Material 3 tonal scheme generated from the seed #2E7D32 (green). Tones follow the M3 role mapping;
+// hues/chromas: primary = seed, secondary = muted seed, tertiary = seed +70deg (teal), neutrals tinted green.
 
-// Secondary colors - complementary greens
-val md_theme_light_secondary = Color(0xFF2E7D32) // Medium green
-val md_theme_light_onSecondary = Color(0xFFFFFFFF) // White text
-val md_theme_light_secondaryContainer = Color(0xFFE8F5E9) // Very light green
-val md_theme_light_onSecondaryContainer = Color(0xFF1B5E20) // Dark green text
-
-// Tertiary colors - accent teal
-val md_theme_light_tertiary = Color(0xFF00796B) // Teal
-val md_theme_light_onTertiary = Color(0xFFFFFFFF) // White text
-val md_theme_light_tertiaryContainer = Color(0xFFB2DFDB) // Light teal
-val md_theme_light_onTertiaryContainer = Color(0xFF004D40) // Dark teal text
-
-// Error colors
-val md_theme_light_error = Color(0xFFBA1A1A)
-val md_theme_light_errorContainer = Color(0xFFFFDAD6)
+val md_theme_light_primary = Color(0xFF266C2A)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFADF4A7)
+val md_theme_light_onPrimaryContainer = Color(0xFF062100)
+val md_theme_light_secondary = Color(0xFF4B6451)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFCCEAD3)
+val md_theme_light_onSecondaryContainer = Color(0xFF082010)
+val md_theme_light_tertiary = Color(0xFF016972)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFF9DF0FB)
+val md_theme_light_onTertiaryContainer = Color(0xFF001F23)
+val md_theme_light_error = Color(0xFFBB142D)
 val md_theme_light_onError = Color(0xFFFFFFFF)
-val md_theme_light_onErrorContainer = Color(0xFF410002)
+val md_theme_light_errorContainer = Color(0xFFFEDAD7)
+val md_theme_light_onErrorContainer = Color(0xFF410100)
+val md_theme_light_background = Color(0xFFF4FBF3)
+val md_theme_light_onBackground = Color(0xFF181D17)
+val md_theme_light_surface = Color(0xFFF4FBF3)
+val md_theme_light_onSurface = Color(0xFF181D17)
+val md_theme_light_surfaceVariant = Color(0xFFD9E6D7)
+val md_theme_light_onSurfaceVariant = Color(0xFF3F4A3E)
+val md_theme_light_outline = Color(0xFF6F7A6D)
+val md_theme_light_outlineVariant = Color(0xFFBDCABB)
+val md_theme_light_scrim = Color(0xFF000000)
+val md_theme_light_inverseSurface = Color(0xFF2C322C)
+val md_theme_light_inverseOnSurface = Color(0xFFECF3EA)
+val md_theme_light_inversePrimary = Color(0xFF92D78D)
+val md_theme_light_surfaceTint = Color(0xFF266C2A)
+val md_theme_light_surfaceDim = Color(0xFFD5DCD4)
+val md_theme_light_surfaceBright = Color(0xFFF4FBF3)
+val md_theme_light_surfaceContainerLowest = Color(0xFFFFFFFF)
+val md_theme_light_surfaceContainerLow = Color(0xFFEEF6ED)
+val md_theme_light_surfaceContainer = Color(0xFFE9F0E7)
+val md_theme_light_surfaceContainerHigh = Color(0xFFE3EAE2)
+val md_theme_light_surfaceContainerHighest = Color(0xFFDDE4DC)
 
-// Background colors
-val md_theme_light_background = Color(0xFFFDFDF7) // #FDFDF7 - Off-white cream background
-val md_theme_light_onBackground = Color(0xFF191C1A) // Dark text on light background
-val md_theme_light_surface = Color(0xFFFFFFFF) // White for cards/surfaces
-val md_theme_light_onSurface = Color(0xFF191C1A) // Dark text on white surface
+val md_theme_dark_primary = Color(0xFF92D78D)
+val md_theme_dark_onPrimary = Color(0xFF003908)
+val md_theme_dark_primaryContainer = Color(0xFF035313)
+val md_theme_dark_onPrimaryContainer = Color(0xFFADF4A7)
+val md_theme_dark_secondary = Color(0xFFB1CEB7)
+val md_theme_dark_onSecondary = Color(0xFF1E3524)
+val md_theme_dark_secondaryContainer = Color(0xFF344C3A)
+val md_theme_dark_onSecondaryContainer = Color(0xFFCCEAD3)
+val md_theme_dark_tertiary = Color(0xFF81D3DE)
+val md_theme_dark_onTertiary = Color(0xFF01363C)
+val md_theme_dark_tertiaryContainer = Color(0xFF014F56)
+val md_theme_dark_onTertiaryContainer = Color(0xFF9DF0FB)
+val md_theme_dark_error = Color(0xFFFFB4AD)
+val md_theme_dark_onError = Color(0xFF680012)
+val md_theme_dark_errorContainer = Color(0xFF92011E)
+val md_theme_dark_onErrorContainer = Color(0xFFFEDAD7)
+val md_theme_dark_background = Color(0xFF0F150E)
+val md_theme_dark_onBackground = Color(0xFFDDE4DC)
+val md_theme_dark_surface = Color(0xFF0F150E)
+val md_theme_dark_onSurface = Color(0xFFDDE4DC)
+val md_theme_dark_surfaceVariant = Color(0xFF3F4A3E)
+val md_theme_dark_onSurfaceVariant = Color(0xFFBDCABB)
+val md_theme_dark_outline = Color(0xFF889486)
+val md_theme_dark_outlineVariant = Color(0xFF3F4A3E)
+val md_theme_dark_scrim = Color(0xFF000000)
+val md_theme_dark_inverseSurface = Color(0xFFDDE4DC)
+val md_theme_dark_inverseOnSurface = Color(0xFF2C322C)
+val md_theme_dark_inversePrimary = Color(0xFF266C2A)
+val md_theme_dark_surfaceTint = Color(0xFF92D78D)
+val md_theme_dark_surfaceDim = Color(0xFF0F150E)
+val md_theme_dark_surfaceBright = Color(0xFF353B34)
+val md_theme_dark_surfaceContainerLowest = Color(0xFF081007)
+val md_theme_dark_surfaceContainerLow = Color(0xFF181D17)
+val md_theme_dark_surfaceContainer = Color(0xFF1C211B)
+val md_theme_dark_surfaceContainerHigh = Color(0xFF262B25)
+val md_theme_dark_surfaceContainerHighest = Color(0xFF313630)
 
-// Surface variant colors
-val md_theme_light_surfaceVariant = Color(0xFFF5F5F5) // Very light gray for subtle surfaces
-val md_theme_light_onSurfaceVariant = Color(0xFF424242) // Dark gray text
-val md_theme_light_outline = Color(0xFF9E9E9E) // Medium gray outline
-
-// Dark theme colors - complementary to light theme
-val md_theme_dark_primary = Color(0xFF81C784) // Medium light green
-val md_theme_dark_onPrimary = Color(0xFF003300) // Very dark green
-val md_theme_dark_primaryContainer = Color(0xFF2E7D32) // Medium dark green
-val md_theme_dark_onPrimaryContainer = Color(0xFFE8F5E9) // Very light green
-
-val md_theme_dark_secondary = Color(0xFF66BB6A) // Light green
-val md_theme_dark_onSecondary = Color(0xFF1B5E20) // Dark green
-val md_theme_dark_secondaryContainer = Color(0xFF2E7D32) // Medium green
-val md_theme_dark_onSecondaryContainer = Color(0xFFC8E6CA) // Light mint green
-
-val md_theme_dark_tertiary = Color(0xFF4DB6AC) // Light teal
-val md_theme_dark_onTertiary = Color(0xFF004D40) // Dark teal
-val md_theme_dark_tertiaryContainer = Color(0xFF00695C) // Medium teal
-val md_theme_dark_onTertiaryContainer = Color(0xFFB2DFDB) // Light teal
-
-val md_theme_dark_error = Color(0xFFFFB4AB)
-val md_theme_dark_errorContainer = Color(0xFF93000A)
-val md_theme_dark_onError = Color(0xFF690005)
-val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
-
-val md_theme_dark_background = Color(0xFF1A1A1A) // Very dark gray
-val md_theme_dark_onBackground = Color(0xFFE5E5E5) // Light gray text
-val md_theme_dark_surface = Color(0xFF2C2C2C) // Dark gray for cards
-val md_theme_dark_onSurface = Color(0xFFE5E5E5) // Light gray text
-
-val md_theme_dark_surfaceVariant = Color(0xFF3A4A3C) // Dark green-gray
-val md_theme_dark_onSurfaceVariant = Color(0xFFC8E6CA) // Light mint green text
-val md_theme_dark_outline = Color(0xFF81C784) // Medium light green outline
-
-// Custom semantic colors for medicine states
-val ExpiredRed = Color(0xFFDC3545)
-val ExpiredRedLight = Color(0xFFF8D7DA)
-val WarningYellow = Color(0xFFFFC107)
-val WarningYellowLight = Color(0xFFFFF3CD)
-val ValidGreen = Color(0xFF28A745)
-val ValidGreenLight = Color(0xFFD4EDDA)
-
-// Status colors readable on their container: darker text on the light pastels, dark containers in dark theme
-val ExpiredRedOnLight = Color(0xFFA52834)
-val WarningYellowOnLight = Color(0xFF7A5C00)
-val ExpiredRedDark = Color(0xFF5C2127)
-val ExpiredRedOnDark = Color(0xFFFFB4AB)
-val WarningYellowDark = Color(0xFF574510)
+// Medicine status (expired uses the error roles). Warning is an amber tonal pair.
+// Softer than errorContainer, which is too saturated for a whole list card in dark theme
+val ExpiredContainerDark = Color(0xFF6A1E20)
+val WarningContainerLight = Color(0xFFFFDF97)
+val WarningOnContainerLight = Color(0xFF4A3900)
+val WarningContainerDark = Color(0xFF4A3900)
+val WarningOnContainerDark = Color(0xFFF7D068)

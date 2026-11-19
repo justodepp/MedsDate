@@ -264,11 +264,7 @@ fun SettingsScreen(
 private fun SettingsSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Switch(
         checked = checked,
-        onCheckedChange = onCheckedChange,
-        colors = SwitchDefaults.colors(
-            checkedTrackColor = MaterialTheme.colorScheme.secondary,
-            checkedThumbColor = MaterialTheme.colorScheme.onSecondary
-        )
+        onCheckedChange = onCheckedChange
     )
 }
 
@@ -280,7 +276,7 @@ private fun SettingsGroup(content: @Composable ColumnScope.() -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
@@ -351,7 +347,7 @@ private fun NotificationSlider(
                     stringResource(R.string.settings_days_plural, value)
                 },
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -363,12 +359,7 @@ private fun NotificationSlider(
             onValueChange = onValueChange,
             valueRange = 1f..30f,
             steps = 28, // 30 - 1 (start) - 1 (end) = 28
-            modifier = Modifier.fillMaxWidth(),
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.secondary,
-                activeTrackColor = MaterialTheme.colorScheme.secondary,
-                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer
-            )
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Min/Max labels
