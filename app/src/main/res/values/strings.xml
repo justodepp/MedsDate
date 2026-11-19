@@ -103,6 +103,8 @@
     <string name="home_close_search">Chiudi ricerca</string>
     <string name="home_expired_medicines">Medicine Scadute</string>
     <string name="home_active_medicines">Medicine Attive</string>
+    <string name="home_sort_by_expiry">Scadenza</string>
+    <string name="home_sort_by_name">Nome</string>
     <string name="home_sort">Ordina</string>
     <string name="home_sort_expiry_asc">Scadenza ↑</string>
     <string name="home_sort_expiry_desc">Scadenza ↓</string>

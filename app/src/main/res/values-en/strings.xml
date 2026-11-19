@@ -145,6 +145,8 @@
     <string name="stats_expiring_soon">Expiring Soon</string>
     <string name="stats_valid">Valid</string>
     <string name="stats_open">Open statistics</string>
+    <string name="home_sort_by_expiry">Expiry</string>
+    <string name="home_sort_by_name">Name</string>
     <string name="home_sort">Sort</string>
     <string name="home_sort_expiry_asc">Expiry ↑</string>
     <string name="home_sort_expiry_desc">Expiry ↓</string>

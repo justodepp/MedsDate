@@ -50,7 +50,8 @@ class HomeViewModel(
             else repository.searchMedicines(query)
         }
 
-    val medicines: StateFlow<List<Medicine>> = combine(
+    // null until the first database emission (loading)
+    val medicines: StateFlow<List<Medicine>?> = combine(
         filteredMedicines,
         _pendingDelete,
         _sortOrder
@@ -65,20 +66,20 @@ class HomeViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = null
     )
 
-    // Grouped medicines (expired and active)
-    val groupedMedicines: StateFlow<GroupedMedicines> = medicines
+    // Grouped medicines (expired and active), null while loading
+    val groupedMedicines: StateFlow<GroupedMedicines?> = medicines
         .map { list ->
-            val expired = list.filter { it.isExpired() }
-            val active = list.filter { !it.isExpired() }
-            GroupedMedicines(expired = expired, active = active)
+            list?.let {
+                GroupedMedicines(expired = it.filter { m -> m.isExpired() }, active = it.filter { m -> !m.isExpired() })
+            }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = GroupedMedicines(emptyList(), emptyList())
+            initialValue = null
         )
 
     /**

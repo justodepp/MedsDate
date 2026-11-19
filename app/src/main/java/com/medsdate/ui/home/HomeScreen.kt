@@ -4,7 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +19,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SwapVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LargeFlexibleTopAppBar
+import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +45,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.Composable
@@ -49,14 +57,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medsdate.R
 import com.medsdate.domain.model.Medicine
-import com.medsdate.ui.components.MedsAppBar
 import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.ui.components.SwipeToDeleteCard
 import com.medsdate.ui.navigation.Screen
@@ -90,7 +99,7 @@ fun HomeScreen(
     val sortOrder by viewModel.sortOrder.collectAsState()
     val expiringSoonDays by viewModel.expiringSoonDays.collectAsState()
     var isSearchActive by remember { mutableStateOf(false) }
-    var showSortMenu by remember { mutableStateOf(false) }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
     val resources = LocalResources.current
 
@@ -112,45 +121,17 @@ fun HomeScreen(
     }
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             if (!isSearchActive) {
-                MedsAppBar(
-                    title = "MedsDate",
-                    showAppIcon = true,
+                HomeTopBar(
+                    scrollBehavior = scrollBehavior,
                     actions = {
                         IconButton(onClick = { navController.navigate(Screen.Stats.route) }) {
                             Icon(
                                 imageVector = Icons.Default.BarChart,
                                 contentDescription = stringResource(R.string.stats_open)
                             )
-                        }
-                        IconButton(onClick = { showSortMenu = true }) {
-                            Icon(
-                                imageVector = Icons.Default.SwapVert,
-                                contentDescription = stringResource(R.string.home_sort)
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = showSortMenu,
-                            onDismissRequest = { showSortMenu = false }
-                        ) {
-                            listOf(
-                                SortOrder.EXPIRY_ASC to R.string.home_sort_expiry_asc,
-                                SortOrder.EXPIRY_DESC to R.string.home_sort_expiry_desc,
-                                SortOrder.NAME_ASC to R.string.home_sort_name_asc,
-                                SortOrder.NAME_DESC to R.string.home_sort_name_desc
-                            ).forEach { (order, labelRes) ->
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(labelRes)) },
-                                    onClick = {
-                                        viewModel.onSortOrderChange(order)
-                                        showSortMenu = false
-                                    },
-                                    trailingIcon = if (sortOrder == order) {
-                                        { Icon(Icons.Default.Check, contentDescription = null) }
-                                    } else null
-                                )
-                            }
                         }
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(
@@ -183,11 +164,16 @@ fun HomeScreen(
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             // Content
-            if (groupedMedicines.expired.isEmpty() && groupedMedicines.active.isEmpty()) {
+            val grouped = groupedMedicines
+            if (grouped == null) {
+                LoadingState()
+            } else if (grouped.expired.isEmpty() && grouped.active.isEmpty()) {
                 EmptyState()
             } else {
                 MedicineList(
-                    groupedMedicines = groupedMedicines,
+                    groupedMedicines = grouped,
+                    sortOrder = sortOrder,
+                    onSortOrderChange = viewModel::onSortOrderChange,
                     onMedicineClick = onMedicineClick,
                     isSearchActive = isSearchActive,
                     onSearchClick = { isSearchActive = true },
@@ -260,6 +246,8 @@ private fun SearchBar(
 @Composable
 private fun MedicineList(
     groupedMedicines: GroupedMedicines,
+    sortOrder: SortOrder,
+    onSortOrderChange: (SortOrder) -> Unit,
     onMedicineClick: (Int) -> Unit,
     isSearchActive: Boolean,
     onSearchClick: () -> Unit,
@@ -270,13 +258,22 @@ private fun MedicineList(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
+        item(key = "sort") {
+            SortRow(
+                sortOrder = sortOrder,
+                onSortOrderChange = onSortOrderChange,
+                modifier = Modifier.animateItem()
+            )
+        }
+
         // Expired medicines section
         if (groupedMedicines.expired.isNotEmpty()) {
-            item {
+            item(key = "header-expired") {
                 SectionHeader(
                     title = stringResource(R.string.home_expired_medicines),
                     count = groupedMedicines.expired.size,
-                    isExpired = true
+                    isExpired = true,
+                    modifier = Modifier.animateItem()
                 )
             }
 
@@ -290,12 +287,13 @@ private fun MedicineList(
                     onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) },
                     showConfirmDialog = false,
-                    expiringSoonDays = expiringSoonDays
+                    expiringSoonDays = expiringSoonDays,
+                    modifier = Modifier.animateItem()
                 )
             }
 
             if (groupedMedicines.active.isNotEmpty()) {
-                item {
+                item(key = "spacer") {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
@@ -303,11 +301,12 @@ private fun MedicineList(
 
         // Active medicines section
         if (groupedMedicines.active.isNotEmpty()) {
-            item {
+            item(key = "header-active") {
                 SectionHeader(
                     title = stringResource(R.string.home_active_medicines),
                     count = groupedMedicines.active.size,
-                    isExpired = false
+                    isExpired = false,
+                    modifier = Modifier.animateItem()
                 )
             }
 
@@ -319,10 +318,106 @@ private fun MedicineList(
                     onDelete = { viewModel.deleteMedicine(medicine) },
                     onClick = { onMedicineClick(medicine.id) },
                     showConfirmDialog = false,
-                    expiringSoonDays = expiringSoonDays
+                    expiringSoonDays = expiringSoonDays,
+                    modifier = Modifier.animateItem()
                 )
             }
         }
+    }
+}
+
+/**
+ * Large collapsing top bar: the title shrinks when the list scrolls.
+ */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun HomeTopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    actions: @Composable RowScope.() -> Unit
+) {
+    LargeFlexibleTopAppBar(
+        title = { Text("MedsDate") },
+        navigationIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.starter_image),
+                contentDescription = null,
+                modifier = Modifier.padding(start = 16.dp, end = 4.dp).size(28.dp)
+            )
+        },
+        actions = actions,
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            scrolledContainerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    )
+}
+
+/**
+ * Sort by expiry or name; tapping the active one flips the direction.
+ */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun SortRow(
+    sortOrder: SortOrder,
+    onSortOrderChange: (SortOrder) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val byExpiry = sortOrder == SortOrder.EXPIRY_ASC || sortOrder == SortOrder.EXPIRY_DESC
+    val ascending = sortOrder == SortOrder.EXPIRY_ASC || sortOrder == SortOrder.NAME_ASC
+
+    fun toggle(expiry: Boolean) = onSortOrderChange(
+        when {
+            expiry && byExpiry -> if (ascending) SortOrder.EXPIRY_DESC else SortOrder.EXPIRY_ASC
+            expiry -> SortOrder.EXPIRY_ASC
+            !byExpiry -> if (ascending) SortOrder.NAME_DESC else SortOrder.NAME_ASC
+            else -> SortOrder.NAME_ASC
+        }
+    )
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)
+    ) {
+        listOf(true to R.string.home_sort_by_expiry, false to R.string.home_sort_by_name).forEachIndexed { i, (expiry, label) ->
+            val checked = byExpiry == expiry
+            ToggleButton(
+                checked = checked,
+                onCheckedChange = { toggle(expiry) },
+                modifier = Modifier.weight(1f),
+                shapes = if (i == 0) ButtonGroupDefaults.connectedLeadingButtonShapes()
+                else ButtonGroupDefaults.connectedTrailingButtonShapes(),
+                colors = ToggleButtonDefaults.colors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    checkedContainerColor = MaterialTheme.colorScheme.primary,
+                    checkedContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            ) {
+                if (checked) {
+                    Icon(
+                        imageVector = if (ascending) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                }
+                Text(stringResource(label))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun LoadingState() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        LoadingIndicator(color = MaterialTheme.colorScheme.secondary)
     }
 }
 
@@ -333,10 +428,11 @@ private fun MedicineList(
 private fun SectionHeader(
     title: String,
     count: Int,
-    isExpired: Boolean
+    isExpired: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -500,6 +596,8 @@ private fun MedicineListPreview() {
                 expired = listOf(medicines[0]),
                 active = listOf(medicines[1], medicines[2])
             ),
+            sortOrder = SortOrder.EXPIRY_ASC,
+            onSortOrderChange = {},
             onMedicineClick = {},
             isSearchActive = false,
             onSearchClick = {}
