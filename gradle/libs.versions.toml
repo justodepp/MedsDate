@@ -32,7 +32,7 @@ appcompat = "1.7.1"
 workManager = "2.10.5"
 
 # Image Loading
-coil = "2.7.0"
+coil = "3.4.0"
 
 # Billing
 billing = "8.0.0"
@@ -102,7 +102,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 
 # Coil
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # Billing
 billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
