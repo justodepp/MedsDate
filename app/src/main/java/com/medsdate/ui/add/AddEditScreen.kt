@@ -1,6 +1,9 @@
 package com.medsdate.ui.add
 
 import android.app.DatePickerDialog
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.medsdate.R
@@ -111,6 +115,21 @@ fun AddEditScreen(
             copiedPath?.let { path ->
                 viewModel.onImagePathChange(path)
             }
+        }
+    }
+
+    // Android 13+: ask for notification permission on save; the medicine is saved whatever the answer
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { viewModel.saveMedicine() }
+    val onSave = {
+        val needsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        if (needsPermission) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.saveMedicine()
         }
     }
 
@@ -185,7 +204,7 @@ fun AddEditScreen(
 
             // Save button
             Button(
-                onClick = viewModel::saveMedicine,
+                onClick = onSave,
                 modifier = Modifier.fillMaxWidth(),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 2.dp,

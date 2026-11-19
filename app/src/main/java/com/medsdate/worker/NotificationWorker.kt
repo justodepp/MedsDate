@@ -5,7 +5,10 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -50,9 +53,10 @@ class NotificationWorker(
     private fun sendNotification(medicineId: Int, medicineName: String, daysUntilExpiry: Int) {
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
+        val localized = localizedContext()
 
         // Create notification channel (Android O+)
-        createNotificationChannel(notificationManager)
+        createNotificationChannel(notificationManager, localized)
 
         // Create intent to open app
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
@@ -69,11 +73,11 @@ class NotificationWorker(
         // Build notification
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Medicine Expiry Reminder")
-            .setContentText(getNotificationText(medicineName, daysUntilExpiry))
+            .setContentTitle(localized.getString(R.string.expiry_notification_title))
+            .setContentText(getNotificationText(localized, medicineName, daysUntilExpiry))
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(getNotificationText(medicineName, daysUntilExpiry))
+                    .bigText(getNotificationText(localized, medicineName, daysUntilExpiry))
             )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -85,18 +89,30 @@ class NotificationWorker(
     }
 
     /**
+     * Context in the language chosen in the app. Below API 33 the application context only follows
+     * the system language, so apply the app locale by hand.
+     */
+    private fun localizedContext(): Context {
+        val locales = AppCompatDelegate.getApplicationLocales()
+        if (locales.isEmpty) return applicationContext
+        val config = Configuration(applicationContext.resources.configuration)
+        config.setLocales(LocaleList.forLanguageTags(locales.toLanguageTags()))
+        return applicationContext.createConfigurationContext(config)
+    }
+
+    /**
      * Creates notification channel for Android O+.
      */
-    private fun createNotificationChannel(notificationManager: NotificationManager) {
+    private fun createNotificationChannel(notificationManager: NotificationManager, context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val existingChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
             if (existingChannel == null) {
                 val channel = NotificationChannel(
                     CHANNEL_ID,
-                    CHANNEL_NAME,
+                    context.getString(R.string.expiry_channel_name),
                     NotificationManager.IMPORTANCE_HIGH
                 ).apply {
-                    description = CHANNEL_DESCRIPTION
+                    description = context.getString(R.string.expiry_channel_description)
                     enableVibration(true)
                 }
                 notificationManager.createNotificationChannel(channel)
@@ -107,11 +123,11 @@ class NotificationWorker(
     /**
      * Gets notification text based on days until expiry.
      */
-    private fun getNotificationText(medicineName: String, daysUntilExpiry: Int): String {
-        return when {
-            daysUntilExpiry <= 0 -> "$medicineName has expired!"
-            daysUntilExpiry == 1 -> "$medicineName expires tomorrow!"
-            else -> "$medicineName expires in $daysUntilExpiry days"
+    private fun getNotificationText(context: Context, medicineName: String, daysUntilExpiry: Int): String {
+        return if (daysUntilExpiry <= 1) {
+            context.getString(R.string.expiry_notification_tomorrow, medicineName)
+        } else {
+            context.getString(R.string.expiry_notification_days, medicineName, daysUntilExpiry)
         }
     }
 
@@ -121,7 +137,5 @@ class NotificationWorker(
         const val KEY_DAYS_UNTIL_EXPIRY = "days_until_expiry"
 
         private const val CHANNEL_ID = "medicine_expiry_channel"
-        private const val CHANNEL_NAME = "Medicine Expiry"
-        private const val CHANNEL_DESCRIPTION = "Notifications for medicine expiry reminders"
     }
 }

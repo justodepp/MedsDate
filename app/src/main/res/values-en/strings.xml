@@ -162,4 +162,10 @@
     <string name="medicine_expired_days_ago_singular">Expired %d day ago</string>
     <string name="medicine_expired_days_ago_plural">Expired %d days ago</string>
 
+    <string name="expiry_channel_name">Medicine expiry</string>
+    <string name="expiry_channel_description">Reminders before your medicines expire</string>
+    <string name="expiry_notification_title">Expiry reminder</string>
+    <string name="expiry_notification_tomorrow">%1$s expires tomorrow!</string>
+    <string name="expiry_notification_days">%1$s expires in %2$d days</string>
+
 </resources>

@@ -17,6 +17,11 @@
     <string name="msg_credits_text">Icone crediti a Smashicons, Good Ware, smalllikeart e Freepik da flaticon.com</string>
 
     <!-- Push -->
+    <string name="expiry_channel_name">Scadenza medicinali</string>
+    <string name="expiry_channel_description">Promemoria prima della scadenza dei medicinali</string>
+    <string name="expiry_notification_title">Promemoria scadenza</string>
+    <string name="expiry_notification_tomorrow">%1$s scade domani!</string>
+    <string name="expiry_notification_days">%1$s scade tra %2$d giorni</string>
     <string name="notification_title">Attenzione!</string>
     <string name="notification_message">Le tue medicine <b>%1$s</b> stanno per scadere!</string>
     <string name="default_notification_channel_id" translatable="false">default_channel</string>

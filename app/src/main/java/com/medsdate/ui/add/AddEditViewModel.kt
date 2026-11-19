@@ -118,16 +118,18 @@ class AddEditViewModel(
                     updatedAt = Date()
                 )
 
-                if (currentState.isEditMode) {
+                val saved = if (currentState.isEditMode) {
                     repository.updateMedicine(medicine)
                     Timber.d("Medicine updated: ${medicine.name}")
+                    medicine
                 } else {
-                    repository.insertMedicine(medicine)
+                    val newId = repository.insertMedicine(medicine).toInt()
                     Timber.d("Medicine inserted: ${medicine.name}")
+                    medicine.copy(id = newId)
                 }
 
-                // Schedule notifications
-                scheduleNotifications(medicine)
+                // Schedule notifications (needs the real id: work names are unique per medicine)
+                scheduleNotifications(saved)
 
                 _events.emit(AddEditEvent.SaveSuccess)
             } catch (e: Exception) {

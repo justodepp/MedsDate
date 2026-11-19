@@ -2,8 +2,16 @@ package com.medsdate
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import com.medsdate.data.repository.MedicineRepository
+import com.medsdate.data.repository.SettingsRepository
 import com.medsdate.di.appModules
 import com.medsdate.util.LocaleManager
+import com.medsdate.worker.NotificationScheduler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -42,6 +50,19 @@ class MedsDateApplication : Application() {
 
         // Carry over the language chosen with the pre-AppCompat implementation
         LocaleManager.migrateLegacyLanguage(this)
+
+        // Re-create reminders at startup: covers medicines saved before WorkManager worked (<= 1.3)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                NotificationScheduler.rescheduleAll(
+                    this@MedsDateApplication,
+                    get<MedicineRepository>().getAllMedicines().first(),
+                    get<SettingsRepository>().getSettings().first()
+                )
+            } catch (e: Exception) {
+                Timber.e(e, "Error rescheduling notifications")
+            }
+        }
 
         // Initialize Firebase
         FirebaseApp.initializeApp(this)

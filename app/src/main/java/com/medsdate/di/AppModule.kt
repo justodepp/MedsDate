@@ -48,7 +48,7 @@ val viewModelModule = module {
     viewModel { DetailViewModel(androidContext(), get()) }
 
     // Settings ViewModel
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(androidContext(), get(), get()) }
 
     // Stats ViewModel
     viewModel { StatsViewModel(get(), get()) }
