@@ -30,10 +30,6 @@ class SettingsViewModel(
             initialValue = NotificationSettings()
         )
 
-    // UI State for save feedback
-    private val _saveState = MutableStateFlow<SaveState>(SaveState.Idle)
-    val saveState: StateFlow<SaveState> = _saveState.asStateFlow()
-
     /**
      * Updates the first notification days.
      */
@@ -98,35 +94,4 @@ class SettingsViewModel(
             repository.getSettings().first()
         )
     }
-
-    /**
-     * Saves settings and shows feedback.
-     */
-    fun saveSettings() {
-        viewModelScope.launch {
-            _saveState.value = SaveState.Saving
-            try {
-                // Settings are already saved on each change, so just show success
-                _saveState.value = SaveState.Success
-                Timber.d("Settings saved successfully")
-
-                // Reset state after a delay
-                kotlinx.coroutines.delay(2000)
-                _saveState.value = SaveState.Idle
-            } catch (e: Exception) {
-                Timber.e(e, "Error saving settings")
-                _saveState.value = SaveState.Error(e.message ?: "Unknown error")
-            }
-        }
-    }
-}
-
-/**
- * State for save operation.
- */
-sealed class SaveState {
-    object Idle : SaveState()
-    object Saving : SaveState()
-    object Success : SaveState()
-    data class Error(val message: String) : SaveState()
 }

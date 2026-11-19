@@ -1,6 +1,7 @@
 package com.medsdate.ui.settings
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -47,7 +48,6 @@ fun SettingsScreen(
     billingManager: BillingManager = koinInject()
 ) {
     val settings by viewModel.settings.collectAsState()
-    val saveState by viewModel.saveState.collectAsState()
     val currentLanguage = LocaleManager.currentLanguage()
 
     var showMenu by remember { mutableStateOf(false) }
@@ -170,86 +170,57 @@ fun SettingsScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Divider()
-
-        // Expiring soon threshold — always visible, affects card colors
-        NotificationSlider(
-            title = stringResource(R.string.settings_expiring_soon_days),
-            value = settings.expiringSoonDays,
-            onValueChange = { viewModel.onExpiringSoonDaysChange(it.roundToInt()) }
-        )
-
-        Divider()
-
-        // Enable notifications toggle
-        SettingRow(
-            title = stringResource(R.string.settings_enable_notifications),
-            description = stringResource(R.string.settings_enable_notifications_desc)
-        ) {
-            Switch(
-                checked = settings.enableNotifications,
-                onCheckedChange = viewModel::onNotificationsToggle
-            )
-        }
-
-        if (settings.enableNotifications) {
-            // First notification slider
-            NotificationSlider(
-                title = stringResource(R.string.settings_first_notification),
-                value = settings.firstNotificationDays,
-                onValueChange = { viewModel.onFirstNotificationDaysChange(it.roundToInt()) }
-            )
-
-            Divider()
-
-            // Second notification toggle
-            SettingRow(
-                title = stringResource(R.string.settings_enable_second_notification),
-                description = stringResource(R.string.settings_enable_second_notification_desc)
-            ) {
-                Switch(
-                    checked = settings.enableSecondNotification,
-                    onCheckedChange = viewModel::onSecondNotificationToggle
-                )
-            }
-
-            // Second notification slider
-            if (settings.enableSecondNotification) {
+            // How expiring medicines are highlighted
+            SettingsGroup {
                 NotificationSlider(
-                    title = stringResource(R.string.settings_second_notification),
-                    value = settings.secondNotificationDays,
-                    onValueChange = { viewModel.onSecondNotificationDaysChange(it.roundToInt()) }
+                    title = stringResource(R.string.settings_expiring_soon_days),
+                    value = settings.expiringSoonDays,
+                    onValueChange = { viewModel.onExpiringSoonDaysChange(it.roundToInt()) }
                 )
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Save button
-        Button(
-            onClick = viewModel::saveSettings,
-            modifier = Modifier.fillMaxWidth(),
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 2.dp,
-                pressedElevation = 0.dp
-            ),
-            enabled = saveState !is SaveState.Saving
-        ) {
-            when (saveState) {
-                is SaveState.Saving -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
+            // Reminders
+            SettingsGroup {
+                SettingRow(
+                    title = stringResource(R.string.settings_enable_notifications),
+                    description = stringResource(R.string.settings_enable_notifications_desc)
+                ) {
+                    SettingsSwitch(
+                        checked = settings.enableNotifications,
+                        onCheckedChange = viewModel::onNotificationsToggle
                     )
                 }
-                is SaveState.Success -> {
-                    Text(stringResource(R.string.settings_saved))
-                }
-                else -> {
-                    Text(stringResource(R.string.settings_save))
+
+                if (settings.enableNotifications) {
+                    HorizontalDivider()
+
+                    NotificationSlider(
+                        title = stringResource(R.string.settings_first_notification),
+                        value = settings.firstNotificationDays,
+                        onValueChange = { viewModel.onFirstNotificationDaysChange(it.roundToInt()) }
+                    )
+
+                    HorizontalDivider()
+
+                    SettingRow(
+                        title = stringResource(R.string.settings_enable_second_notification),
+                        description = stringResource(R.string.settings_enable_second_notification_desc)
+                    ) {
+                        SettingsSwitch(
+                            checked = settings.enableSecondNotification,
+                            onCheckedChange = viewModel::onSecondNotificationToggle
+                        )
+                    }
+
+                    if (settings.enableSecondNotification) {
+                        NotificationSlider(
+                            title = stringResource(R.string.settings_second_notification),
+                            value = settings.secondNotificationDays,
+                            onValueChange = { viewModel.onSecondNotificationDaysChange(it.roundToInt()) }
+                        )
+                    }
                 }
             }
-        }
 
         // Info card
         Card(
@@ -282,6 +253,36 @@ fun SettingsScreen(
         DonateDialog(
             billingManager = billingManager,
             onDismiss = { showDonateDialog = false }
+        )
+    }
+}
+
+@Composable
+private fun SettingsSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Switch(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        colors = SwitchDefaults.colors(
+            checkedTrackColor = MaterialTheme.colorScheme.secondary,
+            checkedThumbColor = MaterialTheme.colorScheme.onSecondary
+        )
+    )
+}
+
+/**
+ * Rounded card grouping related settings.
+ */
+@Composable
+private fun SettingsGroup(content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            content = content
         )
     }
 }
@@ -347,7 +348,7 @@ private fun NotificationSlider(
                     stringResource(R.string.settings_days_plural, value)
                 },
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -359,7 +360,12 @@ private fun NotificationSlider(
             onValueChange = onValueChange,
             valueRange = 1f..30f,
             steps = 28, // 30 - 1 (start) - 1 (end) = 28
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colorScheme.secondary,
+                activeTrackColor = MaterialTheme.colorScheme.secondary,
+                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer
+            )
         )
 
         // Min/Max labels
