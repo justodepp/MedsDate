@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark window and system splash background (matches md_theme_dark_background) -->
+    <style name="Theme.MedsDate" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#FF1A1A1A</item>
+    </style>
+</resources>
