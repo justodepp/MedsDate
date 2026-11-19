@@ -40,7 +40,7 @@ import com.medsdate.domain.model.ExpiryStatus
 import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.theme.expiredColors
 import com.medsdate.ui.theme.warningColors
-import java.text.SimpleDateFormat
+import com.medsdate.utils.localizedDateFormat
 import java.util.Date
 
 /**
@@ -247,7 +247,7 @@ private fun DaysBadge(days: Long, status: ExpiryStatus) {
 @Composable
 private fun formatExpiryDate(date: Date): String {
     val locale = LocalConfiguration.current.locales[0]
-    val formatter = remember(locale) { SimpleDateFormat("MMM dd, yyyy", locale) }
+    val formatter = remember(locale) { localizedDateFormat(locale) }
     return stringResource(R.string.medicine_expires_label, formatter.format(date))
 }
 

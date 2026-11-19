@@ -51,7 +51,7 @@ import com.medsdate.domain.model.Medicine
 import com.medsdate.ui.components.medicineImageTransition
 import com.medsdate.ui.theme.MedsDateTheme
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
+import com.medsdate.utils.localizedDateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -241,7 +241,8 @@ private fun DetailContent(
         )
 
         // Expiry date
-        val dateFormatter = SimpleDateFormat("MMMM dd, yyyy", LocalConfiguration.current.locales[0])
+        val locale = LocalConfiguration.current.locales[0]
+        val dateFormatter = remember(locale) { localizedDateFormat(locale, "yMMMMd") }
         DetailField(
             type = Type.ExpiryDate,
             label = stringResource(R.string.detail_field_expiry_date),

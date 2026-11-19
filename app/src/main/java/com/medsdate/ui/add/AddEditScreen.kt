@@ -85,7 +85,7 @@ import com.medsdate.ui.components.MedsBottomNavigation
 import com.medsdate.ui.theme.MedsDateTheme
 import com.medsdate.utils.ImageUtils
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
+import com.medsdate.utils.localizedDateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -562,7 +562,8 @@ private fun ExpiryDatePicker(
     onDateSelected: (Date) -> Unit,
     error: String?
 ) {
-    val dateFormatter = SimpleDateFormat("MMM dd, yyyy", LocalConfiguration.current.locales[0])
+    val locale = LocalConfiguration.current.locales[0]
+    val dateFormatter = remember(locale) { localizedDateFormat(locale) }
     var showPicker by remember { mutableStateOf(false) }
 
     // A read-only field still takes the touch: open the picker when the press is released
