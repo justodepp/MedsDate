@@ -1,10 +1,12 @@
 package com.medsdate.ui.add
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.medsdate.data.repository.MedicineRepository
 import com.medsdate.data.repository.SettingsRepository
+import com.medsdate.R
 import com.medsdate.domain.model.Medicine
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -89,9 +91,9 @@ class AddEditViewModel(
         val currentState = _uiState.value
 
         // Validate
-        val nameError = if (currentState.name.isBlank()) "Name is required" else null
-        val expiryDateError = if (currentState.expiryDate.before(Date())) {
-            "Expiry date must be in the future"
+        val nameError = if (currentState.name.isBlank()) R.string.error_name_required else null
+        val expiryDateError = if (Medicine(name = "", expiryDate = currentState.expiryDate).isExpired()) {
+            R.string.error_expiry_past
         } else null
 
         if (nameError != null || expiryDateError != null) {
@@ -171,8 +173,8 @@ data class AddEditUiState(
     val quantity: Int = 1,
     val imagePath: String? = null,
     val notes: String = "",
-    val nameError: String? = null,
-    val expiryDateError: String? = null,
+    @StringRes val nameError: Int? = null,
+    @StringRes val expiryDateError: Int? = null,
     val isSaving: Boolean = false
 )
 

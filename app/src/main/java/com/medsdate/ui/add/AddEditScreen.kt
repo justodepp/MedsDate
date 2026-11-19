@@ -1,6 +1,5 @@
 package com.medsdate.ui.add
 
-import android.app.DatePickerDialog
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -8,6 +7,21 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -163,7 +177,7 @@ fun AddEditScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 isError = uiState.nameError != null,
-                supportingText = uiState.nameError?.let { { Text(it) } }
+                supportingText = uiState.nameError?.let { { Text(stringResource(it)) } }
             )
 
             // Quantity stepper
@@ -177,7 +191,7 @@ fun AddEditScreen(
             ExpiryDatePicker(
                 selectedDate = uiState.expiryDate,
                 onDateSelected = viewModel::onExpiryDateChange,
-                error = uiState.expiryDateError
+                error = uiState.expiryDateError?.let { stringResource(it) }
             )
 
             // Photo section (optional)
@@ -507,37 +521,22 @@ private fun QuantityStepper(
 }
 
 /**
- * Expiry date picker field.
+ * Expiry date field: opens a Material 3 date picker (today or later).
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpiryDatePicker(
     selectedDate: Date,
     onDateSelected: (Date) -> Unit,
     error: String?
 ) {
-    val context = LocalContext.current
     val dateFormatter = SimpleDateFormat("MMM dd, yyyy", LocalConfiguration.current.locales[0])
+    var showPicker by remember { mutableStateOf(false) }
 
-    val datePickerDialog = remember {
-        val calendar = Calendar.getInstance().apply {
-            time = selectedDate
-        }
-
-        DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val newDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth)
-                }.time
-                onDateSelected(newDate)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            // Only allow future dates
-            datePicker.minDate = System.currentTimeMillis()
-        }
+    // A read-only field still takes the touch: open the picker when the press is released
+    val interactionSource = remember { MutableInteractionSource() }
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { if (it is PressInteraction.Release) showPicker = true }
     }
 
     OutlinedTextField(
@@ -550,16 +549,52 @@ private fun ExpiryDatePicker(
                 contentDescription = stringResource(R.string.calendar_description)
             )
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { datePickerDialog.show() },
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         readOnly = true,
-        enabled = false,
+        interactionSource = interactionSource,
         isError = error != null,
         supportingText = error?.let { { Text(it) } }
     )
+
+    if (showPicker) {
+        val todayUtc = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        val state = rememberDatePickerState(
+            initialSelectedDateMillis = selectedDate.toUtcDayMillis(),
+            selectableDates = object : SelectableDates {
+                override fun isSelectableDate(utcTimeMillis: Long) = utcTimeMillis >= todayUtc
+            }
+        )
+        DatePickerDialog(
+            onDismissRequest = { showPicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        state.selectedDateMillis?.let { onDateSelected(it.toLocalDayStart()) }
+                        showPicker = false
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
+                ) { Text(stringResource(R.string.action_ok)) }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showPicker = false },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
+                ) { Text(stringResource(R.string.action_cancel)) }
+            },
+            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surface)
+        ) {
+            DatePicker(state = state, colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surface))
+        }
+    }
 }
+
+/** The date picker works in UTC midnights: convert from/to the local calendar day. */
+private fun Date.toUtcDayMillis(): Long =
+    toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+
+private fun Long.toLocalDayStart(): Date =
+    Date.from(Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant())
 
 /**
  * Photo section: opens the system photo picker.

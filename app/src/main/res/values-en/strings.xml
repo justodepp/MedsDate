@@ -103,7 +103,7 @@
     <string name="calendar_description">Calendar</string>
     <string name="photo_optional">Photo (Optional)</string>
     <string name="photo_description">Medicine photo</string>
-    <string name="camera_description">Immagine</string>
+    <string name="camera_description">Image</string>
     <string name="gallery_description">Gallery</string>
     <string name="photo_subtitle">Load a picture from gallery</string>
     <string name="notes_label">Notes (Optional)</string>
@@ -145,6 +145,10 @@
     <string name="stats_expiring_soon">Expiring Soon</string>
     <string name="stats_valid">Valid</string>
     <string name="stats_open">Open statistics</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_expiry_past">Expiry date cannot be in the past</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
     <string name="home_sort_by_expiry">Expiry</string>
     <string name="home_sort_by_name">Name</string>
     <string name="home_sort">Sort</string>
