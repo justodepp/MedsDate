@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -245,7 +246,8 @@ private fun DaysBadge(days: Long, status: ExpiryStatus) {
  */
 @Composable
 private fun formatExpiryDate(date: Date): String {
-    val formatter = SimpleDateFormat("MMM dd, yyyy", LocalConfiguration.current.locales[0])
+    val locale = LocalConfiguration.current.locales[0]
+    val formatter = remember(locale) { SimpleDateFormat("MMM dd, yyyy", locale) }
     return stringResource(R.string.medicine_expires_label, formatter.format(date))
 }
 

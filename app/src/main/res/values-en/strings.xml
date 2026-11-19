@@ -149,6 +149,9 @@
     <string name="error_expiry_past">Expiry date cannot be in the past</string>
     <string name="photo_take">Take photo</string>
     <string name="photo_pick">Gallery</string>
+    <string name="nav_back">Back</string>
+    <string name="sort_ascending">Ascending</string>
+    <string name="sort_descending">Descending</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancel</string>
     <string name="home_sort_by_expiry">Expiry</string>

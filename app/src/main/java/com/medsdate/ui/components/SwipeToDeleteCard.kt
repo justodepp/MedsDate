@@ -26,6 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,6 +73,8 @@ fun SwipeToDeleteCard(
         else -> RectangleShape
     }
     currentShape = if (medicineCount == 1) RoundedCornerShape(cornerValue) else currentShape
+
+    val deleteActionLabel = stringResource(R.string.delete_medicine)
 
     // Swipe-to-dismiss state
     @Suppress("DEPRECATION")
@@ -130,7 +135,17 @@ fun SwipeToDeleteCard(
 
     SwipeToDismissBox(
         state = swipeToDismissBoxState,
-        modifier = modifier.height(IntrinsicSize.Max),
+        modifier = modifier
+            .height(IntrinsicSize.Max)
+            // Swiping is not available to TalkBack / switch users: expose delete as an action
+            .semantics {
+                customActions = listOf(
+                    CustomAccessibilityAction(deleteActionLabel) {
+                        if (showConfirmDialog) showDialog = true else onDelete()
+                        true
+                    }
+                )
+            },
         enableDismissFromStartToEnd = false, // Only allow left swipe
         backgroundContent = {
             // Show delete icon when swiping

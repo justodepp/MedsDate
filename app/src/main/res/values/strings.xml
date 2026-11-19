@@ -107,6 +107,9 @@
     <string name="error_expiry_past">La data di scadenza non può essere nel passato</string>
     <string name="photo_take">Scatta foto</string>
     <string name="photo_pick">Galleria</string>
+    <string name="nav_back">Indietro</string>
+    <string name="sort_ascending">Crescente</string>
+    <string name="sort_descending">Decrescente</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Annulla</string>
     <string name="home_sort_by_expiry">Scadenza</string>

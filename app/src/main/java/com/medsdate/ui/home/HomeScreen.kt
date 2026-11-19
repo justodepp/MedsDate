@@ -60,6 +60,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -386,10 +389,13 @@ private fun SortRow(
     ) {
         listOf(true to R.string.home_sort_by_expiry, false to R.string.home_sort_by_name).forEachIndexed { i, (expiry, label) ->
             val checked = byExpiry == expiry
+            val directionLabel = stringResource(if (ascending) R.string.sort_ascending else R.string.sort_descending)
             ToggleButton(
                 checked = checked,
                 onCheckedChange = { toggle(expiry) },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .semantics { if (checked) stateDescription = directionLabel },
                 shapes = if (i == 0) ButtonGroupDefaults.connectedLeadingButtonShapes()
                 else ButtonGroupDefaults.connectedTrailingButtonShapes(),
                 colors = ToggleButtonDefaults.colors(
@@ -434,7 +440,8 @@ private fun SectionHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 4.dp),
+            .padding(vertical = 8.dp, horizontal = 4.dp)
+            .semantics { heading() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
