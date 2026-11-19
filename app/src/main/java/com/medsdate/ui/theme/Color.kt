@@ -74,3 +74,10 @@ val WarningYellow = Color(0xFFFFC107)
 val WarningYellowLight = Color(0xFFFFF3CD)
 val ValidGreen = Color(0xFF28A745)
 val ValidGreenLight = Color(0xFFD4EDDA)
+
+// Status colors readable on their container: darker text on the light pastels, dark containers in dark theme
+val ExpiredRedOnLight = Color(0xFFA52834)
+val WarningYellowOnLight = Color(0xFF7A5C00)
+val ExpiredRedDark = Color(0xFF5C2127)
+val ExpiredRedOnDark = Color(0xFFFFB4AB)
+val WarningYellowDark = Color(0xFF574510)

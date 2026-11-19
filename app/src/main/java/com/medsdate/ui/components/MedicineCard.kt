@@ -36,10 +36,8 @@ import coil3.compose.AsyncImage
 import com.medsdate.R
 import com.medsdate.domain.model.ExpiryStatus
 import com.medsdate.domain.model.Medicine
-import com.medsdate.ui.theme.ExpiredRed
-import com.medsdate.ui.theme.ExpiredRedLight
-import com.medsdate.ui.theme.WarningYellow
-import com.medsdate.ui.theme.WarningYellowLight
+import com.medsdate.ui.theme.expiredColors
+import com.medsdate.ui.theme.warningColors
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -65,8 +63,8 @@ fun MedicineCard(
     val cornerValue = 20.dp
     val expiryStatus = medicine.getExpiryStatus(expiringSoonDays)
     val backgroundColor = when (expiryStatus) {
-        ExpiryStatus.EXPIRED -> ExpiredRedLight
-        ExpiryStatus.EXPIRING_SOON -> WarningYellowLight
+        ExpiryStatus.EXPIRED -> expiredColors().container
+        ExpiryStatus.EXPIRING_SOON -> warningColors().container
         ExpiryStatus.VALID -> MaterialTheme.colorScheme.surface
     }
 
@@ -178,8 +176,8 @@ private fun MedicineImage(
 @Composable
 private fun ExpiryWarningIcon(status: ExpiryStatus) {
     val iconColor = when (status) {
-        ExpiryStatus.EXPIRED -> ExpiredRed
-        ExpiryStatus.EXPIRING_SOON -> WarningYellow
+        ExpiryStatus.EXPIRED -> expiredColors().accent
+        ExpiryStatus.EXPIRING_SOON -> warningColors().accent
         ExpiryStatus.VALID -> return // No icon for valid medicines
     }
 
@@ -209,16 +207,18 @@ private fun ExpiryWarningIcon(status: ExpiryStatus) {
  */
 @Composable
 private fun DaysBadge(days: Long, status: ExpiryStatus) {
+    val expired = expiredColors().accent
+    val warning = warningColors().accent
     val (text, color) = when {
-        days == 0L && status == ExpiryStatus.EXPIRED -> stringResource(R.string.medicine_expired_today) to ExpiredRed
-        days == 0L -> stringResource(R.string.medicine_expires_today) to WarningYellow
+        days == 0L && status == ExpiryStatus.EXPIRED -> stringResource(R.string.medicine_expired_today) to expired
+        days == 0L -> stringResource(R.string.medicine_expires_today) to warning
         days < 0 -> {
             val absDays = (-days).toInt()
             val label = if (absDays == 1)
                 stringResource(R.string.medicine_expired_days_ago_singular, absDays)
             else
                 stringResource(R.string.medicine_expired_days_ago_plural, absDays)
-            label to ExpiredRed
+            label to expired
         }
         else -> {
             val d = days.toInt()
@@ -226,7 +226,7 @@ private fun DaysBadge(days: Long, status: ExpiryStatus) {
                 stringResource(R.string.medicine_days_left_singular, d)
             else
                 stringResource(R.string.medicine_days_left_plural, d)
-            val textColor = if (status == ExpiryStatus.EXPIRING_SOON) WarningYellow
+            val textColor = if (status == ExpiryStatus.EXPIRING_SOON) warning
             else MaterialTheme.colorScheme.onSurfaceVariant
             label to textColor
         }

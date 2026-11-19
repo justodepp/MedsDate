@@ -10,7 +10,7 @@ Compare against these after each `ui/*` branch.
 
 ## Issues seen while capturing (input for `ui/*`)
 
-1. **Dark theme, Home**: expired and expiring cards keep a light pastel background but the title and date use light text, so they are almost unreadable (`dark/01-home.jpg`). Same cause likely on Detail.
+1. **Dark theme, Home** (fixed in `fix/dark-cards`: status colors are now theme-aware, also on Stats; baseline images are the state before the fix): expired and expiring cards keep a light pastel background but the title and date use light text, so they are almost unreadable (`dark/01-home.jpg`). Same cause likely on Detail.
 2. **Dark theme**: the top app bar is a bright green, the splash screen is white (flash on launch).
 3. **"Expires today" is listed under "Expired medicines"** (item expired earlier today) and the card is yellow, not red. Stats counts it twice: Expired 2 + Expiring soon 3 + Valid 3 = 8, total 7 (`light/05-stats.jpg`).
 4. **Not localized**: validation messages ("Name is required", "Expiry date must be in the future"); content description "Immagine" on the photo icon.

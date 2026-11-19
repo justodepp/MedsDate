@@ -10,6 +10,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -72,6 +74,22 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
     outline = md_theme_dark_outline,
 )
+
+/**
+ * Container and accent (icon, number, label) for a medicine status surface.
+ * Text on the container keeps `colorScheme.onSurface`.
+ */
+data class StatusColors(val container: Color, val accent: Color)
+
+@Composable
+fun expiredColors(): StatusColors =
+    if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) StatusColors(ExpiredRedDark, ExpiredRedOnDark)
+    else StatusColors(ExpiredRedLight, ExpiredRedOnLight)
+
+@Composable
+fun warningColors(): StatusColors =
+    if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) StatusColors(WarningYellowDark, WarningYellow)
+    else StatusColors(WarningYellowLight, WarningYellowOnLight)
 
 /**
  * MedsDate Material3 theme.

@@ -34,10 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.medsdate.R
 import com.medsdate.ui.components.MedsAppBar
-import com.medsdate.ui.theme.ExpiredRed
-import com.medsdate.ui.theme.ExpiredRedLight
-import com.medsdate.ui.theme.WarningYellow
-import com.medsdate.ui.theme.WarningYellowLight
+import com.medsdate.ui.theme.expiredColors
+import com.medsdate.ui.theme.warningColors
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -70,6 +68,7 @@ fun StatsScreen(
                 icon = Icons.Outlined.MedicalServices,
                 iconTint = MaterialTheme.colorScheme.primary,
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
+                labelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -82,16 +81,16 @@ fun StatsScreen(
                     label = stringResource(R.string.stats_expired),
                     count = stats.expired,
                     icon = Icons.Outlined.Error,
-                    iconTint = ExpiredRed,
-                    containerColor = ExpiredRedLight,
+                    iconTint = expiredColors().accent,
+                    containerColor = expiredColors().container,
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     label = stringResource(R.string.stats_expiring_soon),
                     count = stats.expiringSoon,
                     icon = Icons.Outlined.Warning,
-                    iconTint = WarningYellow,
-                    containerColor = WarningYellowLight,
+                    iconTint = warningColors().accent,
+                    containerColor = warningColors().container,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -103,6 +102,7 @@ fun StatsScreen(
                 icon = Icons.Outlined.CheckCircle,
                 iconTint = MaterialTheme.colorScheme.tertiary,
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                labelColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -116,7 +116,8 @@ private fun StatCard(
     icon: ImageVector,
     iconTint: Color,
     containerColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    labelColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Card(
         modifier = modifier,
@@ -140,7 +141,7 @@ private fun StatCard(
                 Text(
                     text = label,
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = labelColor
                 )
             }
             Text(
@@ -177,16 +178,16 @@ private fun StatsScreenPreview() {
                     label = "Scaduti",
                     count = 3,
                     icon = Icons.Outlined.Error,
-                    iconTint = ExpiredRed,
-                    containerColor = ExpiredRedLight,
+                    iconTint = expiredColors().accent,
+                    containerColor = expiredColors().container,
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     label = "In Scadenza",
                     count = 2,
                     icon = Icons.Outlined.Warning,
-                    iconTint = WarningYellow,
-                    containerColor = WarningYellowLight,
+                    iconTint = warningColors().accent,
+                    containerColor = warningColors().container,
                     modifier = Modifier.weight(1f)
                 )
             }
